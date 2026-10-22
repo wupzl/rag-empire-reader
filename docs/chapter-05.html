@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解高并发与大数据。全书 9 章，全书完结。"><title>向量数据库的第一次背叛 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
+<body data-chapter="5" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE DATA EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
+<div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="current" href="chapter-05.html" aria-current="page"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
+<ul>
+<li><a href="#rag">第一卷技术档案：成熟 RAG 的能力清单</a></li>
+</ul>
+</div>
+</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 05 <span>/ 09 · 约 5 分钟</span></p><h1>向量数据库的第一次背叛</h1><p class="topics">向量检索 · 索引</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="current" href="chapter-05.html" aria-current="page"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
+<ul>
+<li><a href="#rag">第一卷技术档案：成熟 RAG 的能力清单</a></li>
+</ul>
+</div>
+</details><article><h1 id="_1">向量数据库的第一次背叛</h1>
+<blockquote>
+<p>工程阅读提示：故事中的金额、吞吐量、延迟与评测成绩是场景示例，不代表可复现的生产基准。代码用于解释设计，落地需结合实际版本、数据与测试。</p>
+</blockquote>
+<p>两周后。</p>
+<p>系统迎来了第一次内部演示。</p>
+<p>陈默输入：</p>
+<p>“企业版退款期限是多少？”</p>
+<p>系统准确找到了退款政策。</p>
+<p>所有人鼓掌。</p>
+<p>随后，陈默又输入：</p>
+<p>“ERR_PAYMENT_4032 是什么意思？”</p>
+<p>屏幕上的检索结果却是：</p>
+<div class="codehilite"><pre><span></span><code>1. 支付失败的常见原因
+2. 用户权限验证异常
+3. 订单状态不一致
+4. 企业版付款说明
+5. HTTP 403 错误解释
+</code></pre></div>
+
+<p>真正的文档：</p>
+<div class="codehilite"><pre><span></span><code>ERR_PAYMENT_4032
+含义：企业支付账户已被冻结。
+处理方式：联系企业财务管理员。
+</code></pre></div>
+
+<p>竟然没有进入 Top 5。</p>
+<p>“为什么？”陈默问。</p>
+<p>林川回答：</p>
+<p>“因为我们只用了向量检索。”</p>
+<p>“向量检索擅长语义相似，但不一定擅长精确匹配错误码、订单号、函数名和产品型号。”</p>
+<p>“ERR_PAYMENT_4032 对人来说是一个明确的标识符，但对 Embedding 模型来说，不一定能够被准确地映射到对应语义。”</p>
+<p>陈默皱眉。</p>
+<p>“那怎么办？”</p>
+<p>林川写下两个词。</p>
+<p>Hybrid Search。</p>
+<p>混合检索。</p>
+<p>一条检索链路负责语义：</p>
+<div class="codehilite"><pre><span></span><code>Query
+  ↓
+Embedding
+  ↓
+pgvector ANN Search
+  ↓
+Semantic Candidates
+</code></pre></div>
+
+<p>另一条链路负责关键词：</p>
+<div class="codehilite"><pre><span></span><code>Query
+  ↓
+Tokenization
+  ↓
+BM25 / Full-text Search
+  ↓
+Lexical Candidates
+</code></pre></div>
+
+<p>随后将两路候选结果融合。</p>
+<p>他选择了 RRF（Reciprocal Rank Fusion）。</p>
+<p>公式：</p>
+<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 61: …e{rank}\_r(d)} \̲" style="color:#cc0000"> RRF(d)=\sum\_{r\in R}\frac{1}{k+\operatorname{rank}\_r(d)} \</span></p>
+<p>其中：</p>
+<ul>
+<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 2: d\̲" style="color:#cc0000">d\</span>：某个候选文档或 Chunk。</li>
+<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 2: R\̲" style="color:#cc0000">R\</span>：参与融合的检索结果列表。</li>
+<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 2: k\̲" style="color:#cc0000">k\</span>：用于平滑排名影响的常数。</li>
+<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 26: …ame{rank}\_r(d)\̲" style="color:#cc0000">\operatorname{rank}\_r(d)\</span>：候选在某一路检索中的排名。</li>
+</ul>
+<p>“RRF 的优点是，不需要强行比较向量相似度与 BM25 分数的绝对数值。”</p>
+<p>“因为它主要依赖排名。”</p>
+<p>不过林川补充：</p>
+<p>“如果两路检索都没召回正确文档，RRF 也救不了。它只负责融合已有候选。”</p>
+<p>新的检索流程变成：</p>
+<div class="codehilite"><pre><span></span><code>用户 Query
+    │
+    ├── 向量召回 Top 30
+    │
+    └── 关键词召回 Top 30
+              │
+              ▼
+          RRF 融合
+              │
+              ▼
+         候选去重 Top 40
+              │
+              ▼
+           Reranker
+              │
+              ▼
+         最终证据 Top 5
+</code></pre></div>
+
+<p>Top K 数值仅作为本章设计示例，需要通过真实评测与延迟预算调整。</p>
+<p>演示再次开始。</p>
+<p>“ERR_PAYMENT_4032 是什么意思？”</p>
+<p>这一次，正确文档排在第一位。</p>
+<p>陈默刚准备宣布成功，林川却关闭了演示界面。</p>
+<p>“还不能上线。”</p>
+<p>“为什么？”</p>
+<p>“因为我们现在只是找到了相关文档。”</p>
+<p>“但一个成熟的 RAG 系统，还必须解决一个更危险的问题。”</p>
+<p>“什么问题？”</p>
+<p>林川看着屏幕，缓缓说道：</p>
+<p>“如果用户找到了他根本没有权限阅读的文档呢？”</p>
+<p>会议室瞬间安静下来。</p>
+<h2 id="rag">第一卷技术档案：成熟 RAG 的能力清单</h2>
+<p>故事中的星云平台最终需要覆盖以下工程能力。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>Demo 级实现</th>
+<th>生产级目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档处理</td>
+<td>同步解析上传</td>
+<td>异步任务、幂等、重试、版本切换</td>
+</tr>
+<tr>
+<td>分块</td>
+<td>固定长度切分</td>
+<td>结构化、父子分块、表格处理</td>
+</tr>
+<tr>
+<td>检索</td>
+<td>单路向量 Top K</td>
+<td>混合召回、融合、Rerank</td>
+</tr>
+<tr>
+<td>权限</td>
+<td>不做过滤</td>
+<td>租户隔离、文档级 ACL、检索前过滤</td>
+</tr>
+<tr>
+<td>生成</td>
+<td>直接拼接 Prompt</td>
+<td>证据约束、引用、拒答、注入防护</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>单次请求可运行</td>
+<td>缓存、限流、并发控制、延迟预算</td>
+</tr>
+<tr>
+<td>稳定性</td>
+<td>异常直接报错</td>
+<td>超时、降级、熔断、补偿</td>
+</tr>
+<tr>
+<td>可观测性</td>
+<td>普通日志</td>
+<td>Trace、指标、检索日志、成本统计</td>
+</tr>
+<tr>
+<td>质量评估</td>
+<td>人工问几个问题</td>
+<td>Recall\@K、MRR、nDCG、忠实度评测</td>
+</tr>
+<tr>
+<td>交付</td>
+<td>本地启动</td>
+<td>CI/CD、灰度、回滚、容量规划</td>
+</tr>
+</tbody>
+</table></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-04.html">← 上一章<span>被切碎的法律条款</span></a><a href="chapter-06.html">下一章 →<span>权限之墙——一场险些泄露的商业机密</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
+<dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>
