@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解高并发与大数据。全书 9 章，全书完结。"><title>十万并发的夜晚 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
-<body data-chapter="8" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE DATA EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>十万并发的夜晚 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
+<body data-chapter="8" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
 <div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="current" href="chapter-08.html" aria-current="page"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
 <ul>
 <li><a href="#_2">序幕：十万人同时按下回车</a></li>
@@ -28,6 +28,7 @@
 <li><a href="#5">5. 错误率</a></li>
 <li><a href="#rag_5">技术面试：高并发 RAG 的十二道追问</a></li>
 <li><a href="#_32">终章：凌晨两点的最后一条告警</a></li>
+<li><a href="#_33">本章交互实验</a></li>
 </ul>
 </div>
 </details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 08 <span>/ 09 · 约 46 分钟</span></p><h1>十万并发的夜晚</h1><p class="topics">并发 · 容量 · 可观测性</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="current" href="chapter-08.html" aria-current="page"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
@@ -57,6 +58,7 @@
 <li><a href="#5">5. 错误率</a></li>
 <li><a href="#rag_5">技术面试：高并发 RAG 的十二道追问</a></li>
 <li><a href="#_32">终章：凌晨两点的最后一条告警</a></li>
+<li><a href="#_33">本章交互实验</a></li>
 </ul>
 </div>
 </details><article><h1 id="_1">十万并发的夜晚</h1>
@@ -144,16 +146,16 @@
 <p>每秒有 100 个请求进入系统。</p>
 <p>每个请求平均持续 10 秒。</p>
 <p>在系统稳定、请求无大量丢弃的情况下，平均在途请求数大约为：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 14:  L=\lambda W \̲" style="color:#cc0000"> L=\lambda W \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi>λ</mi><mi>W</mi></mrow><annotation encoding="application/x-tex"> L=\lambda W </annotation></semantics></math></span></p>
 <p>这就是 Little's Law。</p>
 <p>其中：</p>
 <ul>
-<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 2: L\̲" style="color:#cc0000">L\</span>：平均在途请求数量。</li>
-<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 8: \lambda\̲" style="color:#cc0000">\lambda\</span>：长期平均完成吞吐率。</li>
-<li>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 2: W\̲" style="color:#cc0000">W\</span>：平均请求在系统中的停留时间。</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span>：平均在途请求数量。</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span>：长期平均完成吞吐率。</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span>：平均请求在系统中的停留时间。</li>
 </ul>
 <p>所以：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 21: …0\times10=1000 \̲" style="color:#cc0000"> L=100\times10=1000 \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mn>100</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex"> L=100\times10=1000 </annotation></semantics></math></span></p>
 <p>“也就是说，100 QPS 的 RAG 系统，完全可能同时维持 1000 个活跃请求。”</p>
 <p>周野突然意识到了什么。</p>
 <p>“如果平均响应时间从 10 秒增加到 30 秒……”</p>
@@ -564,7 +566,7 @@ Connection Timeout: 30000ms
 <p>假设数据库查询平均耗时 100ms。</p>
 <p>如果每个连接能够持续执行独立查询，且没有其他瓶颈，那么单连接理论上每秒可以完成约 10 次查询。</p>
 <p>50 个连接的粗略上限为：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 35: …ext{queries/s} \̲" style="color:#cc0000"> 50\times10=500\ \text{queries/s} \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>50</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>500</mn><mtext> queries/s</mtext></mrow><annotation encoding="application/x-tex"> 50\times10=500\ \text{queries/s} </annotation></semantics></math></span></p>
 <p>“但这只是理想化估算。”</p>
 <p>林川强调。</p>
 <p>“实际吞吐量还受数据库 CPU、索引、锁、I/O、事务和查询分布影响。”</p>
@@ -709,7 +711,7 @@ public String callLlm(String prompt)
 <p>总输出 200 个 Token。</p>
 <p>从第一个 Token 到最后一个 Token 花费 4 秒。</p>
 <p>则可以粗略估算：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 47: …x20.1\text{ms} \̲" style="color:#cc0000"> TPOT\approx\frac{4}{199}\approx20.1\text{ms} \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi>P</mi><mi>O</mi><mi>T</mi><mo>≈</mo><mfrac><mn>4</mn><mn>199</mn></mfrac><mo>≈</mo><mn>20.1</mn><mtext>ms</mtext></mrow><annotation encoding="application/x-tex"> TPOT\approx\frac{4}{199}\approx20.1\text{ms} </annotation></semantics></math></span></p>
 <p>“实际监控要明确统计口径。”</p>
 <p>“有些系统把首 Token 也计入平均值，有些只统计后续 Token 间隔。”</p>
 <p>“如果口径不同，指标不能直接比较。”</p>
@@ -745,7 +747,7 @@ public String callLlm(String prompt)
 <p>其中 99 个请求耗时 1 秒。</p>
 <p>最后一个请求耗时 60 秒。</p>
 <p>平均值：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 40: …}=1.59\text{s} \̲" style="color:#cc0000"> \frac{99\times1+60}{100}=1.59\text{s} \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mn>99</mn><mo>×</mo><mn>1</mn><mo>+</mo><mn>60</mn></mrow><mn>100</mn></mfrac><mo>=</mo><mn>1.59</mn><mtext>s</mtext></mrow><annotation encoding="application/x-tex"> \frac{99\times1+60}{100}=1.59\text{s} </annotation></semantics></math></span></p>
 <p>“平均值看起来只有 1.59 秒。”</p>
 <p>林川说。</p>
 <p>“但最慢的那个用户等了整整一分钟。”</p>
@@ -809,7 +811,7 @@ LLM 生成容量
 <p>每秒 100,000 个输出 Token。</p>
 <p>平均每个请求输出 500 Token。</p>
 <p>那么仅从输出 Token 吞吐量看，理论上：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 32: …0000}{500}=200 \̲" style="color:#cc0000"> QPS\leq\frac{100000}{500}=200 \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Q</mi><mi>P</mi><mi>S</mi><mo>≤</mo><mfrac><mn>100000</mn><mn>500</mn></mfrac><mo>=</mo><mn>200</mn></mrow><annotation encoding="application/x-tex"> QPS\leq\frac{100000}{500}=200 </annotation></semantics></math></span></p>
 <p>“但这只是一个粗略上界。”</p>
 <p>林川说。</p>
 <p>“它没有考虑输入 Prefill、KV Cache、请求并发、批处理效率、输出长度分布和尾延迟。”</p>
@@ -1100,20 +1102,20 @@ Network / SSE
 <p>“而是在接近极限时，能够知道自己正在接近极限，并且有能力保护自己。”</p>
 <h2 id="rag_4">本章技术档案：高并发 RAG 的核心公式</h2>
 <h2 id="1-littles-law">1. Little's Law</h2>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 14:  L=\lambda W \̲" style="color:#cc0000"> L=\lambda W \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi>λ</mi><mi>W</mi></mrow><annotation encoding="application/x-tex"> L=\lambda W </annotation></semantics></math></span></p>
 <p>用于稳定系统中平均在途请求数、吞吐率与平均停留时间之间的关系。</p>
 <h2 id="2_2">2. 模型输出吞吐量上界估算</h2>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 73: …kens/Request}} \̲" style="color:#cc0000"> QPS\lesssim \frac{\text{Output Tokens/s}} {\text{平均输出 Tokens/Request}} \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Q</mi><mi>P</mi><mi>S</mi><mo>≲</mo><mfrac><mtext>Output Tokens/s</mtext><mtext>平均输出 Tokens/Request</mtext></mfrac></mrow><annotation encoding="application/x-tex"> QPS\lesssim \frac{\text{Output Tokens/s}} {\text{平均输出 Tokens/Request}} </annotation></semantics></math></span></p>
 <p>只是输出阶段的粗略约束，不能代替真实模型容量测试。</p>
 <h2 id="3_2">3. 请求总延迟</h2>
 <p>对于串行阶段：</p>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 31: …l}}=\sum_i T_i \̲" style="color:#cc0000"> T\_{\text{total}}=\sum_i T_i \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi mathvariant="normal">_</mi><mtext>total</mtext><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex"> T\_{\text{total}}=\sum_i T_i </annotation></semantics></math></span></p>
 <p>对于并行阶段，端到端延迟取决于关键路径，而不是所有阶段耗时之和。</p>
 <h2 id="4_1">4. 缓存命中率</h2>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 76: …Cache Misses}} \̲" style="color:#cc0000"> HitRate= \frac{\text{Cache Hits}} {\text{Cache Hits}+\text{Cache Misses}} \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>H</mi><mi>i</mi><mi>t</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mfrac><mtext>Cache Hits</mtext><mrow><mtext>Cache Hits</mtext><mo>+</mo><mtext>Cache Misses</mtext></mrow></mfrac></mrow><annotation encoding="application/x-tex"> HitRate= \frac{\text{Cache Hits}} {\text{Cache Hits}+\text{Cache Misses}} </annotation></semantics></math></span></p>
 <p>缓存命中率高不一定代表系统整体性能好，还要关注命中路径的安全性、延迟和缓存维护成本。</p>
 <h2 id="5">5. 错误率</h2>
-<p>\<span class="katex-error" title="ParseError: KaTeX parse error: Unexpected character: &#x27;\&#x27; at position 47: … {\text{总请求数}} \̲" style="color:#cc0000"> ErrorRate= \frac{\text{失败请求数}} {\text{总请求数}} \</span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi>r</mi><mi>r</mi><mi>o</mi><mi>r</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mfrac><mtext>失败请求数</mtext><mtext>总请求数</mtext></mfrac></mrow><annotation encoding="application/x-tex"> ErrorRate= \frac{\text{失败请求数}} {\text{总请求数}} </annotation></semantics></math></span></p>
 <p>需要明确定义失败类型，例如 HTTP 错误、超时、模型失败和业务拒答。</p>
 <h2 id="rag_5">技术面试：高并发 RAG 的十二道追问</h2>
 <p>模拟面试 · 点击展开参考回答</p>
@@ -1165,5 +1167,7 @@ Normal
 <p>“我们刚刚为了降低延迟，调整了检索候选数量和 Rerank 策略。”</p>
 <p>“现在看来，可能影响了召回和答案质量。”</p>
 <p>他缓缓站起身。</p>
-<p>“下一场战争开始了。”</p></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-07.html">← 上一章<span>推理引擎——让模型学会有证据地回答</span></a><a href="chapter-09.html">下一章 →<span>评测法庭——如何证明 AI 真的变聪明了</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
+<p>“下一场战争开始了。”</p>
+<h2 id="_33">本章交互实验</h2>
+<div class="lab" data-lab="capacity"></div></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-07.html">← 上一章<span>推理引擎——让模型学会有证据地回答</span></a><a href="chapter-09.html">下一章 →<span>评测法庭——如何证明 AI 真的变聪明了</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
 <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>
