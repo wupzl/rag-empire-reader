@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>一张决定系统命运的架构图 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
-<body data-chapter="2" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>一张决定系统命运的架构图 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'white';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
+<body data-chapter="2" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换背景：纯白、米白、深色">◐</button></div></header>
 <div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="current" href="chapter-02.html" aria-current="page"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
 <ul></ul>
 </div>
@@ -11,7 +11,9 @@
 <blockquote>
 <p>工程阅读提示：故事中的金额、吞吐量、延迟与评测成绩是场景示例，不代表可复现的生产基准。代码用于解释设计，落地需结合实际版本、数据与测试。</p>
 </blockquote>
-<p>第二天上午九点。林川在白板上画出了系统的第一版架构。星云企业级 RAG 平台 · 总体架构</p>
+<p>第二天上午九点。</p>
+<p>林川在白板上画出了系统的第一版架构。</p>
+<p>星云企业级 RAG 平台 · 总体架构</p>
 <table>
 <thead>
 <tr>
@@ -39,10 +41,11 @@
 </tbody>
 </table>
 <p>陈默盯着架构图。</p>
-<p class="spoken-line">“为什么要分成两条链路？”</p>
-<p><strong>林川回答：</strong> “因为知识入库和在线问答的性能要求完全不同。”</p>
-<p class="spoken-line">“用户上传一份 500 页的 PDF，解析、分块、向量化可能需要几十秒甚至几分钟。”</p>
-<p class="spoken-line">“但用户提问时，不可能等这么久。”</p>
+<p>“为什么要分成两条链路？”</p>
+<p>林川回答：</p>
+<p>“因为知识入库和在线问答的性能要求完全不同。”</p>
+<p>“用户上传一份 500 页的 PDF，解析、分块、向量化可能需要几十秒甚至几分钟。”</p>
+<p>“但用户提问时，不可能等这么久。”</p>
 <p>他写下两组指标。</p>
 <table>
 <thead>
@@ -62,15 +65,17 @@
 </tr>
 </tbody>
 </table>
-<p class="spoken-line">“所以，上传接口不应该同步执行整个知识处理流程。”</p>
-<p class="spoken-line">“我们应该把文件保存到对象存储，把任务持久化，然后通过消息队列交给后台 Worker。”</p>
-<p><strong>陈默问：</strong> “如果 Worker 处理到一半宕机呢？”</p>
-<p><strong>林川回答：</strong> “任务状态机、幂等处理、重试机制、死信队列和补偿任务。”</p>
-<p class="spoken-line">“如果消息重复投递？”</p>
-<p class="spoken-line">“使用稳定的任务 ID、数据库唯一约束和状态检查，避免重复产生有效数据。”</p>
-<p class="spoken-line">“如果向量写入一半失败？”</p>
-<p class="spoken-line">“使用版本化索引。新版本构建完成并校验后，再切换可检索版本。”</p>
+<p>“所以，上传接口不应该同步执行整个知识处理流程。”</p>
+<p>“我们应该把文件保存到对象存储，把任务持久化，然后通过消息队列交给后台 Worker。”</p>
+<p>陈默问：</p>
+<p>“如果 Worker 处理到一半宕机呢？”</p>
+<p>林川回答：</p>
+<p>“任务状态机、幂等处理、重试机制、死信队列和补偿任务。”</p>
+<p>“如果消息重复投递？”</p>
+<p>“使用稳定的任务 ID、数据库唯一约束和状态检查，避免重复产生有效数据。”</p>
+<p>“如果向量写入一半失败？”</p>
+<p>“使用版本化索引。新版本构建完成并校验后，再切换可检索版本。”</p>
 <p>陈默终于露出了笑容。</p>
-<p class="spoken-line">“这才像一个生产系统。”</p>
+<p>“这才像一个生产系统。”</p>
 <p>但他不知道，真正的麻烦才刚刚开始。</p></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-01.html">← 上一章<span>一场价值三百万的幻觉事故</span></a><a href="chapter-03.html">下一章 →<span>五十万份文档的入侵</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
 <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>

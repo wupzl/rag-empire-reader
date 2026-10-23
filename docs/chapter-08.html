@@ -1,44 +1,52 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>十万并发的夜晚 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
-<body data-chapter="8" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>十万并发的夜晚 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'white';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
+<body data-chapter="8" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换背景：纯白、米白、深色">◐</button></div></header>
 <div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="current" href="chapter-08.html" aria-current="page"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
 <ul>
 <li><a href="#_2">序幕：十万人同时按下回车</a></li>
-<li><a href="#_3">第三幕：请求合并——五千个人问同一个问题</a></li>
+<li><a href="#qps">第一幕：并发量，不等于 QPS</a></li>
+<li><a href="#redis">第二幕：Redis 的第一道防线——缓存不是越多越好</a></li>
+<li><a href="#_4">第三幕：请求合并——五千个人问同一个问题</a></li>
+<li><a href="#java-21">第四幕：Java 21 虚拟线程——百万线程的神话</a></li>
 <li><a href="#webflux">第五幕：WebFlux 与虚拟线程——两种并发模型的战争</a></li>
 <li><a href="#sse">第六幕：SSE 连接风暴——一万个用户不肯离开</a></li>
-<li><a href="#_9">第七幕：数据库连接池——只有五十把钥匙的城门</a></li>
-<li><a href="#java_1">第九幕：模型网关——真正的瓶颈不是 Java</a></li>
+<li><a href="#_12">第七幕：数据库连接池——只有五十把钥匙的城门</a></li>
+<li><a href="#_16">第八幕：限流与熔断——不是所有请求都应该被接受</a></li>
+<li><a href="#java_2">第九幕：模型网关——真正的瓶颈不是 Java</a></li>
 <li><a href="#p95-p99">第十幕：P95 与 P99——平均值掩盖的灾难</a></li>
-<li><a href="#_15">第十一幕：容量规划——十万用户究竟需要多少台服务器？</a></li>
+<li><a href="#_22">第十一幕：容量规划——十万用户究竟需要多少台服务器？</a></li>
 <li><a href="#500-qps">第十二幕：压测——为什么 500 QPS 的测试毫无意义？</a></li>
 <li><a href="#trace">第十三幕：故障排查——从日志到 Trace 的最后一公里</a></li>
 <li><a href="#rag_3">第十四幕：架构重建——真正的高并发 RAG</a></li>
-<li><a href="#_24">第十五幕：真正的容量，不是服务器数量</a></li>
+<li><a href="#_31">第十五幕：真正的容量，不是服务器数量</a></li>
 <li><a href="#rag_4">本章技术档案：高并发 RAG 的核心公式</a></li>
 <li><a href="#rag_5">技术面试：高并发 RAG 的十二道追问</a></li>
-<li><a href="#_25">终章：凌晨两点的最后一条告警</a></li>
-<li><a href="#_26">本章交互实验</a></li>
+<li><a href="#_32">终章：凌晨两点的最后一条告警</a></li>
+<li><a href="#_33">本章交互实验</a></li>
 </ul>
 </div>
 </details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 08 <span>/ 09 · 约 50 分钟</span></p><h1>十万并发的夜晚</h1><p class="topics">并发 · 容量 · 可观测性</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="current" href="chapter-08.html" aria-current="page"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
 <ul>
 <li><a href="#_2">序幕：十万人同时按下回车</a></li>
-<li><a href="#_3">第三幕：请求合并——五千个人问同一个问题</a></li>
+<li><a href="#qps">第一幕：并发量，不等于 QPS</a></li>
+<li><a href="#redis">第二幕：Redis 的第一道防线——缓存不是越多越好</a></li>
+<li><a href="#_4">第三幕：请求合并——五千个人问同一个问题</a></li>
+<li><a href="#java-21">第四幕：Java 21 虚拟线程——百万线程的神话</a></li>
 <li><a href="#webflux">第五幕：WebFlux 与虚拟线程——两种并发模型的战争</a></li>
 <li><a href="#sse">第六幕：SSE 连接风暴——一万个用户不肯离开</a></li>
-<li><a href="#_9">第七幕：数据库连接池——只有五十把钥匙的城门</a></li>
-<li><a href="#java_1">第九幕：模型网关——真正的瓶颈不是 Java</a></li>
+<li><a href="#_12">第七幕：数据库连接池——只有五十把钥匙的城门</a></li>
+<li><a href="#_16">第八幕：限流与熔断——不是所有请求都应该被接受</a></li>
+<li><a href="#java_2">第九幕：模型网关——真正的瓶颈不是 Java</a></li>
 <li><a href="#p95-p99">第十幕：P95 与 P99——平均值掩盖的灾难</a></li>
-<li><a href="#_15">第十一幕：容量规划——十万用户究竟需要多少台服务器？</a></li>
+<li><a href="#_22">第十一幕：容量规划——十万用户究竟需要多少台服务器？</a></li>
 <li><a href="#500-qps">第十二幕：压测——为什么 500 QPS 的测试毫无意义？</a></li>
 <li><a href="#trace">第十三幕：故障排查——从日志到 Trace 的最后一公里</a></li>
 <li><a href="#rag_3">第十四幕：架构重建——真正的高并发 RAG</a></li>
-<li><a href="#_24">第十五幕：真正的容量，不是服务器数量</a></li>
+<li><a href="#_31">第十五幕：真正的容量，不是服务器数量</a></li>
 <li><a href="#rag_4">本章技术档案：高并发 RAG 的核心公式</a></li>
 <li><a href="#rag_5">技术面试：高并发 RAG 的十二道追问</a></li>
-<li><a href="#_25">终章：凌晨两点的最后一条告警</a></li>
-<li><a href="#_26">本章交互实验</a></li>
+<li><a href="#_32">终章：凌晨两点的最后一条告警</a></li>
+<li><a href="#_33">本章交互实验</a></li>
 </ul>
 </div>
 </details><article><h1 id="_1">十万并发的夜晚</h1>
@@ -49,11 +57,26 @@
 <p><a href="https://timesofindia.indiatimes.com/technology/tech-news/global-microsoft-azure-outage-microsoft-says-issue-identified-engineers-are-rolling-back-changes-and-rerouting-traffic/articleshow/124916411.cms?utm_source=chatgpt.com">timesofindia.indiatimes.com</a></p>
 <h2 id="_2">序幕：十万人同时按下回车</h2>
 <p>2027 年 1 月 5 日，上午 9:00。</p>
-<p>星云科技总部。企业级 RAG 平台正式向集团员工开放。过去两个月，林川的团队已经完成了文档解析、Heading Path 分块、pgvector 向量检索、Hybrid Search、Cross-Encoder Rerank、文档 ACL、Grounded Generation 和 SSE 流式输出。安全测试通过。功能测试通过。离线问答评测达到预期。陈默站在会议室中央。</p>
-<p class="spoken-line">“今天十点，集团内部将正式推送平台入口。”</p>
-<p><strong>周野笑着说道：</strong> “我们部署了八个 Spring Boot 实例，每个实例分配 4 核 CPU、8GB 内存。数据库用了 PostgreSQL，缓存用了 Redis，模型调用走统一网关。”</p>
-<p class="spoken-line">“应该没什么问题。”</p>
-<p>林川没有说话。他正在查看 Grafana。系统目前只有两百多个活跃用户。平均响应时间 2.8 秒。错误率不到 0.1%。看起来一切正常。上午 10:00。集团通知正式发出。十万名员工收到了同一条消息：</p>
+<p>星云科技总部。</p>
+<p>企业级 RAG 平台正式向集团员工开放。</p>
+<p>过去两个月，林川的团队已经完成了文档解析、Heading Path 分块、pgvector 向量检索、Hybrid Search、Cross-Encoder Rerank、文档 ACL、Grounded Generation 和 SSE 流式输出。</p>
+<p>安全测试通过。</p>
+<p>功能测试通过。</p>
+<p>离线问答评测达到预期。</p>
+<p>陈默站在会议室中央。</p>
+<p>“今天十点，集团内部将正式推送平台入口。”</p>
+<p>周野笑着说道：</p>
+<p>“我们部署了八个 Spring Boot 实例，每个实例分配 4 核 CPU、8GB 内存。数据库用了 PostgreSQL，缓存用了 Redis，模型调用走统一网关。”</p>
+<p>“应该没什么问题。”</p>
+<p>林川没有说话。</p>
+<p>他正在查看 Grafana。</p>
+<p>系统目前只有两百多个活跃用户。</p>
+<p>平均响应时间 2.8 秒。</p>
+<p>错误率不到 0.1%。</p>
+<p>看起来一切正常。</p>
+<p>上午 10:00。</p>
+<p>集团通知正式发出。</p>
+<p>十万名员工收到了同一条消息：</p>
 <blockquote>
 <p>星云企业知识助手正式上线。支持企业制度、技术文档、合同规范及业务流程智能问答。</p>
 </blockquote>
@@ -62,164 +85,142 @@
 <p>10:02。</p>
 <p>访问人数突破三万。</p>
 <p>10:03。</p>
-<p>监控屏幕突然变红。```
-[10:03:12] WARN  HikariPool - Connection is not available
+<p>监控屏幕突然变红。</p>
+<div class="codehilite"><pre><span></span><code>[10:03:12] WARN  HikariPool - Connection is not available
 [10:03:13] WARN  Redis - Command timeout
 [10:03:14] ERROR RerankClient - Request timeout
 [10:03:15] WARN  LLM Gateway - Too many requests
-[10:03:17] ERROR SSE - Upstream connection reset</p>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>10:04。
-
-P99 延迟突破 30 秒。
-
-10:05。
-
-部分用户开始收到 HTTP 503。
-
-10:06。
-
-八个 Spring Boot 实例的 CPU 使用率全部超过 90%。陈默猛地站起来。
-
-“怎么回事？我们不是已经做过压测了吗？”
-
-周野脸色苍白。
-
-“压过了。我们测试过每秒 500 个请求。”
-
-“那为什么现在每秒只有 300 多个请求，系统就崩了？”
-
-林川盯着监控屏幕。
-
-**过了几秒，他缓缓说道：** “因为我们压测的是普通 HTTP 接口。”
-
-“但今天运行的是 RAG 流式问答。”
-
-“它们根本不是同一种负载。”
-
-## 第一幕：并发量，不等于 QPS
-
-陈默走到白板前。
-
-“先别修代码。”
-
-“林川，告诉我现在到底发生了什么。”
-
-林川写下三个概念。QPS、并发数、响应时间。
-
-“这是高并发系统最基础、也最容易被混淆的三个指标。”
-
-### 1. QPS 是什么？
-
-QPS，Queries Per Second，通常表示系统每秒处理的请求数量。但在 RAG 系统中，我们必须进一步区分：
-
-- 每秒到达多少个请求。
-- 每秒完成多少个请求。
-- 每秒发起多少次模型调用。
-- 每秒生成多少个 Token。
-
-“一个用户请求可能触发三次检索、一次 Rerank 和一次 LLM 调用。”
-
-林川说。
-
-“因此，入口 QPS 不能直接代表下游服务的负载。”
-
-### 2. 并发数是什么？
-
-并发数表示某一时刻正在系统中处理、等待或保持活动状态的请求数量。假设：
-
-每秒有 100 个请求进入系统。每个请求平均持续 10 秒。在系统稳定、请求无大量丢弃的情况下，平均在途请求数大约为：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi>λ</mi><mi>W</mi></mrow><annotation encoding="application/x-tex"> L=\lambda W </annotation></semantics></math></span>
-
-这就是 Little&#39;s Law。其中：
-
-- <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span>：平均在途请求数量。
-- <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span>：长期平均完成吞吐率。
-- <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span>：平均请求在系统中的停留时间。
-
-所以：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mn>100</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex"> L=100\times10=1000 </annotation></semantics></math></span>
-
-“也就是说，100 QPS 的 RAG 系统，完全可能同时维持 1000 个活跃请求。”
-
-周野突然意识到了什么。
-
-“如果平均响应时间从 10 秒增加到 30 秒……”
-
-“在吞吐率仍能维持 100 QPS 的稳定条件下，平均在途请求数就会增长到 3000。”
-
-**林川回答。** “但如果系统已经过载、队列持续增长，就不能再把稳定状态公式直接当作容量保证。”
-
-“这时到达速率可能超过完成速率，排队会不断恶化。”
-
-### 3. 十万在线用户意味着十万并发吗？
-
-**陈默问：** “我们现在有十万在线用户，是不是就代表十万并发？”
-
-“不一定。”
-
-**林川回答。** “十万在线用户可能只有一千人正在发起请求。”
-
-“但如果十万人同时提问，而且 SSE 连接持续十几秒甚至几十秒，那确实可能产生非常高的在途并发。”
-
-“所以我们需要区分在线用户数、活跃 SSE 连接数、入口 QPS 和模型推理并发。”
-
-### 并发计算实验
-
-Little&#39;s Law：估算平均在途请求数
-
-| 参数 / 结果 | 数值 |
-| --- | --- |
-| 稳定完成吞吐率 | 300 QPS |
-| 平均请求持续时间 | 15 秒 |
-| 平均在途请求 | 300 × 15 = 4,500 |
-
-适用于稳定系统的平均值估算，不代表峰值并发，也不能直接推导 CPU、内存或模型容量。林川看向陈默。
-
-“我们之前压测的普通接口，几十毫秒就能完成。”
-
-“而 RAG SSE 可能持续十几秒。”
-
-“即使入口 QPS 更低，也可能维持远多于普通接口的活跃连接。”
-
-“但这还不是系统崩溃的全部原因。”
-
-## 第二幕：Redis 的第一道防线——缓存不是越多越好
-
-10:12。
-
-林川打开 Redis 监控。缓存命中率只有 18%。与此同时，数据库查询量急剧上升。
-
-**周野说道：** “我们明明用了 Redis，为什么还会这样？”
-
-**林川回答：** “因为我们只是用了 Redis，并没有设计完整的缓存体系。”
-
-### 1. RAG 可以缓存什么？
-
-他画出了缓存层次。RAG 多级缓存架构用户请求L1：本地缓存 Caffeine热点配置、模型路由、非敏感短期数据L2：分布式缓存 RedisEmbedding、授权感知检索结果、答案缓存PostgreSQL / pgvector / 模型服务
-
-“本地缓存速度快，不需要网络调用，但多个实例之间的数据更新不天然同步。”
-
-“Redis 可以在多个实例间共享缓存，但会引入网络开销、内存压力和热点问题。”
-
-“数据库和模型服务则承担最终数据查询与计算。”
-
-**周野问：** “那我们直接缓存最终答案，不就最省钱了吗？”
-
-林川摇头。
-
-“答案缓存必须非常谨慎。”
-
-“因为我们的 RAG 系统有多租户、文档 ACL 和知识版本。”
-
-“同一个问题，不同用户可能有不同的合法答案。”
-
-他写出一个错误的 Key：
-</code></pre></div></details>
-
-<p>rag:answer:企业版退款政策
-```然后写出更完整的缓存身份：</p>
+[10:03:17] ERROR SSE - Upstream connection reset
+</code></pre></div>
+
+<p>10:04。</p>
+<p>P99 延迟突破 30 秒。</p>
+<p>10:05。</p>
+<p>部分用户开始收到 HTTP 503。</p>
+<p>10:06。</p>
+<p>八个 Spring Boot 实例的 CPU 使用率全部超过 90%。</p>
+<p>陈默猛地站起来。</p>
+<p>“怎么回事？我们不是已经做过压测了吗？”</p>
+<p>周野脸色苍白。</p>
+<p>“压过了。我们测试过每秒 500 个请求。”</p>
+<p>“那为什么现在每秒只有 300 多个请求，系统就崩了？”</p>
+<p>林川盯着监控屏幕。</p>
+<p>过了几秒，他缓缓说道：</p>
+<p>“因为我们压测的是普通 HTTP 接口。”</p>
+<p>“但今天运行的是 RAG 流式问答。”</p>
+<p>“它们根本不是同一种负载。”</p>
+<h2 id="qps">第一幕：并发量，不等于 QPS</h2>
+<p>陈默走到白板前。</p>
+<p>“先别修代码。”</p>
+<p>“林川，告诉我现在到底发生了什么。”</p>
+<p>林川写下三个概念。</p>
+<p>QPS、并发数、响应时间。</p>
+<p>“这是高并发系统最基础、也最容易被混淆的三个指标。”</p>
+<h3 id="1-qps">1. QPS 是什么？</h3>
+<p>QPS，Queries Per Second，通常表示系统每秒处理的请求数量。</p>
+<p>但在 RAG 系统中，我们必须进一步区分：</p>
+<ul>
+<li>每秒到达多少个请求。</li>
+<li>每秒完成多少个请求。</li>
+<li>每秒发起多少次模型调用。</li>
+<li>每秒生成多少个 Token。</li>
+</ul>
+<p>“一个用户请求可能触发三次检索、一次 Rerank 和一次 LLM 调用。”</p>
+<p>林川说。</p>
+<p>“因此，入口 QPS 不能直接代表下游服务的负载。”</p>
+<h3 id="2">2. 并发数是什么？</h3>
+<p>并发数表示某一时刻正在系统中处理、等待或保持活动状态的请求数量。</p>
+<p>假设：</p>
+<p>每秒有 100 个请求进入系统。</p>
+<p>每个请求平均持续 10 秒。</p>
+<p>在系统稳定、请求无大量丢弃的情况下，平均在途请求数大约为：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi>λ</mi><mi>W</mi></mrow><annotation encoding="application/x-tex"> L=\lambda W </annotation></semantics></math></span></p>
+<p>这就是 Little's Law。</p>
+<p>其中：</p>
+<ul>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span>：平均在途请求数量。</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span>：长期平均完成吞吐率。</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span>：平均请求在系统中的停留时间。</li>
+</ul>
+<p>所以：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mn>100</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex"> L=100\times10=1000 </annotation></semantics></math></span></p>
+<p>“也就是说，100 QPS 的 RAG 系统，完全可能同时维持 1000 个活跃请求。”</p>
+<p>周野突然意识到了什么。</p>
+<p>“如果平均响应时间从 10 秒增加到 30 秒……”</p>
+<p>“在吞吐率仍能维持 100 QPS 的稳定条件下，平均在途请求数就会增长到 3000。”</p>
+<p>林川回答。</p>
+<p>“但如果系统已经过载、队列持续增长，就不能再把稳定状态公式直接当作容量保证。”</p>
+<p>“这时到达速率可能超过完成速率，排队会不断恶化。”</p>
+<h3 id="3">3. 十万在线用户意味着十万并发吗？</h3>
+<p>陈默问：</p>
+<p>“我们现在有十万在线用户，是不是就代表十万并发？”</p>
+<p>“不一定。”</p>
+<p>林川回答。</p>
+<p>“十万在线用户可能只有一千人正在发起请求。”</p>
+<p>“但如果十万人同时提问，而且 SSE 连接持续十几秒甚至几十秒，那确实可能产生非常高的在途并发。”</p>
+<p>“所以我们需要区分在线用户数、活跃 SSE 连接数、入口 QPS 和模型推理并发。”</p>
+<h3 id="_3">并发计算实验</h3>
+<p>Little's Law：估算平均在途请求数</p>
+<table>
+<thead>
+<tr>
+<th>参数 / 结果</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>稳定完成吞吐率</td>
+<td>300 QPS</td>
+</tr>
+<tr>
+<td>平均请求持续时间</td>
+<td>15 秒</td>
+</tr>
+<tr>
+<td>平均在途请求</td>
+<td>300 × 15 = 4,500</td>
+</tr>
+</tbody>
+</table>
+<p>适用于稳定系统的平均值估算，不代表峰值并发，也不能直接推导 CPU、内存或模型容量。</p>
+<p>林川看向陈默。</p>
+<p>“我们之前压测的普通接口，几十毫秒就能完成。”</p>
+<p>“而 RAG SSE 可能持续十几秒。”</p>
+<p>“即使入口 QPS 更低，也可能维持远多于普通接口的活跃连接。”</p>
+<p>“但这还不是系统崩溃的全部原因。”</p>
+<h2 id="redis">第二幕：Redis 的第一道防线——缓存不是越多越好</h2>
+<p>10:12。</p>
+<p>林川打开 Redis 监控。</p>
+<p>缓存命中率只有 18%。</p>
+<p>与此同时，数据库查询量急剧上升。</p>
+<p>周野说道：</p>
+<p>“我们明明用了 Redis，为什么还会这样？”</p>
+<p>林川回答：</p>
+<p>“因为我们只是用了 Redis，并没有设计完整的缓存体系。”</p>
+<h3 id="1-rag">1. RAG 可以缓存什么？</h3>
+<p>他画出了缓存层次。</p>
+<p>RAG 多级缓存架构</p>
+<p>用户请求</p>
+<p>L1：本地缓存 Caffeine</p>
+<p>热点配置、模型路由、非敏感短期数据</p>
+<p>L2：分布式缓存 Redis</p>
+<p>Embedding、授权感知检索结果、答案缓存</p>
+<p>PostgreSQL / pgvector / 模型服务</p>
+<p>“本地缓存速度快，不需要网络调用，但多个实例之间的数据更新不天然同步。”</p>
+<p>“Redis 可以在多个实例间共享缓存，但会引入网络开销、内存压力和热点问题。”</p>
+<p>“数据库和模型服务则承担最终数据查询与计算。”</p>
+<p>周野问：</p>
+<p>“那我们直接缓存最终答案，不就最省钱了吗？”</p>
+<p>林川摇头。</p>
+<p>“答案缓存必须非常谨慎。”</p>
+<p>“因为我们的 RAG 系统有多租户、文档 ACL 和知识版本。”</p>
+<p>“同一个问题，不同用户可能有不同的合法答案。”</p>
+<p>他写出一个错误的 Key：</p>
+<div class="codehilite"><pre><span></span><code>rag:answer:企业版退款政策
+</code></pre></div>
+
+<p>然后写出更完整的缓存身份：</p>
 <div class="codehilite"><pre><span></span><code>rag:answer:
   tenant:{tenantId}:
   authz:{authzFingerprint}:
@@ -229,13 +230,15 @@ Little&#39;s Law：估算平均在途请求数
   query:{queryHash}
 </code></pre></div>
 
-<p class="spoken-line">“这里的权限指纹必须能够反映影响答案可见性的授权范围。”</p>
-<p class="spoken-line">“如果用户权限发生变化，旧答案不能继续绕过授权检查。”</p>
-<p class="spoken-line">“尤其对于敏感文档，我们还要在返回缓存答案前验证其证据仍然有效。”</p>
-<h3 id="2">2. 缓存穿透</h3>
-<p><strong>周野问：</strong> “如果用户一直查询不存在的知识呢？”</p>
-<p><strong>林川回答：</strong> “这可能导致缓存穿透。”</p>
-<p class="spoken-line">“例如用户反复查询一个不存在的合同编号，每次都绕过缓存访问数据库。”</p>
+<p>“这里的权限指纹必须能够反映影响答案可见性的授权范围。”</p>
+<p>“如果用户权限发生变化，旧答案不能继续绕过授权检查。”</p>
+<p>“尤其对于敏感文档，我们还要在返回缓存答案前验证其证据仍然有效。”</p>
+<h3 id="2_1">2. 缓存穿透</h3>
+<p>周野问：</p>
+<p>“如果用户一直查询不存在的知识呢？”</p>
+<p>林川回答：</p>
+<p>“这可能导致缓存穿透。”</p>
+<p>“例如用户反复查询一个不存在的合同编号，每次都绕过缓存访问数据库。”</p>
 <p>解决方案包括：</p>
 <ul>
 <li>对确实不存在且权限语义安全的结果进行短 TTL 缓存。</li>
@@ -243,21 +246,23 @@ Little&#39;s Law：估算平均在途请求数
 <li>对恶意高频请求进行限流。</li>
 <li>在适合的精确 ID 查询场景中使用布隆过滤器。</li>
 </ul>
-<p class="spoken-line">“但要注意，不能把‘无权限’和‘不存在’混为一谈并不加区分地共享缓存。”</p>
-<p class="spoken-line">“否则可能造成权限侧信道或错误的缓存复用。”</p>
-<h3 id="3">3. 缓存击穿</h3>
-<p><strong>林川继续说道：</strong> “假设集团员工都在查询同一份热门报销制度。”</p>
-<p class="spoken-line">“缓存刚好过期。”</p>
-<p class="spoken-line">“一瞬间，五千个请求同时访问数据库。”</p>
-<p class="spoken-line">“这就是热点 Key 过期引发的缓存击穿。”</p>
-<p><strong>周野问：</strong> “加个 Redis 锁？”</p>
-<p class="spoken-line">“可以，但要考虑锁超时、持有者故障和重复计算。”</p>
-<p class="spoken-line">“更常见的策略是请求合并、热点预热、逻辑过期和受控后台刷新。”</p>
+<p>“但要注意，不能把‘无权限’和‘不存在’混为一谈并不加区分地共享缓存。”</p>
+<p>“否则可能造成权限侧信道或错误的缓存复用。”</p>
+<h3 id="3_1">3. 缓存击穿</h3>
+<p>林川继续说道：</p>
+<p>“假设集团员工都在查询同一份热门报销制度。”</p>
+<p>“缓存刚好过期。”</p>
+<p>“一瞬间，五千个请求同时访问数据库。”</p>
+<p>“这就是热点 Key 过期引发的缓存击穿。”</p>
+<p>周野问：</p>
+<p>“加个 Redis 锁？”</p>
+<p>“可以，但要考虑锁超时、持有者故障和重复计算。”</p>
+<p>“更常见的策略是请求合并、热点预热、逻辑过期和受控后台刷新。”</p>
 <h3 id="4">4. 缓存雪崩</h3>
-<p class="spoken-line">“如果大量缓存 Key 同时过期呢？”</p>
-<p class="spoken-line">“这就是缓存雪崩的一种典型场景。”</p>
+<p>“如果大量缓存 Key 同时过期呢？”</p>
+<p>“这就是缓存雪崩的一种典型场景。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“可以给 TTL 添加随机抖动，避免大量 Key 在同一时刻失效。”</p>
+<p>“可以给 TTL 添加随机抖动，避免大量 Key 在同一时刻失效。”</p>
 <p>例如：</p>
 <div class="codehilite"><pre><span></span><code>long ttlSeconds =
     600 + ThreadLocalRandom.current().nextLong(120);
@@ -269,150 +274,151 @@ redisTemplate.opsForValue().set(
 );
 </code></pre></div>
 
-<p class="spoken-line">“但 TTL 抖动只能缓解集中到期。”</p>
-<p class="spoken-line">“如果 Redis 集群整体不可用，仍然需要限流、降级和数据库保护。”</p>
-<h2 id="_3">第三幕：请求合并——五千个人问同一个问题</h2>
+<p>“但 TTL 抖动只能缓解集中到期。”</p>
+<p>“如果 Redis 集群整体不可用，仍然需要限流、降级和数据库保护。”</p>
+<h2 id="_4">第三幕：请求合并——五千个人问同一个问题</h2>
 <p>10:18。</p>
-<p>林川发现一个奇怪的现象。过去一分钟，有大量用户提出了几乎相同的问题：</p>
+<p>林川发现一个奇怪的现象。</p>
+<p>过去一分钟，有大量用户提出了几乎相同的问题：</p>
 <blockquote>
 <p>公司的年假制度是什么？</p>
 </blockquote>
-<p>因为缓存过期，系统同时发起了数千次重复检索。甚至产生了大量相同的 Embedding 请求。周野看着日志。</p>
-<p class="spoken-line">“这不是浪费吗？”</p>
-<p class="spoken-line">“当然。”</p>
-<p><strong>林川回答。</strong> “这就是请求合并要解决的问题。”</p>
+<p>因为缓存过期，系统同时发起了数千次重复检索。</p>
+<p>甚至产生了大量相同的 Embedding 请求。</p>
+<p>周野看着日志。</p>
+<p>“这不是浪费吗？”</p>
+<p>“当然。”</p>
+<p>林川回答。</p>
+<p>“这就是请求合并要解决的问题。”</p>
 <h3 id="singleflight">Singleflight：同一份工作，只做一次</h3>
-<p>林川提出一个方案。对于完全相同且可以安全共享计算结果的请求：</p>
-<p>第一个请求负责执行计算。后续请求等待同一个计算结果。请求 A请求 B请求 C</p>
+<p>林川提出一个方案。</p>
+<p>对于完全相同且可以安全共享计算结果的请求：</p>
+<p>第一个请求负责执行计算。</p>
+<p>后续请求等待同一个计算结果。</p>
+<p>请求 A</p>
+<p>请求 B</p>
+<p>请求 C</p>
 <p>Singleflight Coordinator</p>
-<p>相同计算 Key → 合并进行中的任务执行一次可共享的计算向等待者返回结果</p>
+<p>相同计算 Key → 合并进行中的任务</p>
+<p>执行一次可共享的计算</p>
+<p>向等待者返回结果</p>
 <h3 id="java">Java 中如何实现？</h3>
-<p>林川首先用 <code>ConcurrentHashMap</code> 保存正在进行的计算。<code>private final ConcurrentHashMap&lt;String,
+<p>林川首先用 <code>ConcurrentHashMap</code> 保存正在进行的计算。</p>
+<div class="codehilite"><pre><span></span><code>private final ConcurrentHashMap&lt;String,
         CompletableFuture&lt;Result&gt;&gt; inFlight =
-        new ConcurrentHashMap&lt;&gt;();</code>然后实现请求合并。```
-public CompletableFuture<Result> execute(
-        String key,
-        Supplier<Result> supplier) {</p>
-<div class="codehilite"><pre><span></span><code>return inFlight.computeIfAbsent(key, k -&gt; {
+        new ConcurrentHashMap&lt;&gt;();
+</code></pre></div>
 
-    CompletableFuture&lt;Result&gt; future =
-        CompletableFuture.supplyAsync(
-            supplier,
-            executor
+<p>然后实现请求合并。</p>
+<div class="codehilite"><pre><span></span><code>public CompletableFuture&lt;Result&gt; execute(
+        String key,
+        Supplier&lt;Result&gt; supplier) {
+
+    return inFlight.computeIfAbsent(key, k -&gt; {
+
+        CompletableFuture&lt;Result&gt; future =
+            CompletableFuture.supplyAsync(
+                supplier,
+                executor
+            );
+
+        future.whenComplete((result, error) -&gt;
+            inFlight.remove(k, future)
         );
 
-    future.whenComplete((result, error) -&gt;
-        inFlight.remove(k, future)
-    );
-
-    return future;
-});
+        return future;
+    });
+}
 </code></pre></div>
 
-<p>}</p>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>“这是一个简化实现。”
+<p>“这是一个简化实现。”</p>
+<p>林川解释。</p>
+<p>“它只在当前 JVM 实例内合并请求。”</p>
+<p>“多实例场景下，其他实例仍可能重复计算。”</p>
+<p>“如果需要跨实例协调，可以考虑 Redis 锁或其他分布式协调机制。”</p>
+<p>“但不是所有 RAG 请求都适合合并。”</p>
+<h3 id="_5">哪些计算适合合并？</h3>
+<p>例如，同一个 Embedding 模型对同一段规范化文本生成向量，在模型版本固定、服务行为确定的前提下，可以考虑共享结果。</p>
+<p>但完整 RAG 答案可能依赖：</p>
+<ul>
+<li>用户权限。</li>
+<li>历史对话。</li>
+<li>当前知识版本。</li>
+<li>模型版本。</li>
+<li>Prompt 版本。</li>
+<li>个性化参数。</li>
+</ul>
+<p>“这些条件不同，就不能简单合并最终答案。”</p>
+<p>“而且上面的代码还需要完善取消传播、超时、执行器容量和异常清理等机制。”</p>
+<p>“尤其不能让一个等待者取消请求，就错误地取消其他所有人的共享计算。”</p>
+<h2 id="java-21">第四幕：Java 21 虚拟线程——百万线程的神话</h2>
+<p>10:25。</p>
+<p>数据库压力有所缓解。</p>
+<p>但 Spring Boot 实例的线程数量仍然很高。</p>
+<p>周野打开线程监控。</p>
+<p>“我们是不是应该把线程池从 200 调到 2000？”</p>
+<p>林川反问：</p>
+<p>“为什么？”</p>
+<p>“因为很多请求都在等待模型接口返回。”</p>
+<p>“那你有没有想过，这些线程真正占用 CPU 的时间可能很少？”</p>
+<p>周野愣了一下。</p>
+<p>林川继续说道：</p>
+<p>“传统平台线程在阻塞等待网络 I/O 时，会占用相应的操作系统线程资源。”</p>
+<p>“如果存在大量长时间等待的阻塞任务，平台线程的数量和内存开销就可能成为限制。”</p>
+<p>“Java 21 引入的虚拟线程，正是为这种高并发阻塞式任务提供了另一种执行模型。”</p>
+<h3 id="_6">平台线程与虚拟线程</h3>
+<p>平台线程</p>
+<p>Java Thread</p>
+<p>OS Thread</p>
+<p>阻塞等待时通常占用对应 OS 线程。</p>
+<p>虚拟线程</p>
+<p>Virtual Threads</p>
+<p>Carrier Threads</p>
+<p>适合大量可挂起的阻塞等待任务。</p>
+<p>“虚拟线程的核心优势，不是让 CPU 计算更快。”</p>
+<p>“而是降低大量阻塞式并发任务的线程资源成本。”</p>
+<h3 id="java-21_1">Java 21 示例</h3>
+<div class="codehilite"><pre><span></span><code>try (var executor =
+        Executors.newVirtualThreadPerTaskExecutor()) {
 
-**林川解释。** “它只在当前 JVM 实例内合并请求。”
+    Future&lt;String&gt; result = executor.submit(() -&gt; {
+        return blockingLlmClient.call(&quot;你好&quot;);
+    });
 
-“多实例场景下，其他实例仍可能重复计算。”
-
-“如果需要跨实例协调，可以考虑 Redis 锁或其他分布式协调机制。”
-
-“但不是所有 RAG 请求都适合合并。”
-
-### 哪些计算适合合并？
-
-例如，同一个 Embedding 模型对同一段规范化文本生成向量，在模型版本固定、服务行为确定的前提下，可以考虑共享结果。但完整 RAG 答案可能依赖：
-
-- 用户权限。
-- 历史对话。
-- 当前知识版本。
-- 模型版本。
-- Prompt 版本。
-- 个性化参数。
-
-“这些条件不同，就不能简单合并最终答案。”
-
-“而且上面的代码还需要完善取消传播、超时、执行器容量和异常清理等机制。”
-
-“尤其不能让一个等待者取消请求，就错误地取消其他所有人的共享计算。”
-
-## 第四幕：Java 21 虚拟线程——百万线程的神话
-
-10:25。
-
-数据库压力有所缓解。但 Spring Boot 实例的线程数量仍然很高。周野打开线程监控。
-
-“我们是不是应该把线程池从 200 调到 2000？”
-
-**林川反问：** “为什么？”
-
-“因为很多请求都在等待模型接口返回。”
-
-“那你有没有想过，这些线程真正占用 CPU 的时间可能很少？”
-
-周野愣了一下。
-
-**林川继续说道：** “传统平台线程在阻塞等待网络 I/O 时，会占用相应的操作系统线程资源。”
-
-“如果存在大量长时间等待的阻塞任务，平台线程的数量和内存开销就可能成为限制。”
-
-“Java 21 引入的虚拟线程，正是为这种高并发阻塞式任务提供了另一种执行模型。”
-
-### 平台线程与虚拟线程
-
-平台线程
-
-Java Thread
-
-OS Thread
-
-阻塞等待时通常占用对应 OS 线程。虚拟线程
-
-Virtual Threads
-
-Carrier Threads
-
-适合大量可挂起的阻塞等待任务。
-
-“虚拟线程的核心优势，不是让 CPU 计算更快。”
-
-“而是降低大量阻塞式并发任务的线程资源成本。”
-
-### Java 21 示例
-</code></pre></div></details>
-
-<p>try (var executor =
-        Executors.newVirtualThreadPerTaskExecutor()) {</p>
-<div class="codehilite"><pre><span></span><code>Future&lt;String&gt; result = executor.submit(() -&gt; {
-    return blockingLlmClient.call(&quot;你好&quot;);
-});
-
-System.out.println(result.get());
+    System.out.println(result.get());
+}
 </code></pre></div>
 
-<p>}
-```周野兴奋起来。</p>
-<p class="spoken-line">“那我们是不是直接开启虚拟线程，就能支撑十万并发？”</p>
+<p>周野兴奋起来。</p>
+<p>“那我们是不是直接开启虚拟线程，就能支撑十万并发？”</p>
 <p>林川摇头。</p>
-<p class="spoken-line">“不能。”</p>
-<p class="spoken-line">“虚拟线程不会增加数据库最大连接数。”</p>
-<p class="spoken-line">“不会增加模型服务 GPU 算力。”</p>
-<p class="spoken-line">“不会让 Redis 无限处理请求。”</p>
-<p class="spoken-line">“也不会自动消除第三方 API 的速率限制。”</p>
-<p class="spoken-line">“如果瓶颈是模型每秒只能生成十万个 Token，那么创建一百万个虚拟线程也没有用。”</p>
-<h3 id="_4">虚拟线程的工程陷阱</h3>
-<p>林川列出了几个注意点。第一，虚拟线程仍然需要内存，不能无限创建。第二，长时间 CPU 密集计算不会因为使用虚拟线程而自动加速。第三，某些阻塞操作可能无法及时卸载 Carrier Thread，造成 pinning 或其他调度限制。Java 21 下尤其需要检查 <code>synchronized</code>、native 调用等相关场景。第四，<code>ThreadLocal</code> 可以在虚拟线程中使用，但大量虚拟线程携带大对象会造成内存压力。</p>
-<p><strong>第五，虚拟线程不是线程池容量控制的替代品。应通过信号量、连接池、限流器等控制稀缺资源的并发访问。</strong> “对于我们的 RAG 项目，虚拟线程可以改善阻塞式调用的线程利用率。”</p>
-<p class="spoken-line">“但不能把它当成无限吞吐量的开关。”</p>
+<p>“不能。”</p>
+<p>“虚拟线程不会增加数据库最大连接数。”</p>
+<p>“不会增加模型服务 GPU 算力。”</p>
+<p>“不会让 Redis 无限处理请求。”</p>
+<p>“也不会自动消除第三方 API 的速率限制。”</p>
+<p>“如果瓶颈是模型每秒只能生成十万个 Token，那么创建一百万个虚拟线程也没有用。”</p>
+<h3 id="_7">虚拟线程的工程陷阱</h3>
+<p>林川列出了几个注意点。</p>
+<p>第一，虚拟线程仍然需要内存，不能无限创建。</p>
+<p>第二，长时间 CPU 密集计算不会因为使用虚拟线程而自动加速。</p>
+<p>第三，某些阻塞操作可能无法及时卸载 Carrier Thread，造成 pinning 或其他调度限制。Java 21 下尤其需要检查 <code>synchronized</code>、native 调用等相关场景。</p>
+<p>第四，<code>ThreadLocal</code> 可以在虚拟线程中使用，但大量虚拟线程携带大对象会造成内存压力。</p>
+<p>第五，虚拟线程不是线程池容量控制的替代品。应通过信号量、连接池、限流器等控制稀缺资源的并发访问。</p>
+<p>“对于我们的 RAG 项目，虚拟线程可以改善阻塞式调用的线程利用率。”</p>
+<p>“但不能把它当成无限吞吐量的开关。”</p>
 <h2 id="webflux">第五幕：WebFlux 与虚拟线程——两种并发模型的战争</h2>
 <p>10:33。</p>
-<p><strong>陈默问：</strong> “我们已经使用 Spring WebFlux 了，为什么还需要虚拟线程？”</p>
-<p><strong>林川回答：</strong> “这是两种不同的并发编程方式。”</p>
-<p class="spoken-line">“WebFlux 倾向于非阻塞事件驱动模型。”</p>
-<p class="spoken-line">“虚拟线程让我们能够使用更直观的同步阻塞式代码，同时降低大量阻塞等待对平台线程的占用。”</p>
+<p>陈默问：</p>
+<p>“我们已经使用 Spring WebFlux 了，为什么还需要虚拟线程？”</p>
+<p>林川回答：</p>
+<p>“这是两种不同的并发编程方式。”</p>
+<p>“WebFlux 倾向于非阻塞事件驱动模型。”</p>
+<p>“虚拟线程让我们能够使用更直观的同步阻塞式代码，同时降低大量阻塞等待对平台线程的占用。”</p>
 <h3 id="webflux_1">WebFlux 的基本模型</h3>
-<p>在 Reactor Netty 中，少量 Event Loop 线程负责处理大量网络事件。当请求需要等待非阻塞 I/O 时，线程可以继续处理其他事件。例如：</p>
+<p>在 Reactor Netty 中，少量 Event Loop 线程负责处理大量网络事件。</p>
+<p>当请求需要等待非阻塞 I/O 时，线程可以继续处理其他事件。</p>
+<p>例如：</p>
 <div class="codehilite"><pre><span></span><code>public Mono&lt;String&gt; callLlm(String prompt) {
     return webClient.post()
         .uri(&quot;/chat/completions&quot;)
@@ -420,26 +426,24 @@ System.out.println(result.get());
         .retrieve()
         .bodyToMono(String.class);
 }
-```如果整个链路真正非阻塞，就不需要每个请求占用一个线程等待网络返回。但周野突然想起了一个问题。
-
-“我们的 PostgreSQL 访问使用的是 JDBC。”
-
-“JDBC 是阻塞式的。”
-
-林川点头。
-
-“这可能就是问题之一。”
-
-### Event Loop 被阻塞会怎样？
-
-假设某个 Event Loop 线程正在执行：
 </code></pre></div>
 
-<p>List<Chunk> chunks =
+<p>如果整个链路真正非阻塞，就不需要每个请求占用一个线程等待网络返回。</p>
+<p>但周野突然想起了一个问题。</p>
+<p>“我们的 PostgreSQL 访问使用的是 JDBC。”</p>
+<p>“JDBC 是阻塞式的。”</p>
+<p>林川点头。</p>
+<p>“这可能就是问题之一。”</p>
+<h3 id="event-loop">Event Loop 被阻塞会怎样？</h3>
+<p>假设某个 Event Loop 线程正在执行：</p>
+<div class="codehilite"><pre><span></span><code>List&lt;Chunk&gt; chunks =
     jdbcTemplate.query(sql, rowMapper);
-```如果数据库查询耗时 500ms，这个 Event Loop 线程就可能在这段时间内无法及时处理其他网络事件。当多个 Event Loop 线程都被类似操作阻塞时，系统响应能力会明显下降。</p>
-<p class="spoken-line">“所以在 WebFlux 中，不能随意把阻塞式 JDBC 调用放到 Event Loop 上执行。”</p>
-<h3 id="_5">一种过渡方案</h3>
+</code></pre></div>
+
+<p>如果数据库查询耗时 500ms，这个 Event Loop 线程就可能在这段时间内无法及时处理其他网络事件。</p>
+<p>当多个 Event Loop 线程都被类似操作阻塞时，系统响应能力会明显下降。</p>
+<p>“所以在 WebFlux 中，不能随意把阻塞式 JDBC 调用放到 Event Loop 上执行。”</p>
+<h3 id="_8">一种过渡方案</h3>
 <div class="codehilite"><pre><span></span><code>public Mono&lt;List&lt;Chunk&gt;&gt; search(String query) {
     return Mono.fromCallable(() -&gt;
             blockingRepository.search(query)
@@ -448,10 +452,10 @@ System.out.println(result.get());
 }
 </code></pre></div>
 
-<p class="spoken-line">“这样可以把阻塞式工作转移到适合阻塞任务的调度资源上。”</p>
-<p class="spoken-line">“但 boundedElastic 本身也有容量和排队限制。”</p>
-<p class="spoken-line">“而且它不能解决数据库连接池耗尽。”</p>
-<h3 id="_6">两种方案怎么选？</h3>
+<p>“这样可以把阻塞式工作转移到适合阻塞任务的调度资源上。”</p>
+<p>“但 boundedElastic 本身也有容量和排队限制。”</p>
+<p>“而且它不能解决数据库连接池耗尽。”</p>
+<h3 id="_9">两种方案怎么选？</h3>
 <table>
 <thead>
 <tr>
@@ -486,29 +490,37 @@ System.out.println(result.get());
 </tr>
 </tbody>
 </table>
-<p class="spoken-line">“不要因为 WebFlux 看起来更先进，就认为它一定比 MVC 快。”</p>
-<p class="spoken-line">“也不要因为 Java 21 有虚拟线程，就认为 Reactor 没有价值。”</p>
-<p class="spoken-line">“真正的选择依据是底层依赖、编程模型、负载特征和压测结果。”</p>
+<p>“不要因为 WebFlux 看起来更先进，就认为它一定比 MVC 快。”</p>
+<p>“也不要因为 Java 21 有虚拟线程，就认为 Reactor 没有价值。”</p>
+<p>“真正的选择依据是底层依赖、编程模型、负载特征和压测结果。”</p>
 <h2 id="sse">第六幕：SSE 连接风暴——一万个用户不肯离开</h2>
 <p>10:41。</p>
-<p>林川打开 Netty 连接监控。当前活跃 SSE 连接数已经达到 18,000。</p>
-<p><strong>周野说道：</strong> “我们明明已经把数据库查询优化了，为什么内存还是持续上涨？”</p>
-<p>林川查看了堆内存分析。大量对象与流式响应缓冲有关。</p>
-<p class="spoken-line">“可能有慢客户端。”</p>
-<p class="spoken-line">“什么意思？”</p>
-<p class="spoken-line">“有些客户端读取数据的速度比服务端生成数据的速度慢。”</p>
-<p class="spoken-line">“如果服务端持续向缓冲区写入数据，而没有有效限制，就可能造成内存积压。”</p>
-<h3 id="_7">背压是什么？</h3>
+<p>林川打开 Netty 连接监控。</p>
+<p>当前活跃 SSE 连接数已经达到 18,000。</p>
+<p>周野说道：</p>
+<p>“我们明明已经把数据库查询优化了，为什么内存还是持续上涨？”</p>
+<p>林川查看了堆内存分析。</p>
+<p>大量对象与流式响应缓冲有关。</p>
+<p>“可能有慢客户端。”</p>
+<p>“什么意思？”</p>
+<p>“有些客户端读取数据的速度比服务端生成数据的速度慢。”</p>
+<p>“如果服务端持续向缓冲区写入数据，而没有有效限制，就可能造成内存积压。”</p>
+<h3 id="_10">背压是什么？</h3>
 <p>林川用水管举例。</p>
-<p class="spoken-line">“假设模型每秒生成 100 个 Token。”</p>
-<p class="spoken-line">“但客户端每秒只能消费 20 个 Token。”</p>
-<p class="spoken-line">“如果中间没有流量控制，剩下的 80 个 Token 就会不断积累。”</p>
-<p class="spoken-line">“这就是生产者速度超过消费者速度的问题。”</p>
+<p>“假设模型每秒生成 100 个 Token。”</p>
+<p>“但客户端每秒只能消费 20 个 Token。”</p>
+<p>“如果中间没有流量控制，剩下的 80 个 Token 就会不断积累。”</p>
+<p>“这就是生产者速度超过消费者速度的问题。”</p>
 <p>在响应式系统中，背压用于协调上下游的数据生产与消费能力。</p>
-<p><strong>但他特别强调：</strong> “Reactor 支持背压语义，不代表整个 SSE 链路天然具备端到端背压。”</p>
-<p class="spoken-line">“如果上游模型 API 不支持暂停生成，我们就不能仅靠 Reactor 自动让模型停止产出 Token。”</p>
-<h3 id="_8">三种处理策略</h3>
-<p>第一，设置有界缓冲。超过阈值时采取明确策略，而不是无限占用内存。第二，对慢客户端进行超时或断开处理。第三，在客户端取消订阅时，尽可能取消上游模型请求。例如：</p>
+<p>但他特别强调：</p>
+<p>“Reactor 支持背压语义，不代表整个 SSE 链路天然具备端到端背压。”</p>
+<p>“如果上游模型 API 不支持暂停生成，我们就不能仅靠 Reactor 自动让模型停止产出 Token。”</p>
+<h3 id="_11">三种处理策略</h3>
+<p>第一，设置有界缓冲。</p>
+<p>超过阈值时采取明确策略，而不是无限占用内存。</p>
+<p>第二，对慢客户端进行超时或断开处理。</p>
+<p>第三，在客户端取消订阅时，尽可能取消上游模型请求。</p>
+<p>例如：</p>
 <div class="codehilite"><pre><span></span><code>return llmClient.stream(prompt)
     .timeout(Duration.ofSeconds(60))
     .doOnCancel(() -&gt; {
@@ -520,16 +532,18 @@ System.out.println(result.get());
 </code></pre></div>
 
 <p>“注意，<code>doOnCancel</code> 只是取消事件的回调。”</p>
-<p class="spoken-line">“是否真正停止上游模型计算，取决于 SDK、HTTP 客户端以及模型服务是否支持取消传播。”</p>
-<p class="spoken-line">“如果上游不支持取消，我们可能还需要显式调用取消接口，或者接受一部分不可避免的计算浪费。”</p>
+<p>“是否真正停止上游模型计算，取决于 SDK、HTTP 客户端以及模型服务是否支持取消传播。”</p>
+<p>“如果上游不支持取消，我们可能还需要显式调用取消接口，或者接受一部分不可避免的计算浪费。”</p>
 <h3 id="sse-websocket">SSE 与 WebSocket 的区别</h3>
-<p><strong>陈默问：</strong> “那我们为什么不用 WebSocket？”</p>
-<p><strong>林川回答：</strong> “因为我们的主要需求是服务端向客户端持续输出模型内容。”</p>
-<p class="spoken-line">“SSE 基于 HTTP，天然适合单向事件流，浏览器也提供 EventSource 支持。”</p>
-<p class="spoken-line">“WebSocket 更适合需要频繁双向实时通信的场景。”</p>
-<p class="spoken-line">“但 SSE 也有代理超时、连接数、断线重连、事件 ID 和缓冲策略等工程问题。”</p>
-<p class="spoken-line">“并不是换成 WebSocket 就能解决模型吞吐量不足。”</p>
-<h2 id="_9">第七幕：数据库连接池——只有五十把钥匙的城门</h2>
+<p>陈默问：</p>
+<p>“那我们为什么不用 WebSocket？”</p>
+<p>林川回答：</p>
+<p>“因为我们的主要需求是服务端向客户端持续输出模型内容。”</p>
+<p>“SSE 基于 HTTP，天然适合单向事件流，浏览器也提供 EventSource 支持。”</p>
+<p>“WebSocket 更适合需要频繁双向实时通信的场景。”</p>
+<p>“但 SSE 也有代理超时、连接数、断线重连、事件 ID 和缓冲策略等工程问题。”</p>
+<p>“并不是换成 WebSocket 就能解决模型吞吐量不足。”</p>
+<h2 id="_12">第七幕：数据库连接池——只有五十把钥匙的城门</h2>
 <p>10:52。</p>
 <p>HikariCP 监控显示：</p>
 <div class="codehilite"><pre><span></span><code>Active Connections: 50
@@ -538,26 +552,31 @@ Pending Threads: 680
 Connection Timeout: 30000ms
 </code></pre></div>
 
-<p><strong>周野问：</strong> “数据库只有 50 个连接，为什么不直接调到 500？”</p>
-<p><strong>林川反问：</strong> “数据库能承受 500 个同时执行的查询吗？”</p>
+<p>周野问：</p>
+<p>“数据库只有 50 个连接，为什么不直接调到 500？”</p>
+<p>林川反问：</p>
+<p>“数据库能承受 500 个同时执行的查询吗？”</p>
 <p>周野沉默了。</p>
-<h3 id="_10">连接池为什么不是越大越好？</h3>
-<p><strong>林川解释：</strong> “数据库连接不是免费的。”</p>
-<p class="spoken-line">“每个连接会消耗服务器资源。”</p>
-<p class="spoken-line">“过多并发查询还可能增加 CPU 争用、内存压力、锁等待和磁盘 I/O 竞争。”</p>
-<p class="spoken-line">“连接池太小，应用会排队。”</p>
-<p class="spoken-line">“连接池太大，数据库可能过载。”</p>
-<p class="spoken-line">“所以连接池大小需要结合数据库实际执行能力和查询耗时来确定。”</p>
-<h3 id="_11">一个简单的估算</h3>
-<p>假设数据库查询平均耗时 100ms。如果每个连接能够持续执行独立查询，且没有其他瓶颈，那么单连接理论上每秒可以完成约 10 次查询。</p>
+<h3 id="_13">连接池为什么不是越大越好？</h3>
+<p>林川解释：</p>
+<p>“数据库连接不是免费的。”</p>
+<p>“每个连接会消耗服务器资源。”</p>
+<p>“过多并发查询还可能增加 CPU 争用、内存压力、锁等待和磁盘 I/O 竞争。”</p>
+<p>“连接池太小，应用会排队。”</p>
+<p>“连接池太大，数据库可能过载。”</p>
+<p>“所以连接池大小需要结合数据库实际执行能力和查询耗时来确定。”</p>
+<h3 id="_14">一个简单的估算</h3>
+<p>假设数据库查询平均耗时 100ms。</p>
+<p>如果每个连接能够持续执行独立查询，且没有其他瓶颈，那么单连接理论上每秒可以完成约 10 次查询。</p>
 <p>50 个连接的粗略上限为：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>50</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>500</mn><mtext> queries/s</mtext></mrow><annotation encoding="application/x-tex"> 50\times10=500\ \text{queries/s} </annotation></semantics></math></span></p>
-<p class="spoken-line">“但这只是理想化估算。”</p>
-<p><strong>林川强调。</strong> “实际吞吐量还受数据库 CPU、索引、锁、I/O、事务和查询分布影响。”</p>
-<p class="spoken-line">“尤其向量检索可能比普通主键查询昂贵得多。”</p>
-<h3 id="_12">为什么数据库查询变慢会引发连锁反应？</h3>
-<p>林川画出一个恶性循环。```
-数据库查询变慢
+<p>“但这只是理想化估算。”</p>
+<p>林川强调。</p>
+<p>“实际吞吐量还受数据库 CPU、索引、锁、I/O、事务和查询分布影响。”</p>
+<p>“尤其向量检索可能比普通主键查询昂贵得多。”</p>
+<h3 id="_15">为什么数据库查询变慢会引发连锁反应？</h3>
+<p>林川画出一个恶性循环。</p>
+<div class="codehilite"><pre><span></span><code>数据库查询变慢
       ↓
 连接占用时间变长
       ↓
@@ -571,100 +590,77 @@ Connection Timeout: 30000ms
       ↓
 超时和重试增加
       ↓
-数据库压力进一步上升</p>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>“这就是典型的过载正反馈。”
-
-“系统越慢，等待请求越多。”
-
-“如果重试策略不合理，还会让已经过载的系统承受更多流量。”
-
-“所以我们不能只优化连接池。”
-
-“必须在入口限制系统能够接纳的工作量。”
-
-## 第八幕：限流与熔断——不是所有请求都应该被接受
-
-11:05。
-
-林川做出了一个决定。
-
-“暂停非核心知识库的复杂查询。”
-
-陈默愣了一下。
-
-“这不是主动拒绝用户吗？”
-
-“是。”
-
-**林川回答。** “但如果继续接收所有请求，整个系统都会崩溃。”
-
-“有限资源下，拒绝部分请求，有时比让所有请求一起超时更合理。”
-
-### 限流：控制进入系统的速度
-
-林川采用令牌桶算法。
-
-令牌以固定速率补充。
-
-请求必须获得令牌才能进入受保护的处理阶段。例如：
-</code></pre></div></details>
-
-<p>令牌桶容量：1000
-补充速率：200 tokens/s</p>
-<p>每个普通请求消耗：1 token
-复杂 Multi-Query 请求：按估算成本消耗更多</p>
-<div class="codehilite"><pre><span></span><code>“对于 RAG，我们甚至可以设计加权限流。”
-
-“因为简单事实查询和复杂多轮推理，消耗的资源并不相同。”
-
-### Java 信号量限制模型并发
+数据库压力进一步上升
 </code></pre></div>
 
-<p>private final Semaphore llmSemaphore =
-    new Semaphore(100);</p>
-<p>public String callLlm(String prompt)
-        throws InterruptedException {</p>
-<div class="codehilite"><pre><span></span><code>if (!llmSemaphore.tryAcquire(
-        200, TimeUnit.MILLISECONDS)) {
-    throw new TooManyRequestsException();
-}
+<p>“这就是典型的过载正反馈。”</p>
+<p>“系统越慢，等待请求越多。”</p>
+<p>“如果重试策略不合理，还会让已经过载的系统承受更多流量。”</p>
+<p>“所以我们不能只优化连接池。”</p>
+<p>“必须在入口限制系统能够接纳的工作量。”</p>
+<h2 id="_16">第八幕：限流与熔断——不是所有请求都应该被接受</h2>
+<p>11:05。</p>
+<p>林川做出了一个决定。</p>
+<p>“暂停非核心知识库的复杂查询。”</p>
+<p>陈默愣了一下。</p>
+<p>“这不是主动拒绝用户吗？”</p>
+<p>“是。”</p>
+<p>林川回答。</p>
+<p>“但如果继续接收所有请求，整个系统都会崩溃。”</p>
+<p>“有限资源下，拒绝部分请求，有时比让所有请求一起超时更合理。”</p>
+<h3 id="_17">限流：控制进入系统的速度</h3>
+<p>林川采用令牌桶算法。</p>
+<p>令牌以固定速率补充。</p>
+<p>请求必须获得令牌才能进入受保护的处理阶段。</p>
+<p>例如：</p>
+<div class="codehilite"><pre><span></span><code>令牌桶容量：1000
+补充速率：200 tokens/s
 
-try {
-    return blockingLlmClient.call(prompt);
-} finally {
-    llmSemaphore.release();
+每个普通请求消耗：1 token
+复杂 Multi-Query 请求：按估算成本消耗更多
+</code></pre></div>
+
+<p>“对于 RAG，我们甚至可以设计加权限流。”</p>
+<p>“因为简单事实查询和复杂多轮推理，消耗的资源并不相同。”</p>
+<h3 id="java_1">Java 信号量限制模型并发</h3>
+<div class="codehilite"><pre><span></span><code>private final Semaphore llmSemaphore =
+    new Semaphore(100);
+
+public String callLlm(String prompt)
+        throws InterruptedException {
+
+    if (!llmSemaphore.tryAcquire(
+            200, TimeUnit.MILLISECONDS)) {
+        throw new TooManyRequestsException();
+    }
+
+    try {
+        return blockingLlmClient.call(prompt);
+    } finally {
+        llmSemaphore.release();
+    }
 }
 </code></pre></div>
 
-<p>}</p>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>“这个信号量限制当前实例内同时执行的模型调用数量。”
-
-“如果部署八个实例，每个实例限制 100，总体上可能达到 800。”
-
-“所以全局容量控制还需要结合网关、集中式限流或各实例配额。”
-
-### 熔断：防止故障扩散
-
-**陈默问：** “限流和熔断有什么区别？”
-
-**林川回答：** “限流主要控制进入系统的请求速率或并发量。”
-
-“熔断主要根据下游故障状态，暂时停止或限制调用。”
-
-例如，Rerank 服务连续超时。系统可以暂时跳过 Rerank，回退到 Hybrid Search 的融合结果。
-
-**但林川强调：** “降级必须有边界。”
-
-“Rerank 失败可以考虑降级。”
-
-“权限服务失败不能默认放行。”
-
-“数据库无法确认用户是否有权读取文档时，应该拒绝访问，而不是为了可用性牺牲安全性。”
-
-### 线程隔离与舱壁模式
-
-林川还将不同资源池分开。```
-RAG API
+<p>“这个信号量限制当前实例内同时执行的模型调用数量。”</p>
+<p>“如果部署八个实例，每个实例限制 100，总体上可能达到 800。”</p>
+<p>“所以全局容量控制还需要结合网关、集中式限流或各实例配额。”</p>
+<h3 id="_18">熔断：防止故障扩散</h3>
+<p>陈默问：</p>
+<p>“限流和熔断有什么区别？”</p>
+<p>林川回答：</p>
+<p>“限流主要控制进入系统的请求速率或并发量。”</p>
+<p>“熔断主要根据下游故障状态，暂时停止或限制调用。”</p>
+<p>例如，Rerank 服务连续超时。</p>
+<p>系统可以暂时跳过 Rerank，回退到 Hybrid Search 的融合结果。</p>
+<p>但林川强调：</p>
+<p>“降级必须有边界。”</p>
+<p>“Rerank 失败可以考虑降级。”</p>
+<p>“权限服务失败不能默认放行。”</p>
+<p>“数据库无法确认用户是否有权读取文档时，应该拒绝访问，而不是为了可用性牺牲安全性。”</p>
+<h3 id="_19">线程隔离与舱壁模式</h3>
+<p>林川还将不同资源池分开。</p>
+<div class="codehilite"><pre><span></span><code>RAG API
 │
 ├── Retrieval Bulkhead
 │   └── PostgreSQL / pgvector
@@ -674,69 +670,91 @@ RAG API
 │
 └── LLM Bulkhead
     └── Generation Model
-</code></pre></div></details>
+</code></pre></div>
 
-<p class="spoken-line">“这样，Rerank 服务故障不会无限占用所有请求处理资源。”</p>
-<p class="spoken-line">“不同依赖的超时、并发和队列都可以独立配置。”</p>
-<h2 id="java_1">第九幕：模型网关——真正的瓶颈不是 Java</h2>
+<p>“这样，Rerank 服务故障不会无限占用所有请求处理资源。”</p>
+<p>“不同依赖的超时、并发和队列都可以独立配置。”</p>
+<h2 id="java_2">第九幕：模型网关——真正的瓶颈不是 Java</h2>
 <p>11:18。</p>
-<p>系统入口 QPS 已经稳定下来。但 LLM 网关仍然持续报错。<code>HTTP 429 Too Many Requests</code>周野看着错误信息。</p>
-<p class="spoken-line">“我们的 Java 服务 CPU 已经降下来了。”</p>
-<p class="spoken-line">“为什么模型还是扛不住？”</p>
-<p><strong>林川回答：</strong> “因为模型服务有自己的容量限制。”</p>
-<p class="spoken-line">“而且 LLM 的吞吐量不能只用 QPS 衡量。”</p>
+<p>系统入口 QPS 已经稳定下来。</p>
+<p>但 LLM 网关仍然持续报错。</p>
+<div class="codehilite"><pre><span></span><code>HTTP 429 Too Many Requests
+</code></pre></div>
+
+<p>周野看着错误信息。</p>
+<p>“我们的 Java 服务 CPU 已经降下来了。”</p>
+<p>“为什么模型还是扛不住？”</p>
+<p>林川回答：</p>
+<p>“因为模型服务有自己的容量限制。”</p>
+<p>“而且 LLM 的吞吐量不能只用 QPS 衡量。”</p>
 <h3 id="llm">LLM 的两个重要吞吐量指标</h3>
 <p>Input Tokens Per Second</p>
 <p>模型每秒处理的输入 Token 数量。</p>
 <p>Output Tokens Per Second</p>
 <p>模型每秒生成的输出 Token 数量。</p>
-<p class="spoken-line">“对于生成式模型，输入阶段和输出阶段的计算特征不同。”</p>
-<p class="spoken-line">“尤其自部署模型，还需要考虑 Prefill、Decode、KV Cache 和 GPU 显存。”</p>
+<p>“对于生成式模型，输入阶段和输出阶段的计算特征不同。”</p>
+<p>“尤其自部署模型，还需要考虑 Prefill、Decode、KV Cache 和 GPU 显存。”</p>
 <h3 id="prefill-decode">Prefill 与 Decode</h3>
 <p>林川在白板上写下：</p>
-<p>Prefill：处理输入上下文。模型读取 Prompt，计算相关中间状态并建立用于后续生成的 KV Cache。Decode：逐步生成输出 Token。模型基于已有上下文和 KV Cache，逐 Token 生成答案。</p>
-<p class="spoken-line">“长 Prompt 会增加 Prefill 工作量。”</p>
-<p class="spoken-line">“长输出会增加 Decode 工作量和请求持续时间。”</p>
-<p class="spoken-line">“因此，Context Packing 不只是减少费用，也能减少模型服务压力。”</p>
+<p>Prefill：处理输入上下文。</p>
+<p>模型读取 Prompt，计算相关中间状态并建立用于后续生成的 KV Cache。</p>
+<p>Decode：逐步生成输出 Token。</p>
+<p>模型基于已有上下文和 KV Cache，逐 Token 生成答案。</p>
+<p>“长 Prompt 会增加 Prefill 工作量。”</p>
+<p>“长输出会增加 Decode 工作量和请求持续时间。”</p>
+<p>“因此，Context Packing 不只是减少费用，也能减少模型服务压力。”</p>
 <h3 id="ttft-tpot">TTFT 与 TPOT</h3>
 <p>林川又写下两个指标。</p>
 <p>TTFT：Time To First Token</p>
-<p>从定义的请求起点到收到第一个输出 Token 的时间。在完整 RAG 请求中，可以测量端到端 TTFT，也可以单独测量模型服务 TTFT，两者不能混淆。</p>
+<p>从定义的请求起点到收到第一个输出 Token 的时间。</p>
+<p>在完整 RAG 请求中，可以测量端到端 TTFT，也可以单独测量模型服务 TTFT，两者不能混淆。</p>
 <p>TPOT：Time Per Output Token</p>
-<p>通常用于衡量输出阶段平均每个 Token 的生成间隔。例如：</p>
-<p>总输出 200 个 Token。从第一个 Token 到最后一个 Token 花费 4 秒。则可以粗略估算：</p>
+<p>通常用于衡量输出阶段平均每个 Token 的生成间隔。</p>
+<p>例如：</p>
+<p>总输出 200 个 Token。</p>
+<p>从第一个 Token 到最后一个 Token 花费 4 秒。</p>
+<p>则可以粗略估算：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi>P</mi><mi>O</mi><mi>T</mi><mo>≈</mo><mfrac><mn>4</mn><mn>199</mn></mfrac><mo>≈</mo><mn>20.1</mn><mtext>ms</mtext></mrow><annotation encoding="application/x-tex"> TPOT\approx\frac{4}{199}\approx20.1\text{ms} </annotation></semantics></math></span></p>
-<p class="spoken-line">“实际监控要明确统计口径。”</p>
-<p class="spoken-line">“有些系统把首 Token 也计入平均值，有些只统计后续 Token 间隔。”</p>
-<p class="spoken-line">“如果口径不同，指标不能直接比较。”</p>
-<h3 id="_13">模型网关应该做什么？</h3>
+<p>“实际监控要明确统计口径。”</p>
+<p>“有些系统把首 Token 也计入平均值，有些只统计后续 Token 间隔。”</p>
+<p>“如果口径不同，指标不能直接比较。”</p>
+<h3 id="_20">模型网关应该做什么？</h3>
 <p>林川提出统一模型网关架构。</p>
 <p>RAG Application</p>
 <p>LLM Gateway</p>
-<p>模型路由并发控制限流与配额超时与重试熔断与降级Token 成本统计</p>
+<p>模型路由</p>
+<p>并发控制</p>
+<p>限流与配额</p>
+<p>超时与重试</p>
+<p>熔断与降级</p>
+<p>Token 成本统计</p>
 <p>Model A</p>
 <p>Model B</p>
 <p>Model C</p>
-<p class="spoken-line">“我们可以根据模型能力、成本、延迟和业务等级进行路由。”</p>
-<p class="spoken-line">“但不能把模型切换当成完全无成本的操作。”</p>
-<p class="spoken-line">“不同模型可能有不同的上下文窗口、输出格式、工具调用能力和回答质量。”</p>
-<p class="spoken-line">“所以模型降级也需要经过评测。”</p>
+<p>“我们可以根据模型能力、成本、延迟和业务等级进行路由。”</p>
+<p>“但不能把模型切换当成完全无成本的操作。”</p>
+<p>“不同模型可能有不同的上下文窗口、输出格式、工具调用能力和回答质量。”</p>
+<p>“所以模型降级也需要经过评测。”</p>
 <h2 id="p95-p99">第十幕：P95 与 P99——平均值掩盖的灾难</h2>
 <p>11:32。</p>
 <p>周野兴奋地跑进会议室。</p>
-<p class="spoken-line">“好消息，平均响应时间已经降到 4 秒了！”</p>
+<p>“好消息，平均响应时间已经降到 4 秒了！”</p>
 <p>陈默刚准备松口气。</p>
-<p><strong>林川却问：</strong> “P99 呢？”</p>
+<p>林川却问：</p>
+<p>“P99 呢？”</p>
 <p>周野看了一眼屏幕。</p>
-<p class="spoken-line">“27 秒。”</p>
-<p class="spoken-line">“那我们还没有解决问题。”</p>
-<h3 id="_14">为什么平均响应时间不够？</h3>
-<p>假设 100 个请求。其中 99 个请求耗时 1 秒。最后一个请求耗时 60 秒。平均值：</p>
+<p>“27 秒。”</p>
+<p>“那我们还没有解决问题。”</p>
+<h3 id="_21">为什么平均响应时间不够？</h3>
+<p>假设 100 个请求。</p>
+<p>其中 99 个请求耗时 1 秒。</p>
+<p>最后一个请求耗时 60 秒。</p>
+<p>平均值：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mn>99</mn><mo>×</mo><mn>1</mn><mo>+</mo><mn>60</mn></mrow><mn>100</mn></mfrac><mo>=</mo><mn>1.59</mn><mtext>s</mtext></mrow><annotation encoding="application/x-tex"> \frac{99\times1+60}{100}=1.59\text{s} </annotation></semantics></math></span></p>
-<p class="spoken-line">“平均值看起来只有 1.59 秒。”</p>
+<p>“平均值看起来只有 1.59 秒。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“但最慢的那个用户等了整整一分钟。”</p>
-<p class="spoken-line">“这就是为什么我们需要关注尾延迟。”</p>
+<p>“但最慢的那个用户等了整整一分钟。”</p>
+<p>“这就是为什么我们需要关注尾延迟。”</p>
 <h3 id="p50p95p99">P50、P95、P99</h3>
 <ul>
 <li>P50：约一半请求的延迟不超过该值。</li>
@@ -745,13 +763,15 @@ RAG API
 </ul>
 <p>具体计算结果还会受到样本数量和分位数算法影响。</p>
 <h3 id="rag">一组 RAG 延迟数据</h3>
-<p>RAG 请求延迟分位数（模拟数据）单位：秒</p>
+<p>RAG 请求延迟分位数（模拟数据）</p>
+<p>单位：秒</p>
 <blockquote>
 <p>原稿此处仅保留坐标轴标签，未提供可恢复的各分位数数值，因此省略图表。下方阶段耗时用于说明关键路径，不能替代分位数数据。</p>
 </blockquote>
-<p><strong>林川解释：</strong> “P99 很高，可能是数据库慢查询、模型排队、下游超时、重试、GC 或网络问题。”</p>
-<p class="spoken-line">“我们不能只看一个总延迟。”</p>
-<p class="spoken-line">“必须把整个 RAG Pipeline 拆开。”</p>
+<p>林川解释：</p>
+<p>“P99 很高，可能是数据库慢查询、模型排队、下游超时、重试、GC 或网络问题。”</p>
+<p>“我们不能只看一个总延迟。”</p>
+<p>“必须把整个 RAG Pipeline 拆开。”</p>
 <p>例如：</p>
 <div class="codehilite"><pre><span></span><code>Query Rewrite:      180ms
 Embedding:          120ms
@@ -764,15 +784,18 @@ LLM TTFT:          1200ms
 LLM Generation:    4200ms
 </code></pre></div>
 
-<p class="spoken-line">“这些阶段不一定完全串行。”</p>
-<p class="spoken-line">“例如向量检索和关键词检索可以并行。”</p>
-<p class="spoken-line">“所以端到端延迟不能简单把所有阶段耗时相加。”</p>
-<p class="spoken-line">“我们需要 Trace 来分析真正的关键路径。”</p>
-<h2 id="_15">第十一幕：容量规划——十万用户究竟需要多少台服务器？</h2>
-<p>下午一点。系统终于逐渐恢复。陈默把林川叫到会议室。</p>
-<p class="spoken-line">“今天的问题，归根结底是不是服务器不够？”</p>
-<p><strong>林川回答：</strong> “不能这么简单判断。”</p>
-<p class="spoken-line">“我们需要先找出每个资源的实际容量。”</p>
+<p>“这些阶段不一定完全串行。”</p>
+<p>“例如向量检索和关键词检索可以并行。”</p>
+<p>“所以端到端延迟不能简单把所有阶段耗时相加。”</p>
+<p>“我们需要 Trace 来分析真正的关键路径。”</p>
+<h2 id="_22">第十一幕：容量规划——十万用户究竟需要多少台服务器？</h2>
+<p>下午一点。</p>
+<p>系统终于逐渐恢复。</p>
+<p>陈默把林川叫到会议室。</p>
+<p>“今天的问题，归根结底是不是服务器不够？”</p>
+<p>林川回答：</p>
+<p>“不能这么简单判断。”</p>
+<p>“我们需要先找出每个资源的实际容量。”</p>
 <h3 id="rag_1">RAG 系统的容量不是一个数字</h3>
 <p>林川写下：</p>
 <div class="codehilite"><pre><span></span><code>入口 API 容量
@@ -784,20 +807,23 @@ LLM 生成容量
 网络与 SSE 连接容量
 </code></pre></div>
 
-<p class="spoken-line">“最终吞吐量会受到最先达到容量上限的关键资源限制。”</p>
-<p class="spoken-line">“而且不同请求消耗的资源不同。”</p>
-<p class="spoken-line">“例如一个简单制度查询，可能只需要一次检索和几百 Token 输出。”</p>
-<p class="spoken-line">“一个复杂跨文档分析，可能触发多路检索、较长 Rerank 和数千 Token 生成。”</p>
-<h3 id="_16">一个模型容量估算</h3>
+<p>“最终吞吐量会受到最先达到容量上限的关键资源限制。”</p>
+<p>“而且不同请求消耗的资源不同。”</p>
+<p>“例如一个简单制度查询，可能只需要一次检索和几百 Token 输出。”</p>
+<p>“一个复杂跨文档分析，可能触发多路检索、较长 Rerank 和数千 Token 生成。”</p>
+<h3 id="_23">一个模型容量估算</h3>
 <p>假设某个模型集群在目标延迟下，能够稳定提供：</p>
-<p>每秒 100,000 个输出 Token。平均每个请求输出 500 Token。那么仅从输出 Token 吞吐量看，理论上：</p>
+<p>每秒 100,000 个输出 Token。</p>
+<p>平均每个请求输出 500 Token。</p>
+<p>那么仅从输出 Token 吞吐量看，理论上：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Q</mi><mi>P</mi><mi>S</mi><mo>≤</mo><mfrac><mn>100000</mn><mn>500</mn></mfrac><mo>=</mo><mn>200</mn></mrow><annotation encoding="application/x-tex"> QPS\leq\frac{100000}{500}=200 </annotation></semantics></math></span></p>
-<p class="spoken-line">“但这只是一个粗略上界。”</p>
+<p>“但这只是一个粗略上界。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“它没有考虑输入 Prefill、KV Cache、请求并发、批处理效率、输出长度分布和尾延迟。”</p>
-<p class="spoken-line">“真实容量必须通过负载测试测出来。”</p>
-<h3 id="_17">容量规划的基本流程</h3>
-<p>第一步，确定业务目标。例如：</p>
+<p>“它没有考虑输入 Prefill、KV Cache、请求并发、批处理效率、输出长度分布和尾延迟。”</p>
+<p>“真实容量必须通过负载测试测出来。”</p>
+<h3 id="_24">容量规划的基本流程</h3>
+<p>第一步，确定业务目标。</p>
+<p>例如：</p>
 <ul>
 <li>峰值入口 QPS。</li>
 <li>平均与最大输出长度。</li>
@@ -805,12 +831,18 @@ LLM 生成容量
 <li>可接受错误率。</li>
 <li>预期增长量。</li>
 </ul>
-<p>第二步，建立请求类型分布。例如简单查询、复杂查询、多轮查询和长文档问答分别占多少比例。第三步，逐个压测关键依赖。第四步，进行端到端混合负载测试。第五步，保留容量余量，并设计过载保护。</p>
-<p class="spoken-line">“我们不能只根据 CPU 核数推算模型吞吐量。”</p>
-<p class="spoken-line">“也不能只根据数据库连接数推算系统 QPS。”</p>
-<p class="spoken-line">“必须测量。”</p>
+<p>第二步，建立请求类型分布。</p>
+<p>例如简单查询、复杂查询、多轮查询和长文档问答分别占多少比例。</p>
+<p>第三步，逐个压测关键依赖。</p>
+<p>第四步，进行端到端混合负载测试。</p>
+<p>第五步，保留容量余量，并设计过载保护。</p>
+<p>“我们不能只根据 CPU 核数推算模型吞吐量。”</p>
+<p>“也不能只根据数据库连接数推算系统 QPS。”</p>
+<p>“必须测量。”</p>
 <h2 id="500-qps">第十二幕：压测——为什么 500 QPS 的测试毫无意义？</h2>
-<p>下午两点。林川重新打开了之前的压测报告。报告写着：</p>
+<p>下午两点。</p>
+<p>林川重新打开了之前的压测报告。</p>
+<p>报告写着：</p>
 <div class="codehilite"><pre><span></span><code>Test:
 500 QPS
 
@@ -824,23 +856,33 @@ Average Latency:
 45ms
 </code></pre></div>
 
-<p><strong>陈默问：</strong> “这个测试到底有什么问题？”</p>
-<p><strong>林川回答：</strong> “因为它只测试了一个简单接口。”</p>
-<p class="spoken-line">“没有真实的 RAG 检索。”</p>
-<p class="spoken-line">“没有 Rerank。”</p>
-<p class="spoken-line">“没有模型生成。”</p>
-<p class="spoken-line">“没有 SSE 长连接。”</p>
-<p class="spoken-line">“也没有模拟真实用户的输入长度与输出长度。”</p>
-<p class="spoken-line">“它只能证明那个接口在当时条件下的性能。”</p>
+<p>陈默问：</p>
+<p>“这个测试到底有什么问题？”</p>
+<p>林川回答：</p>
+<p>“因为它只测试了一个简单接口。”</p>
+<p>“没有真实的 RAG 检索。”</p>
+<p>“没有 Rerank。”</p>
+<p>“没有模型生成。”</p>
+<p>“没有 SSE 长连接。”</p>
+<p>“也没有模拟真实用户的输入长度与输出长度。”</p>
+<p>“它只能证明那个接口在当时条件下的性能。”</p>
 <h3 id="rag_2">生产级 RAG 应该怎么压测？</h3>
-<p>林川设计了四类测试。第一类：组件基准测试。分别测试 pgvector、关键词检索、Rerank、Embedding 和模型服务。第二类：端到端负载测试。使用真实请求分布，覆盖不同问题长度、历史对话长度、候选数量和输出长度。第三类：峰值与突发测试。模拟通知推送后，大量用户在短时间内同时进入系统。第四类：故障注入测试。主动制造 Redis 超时、数据库慢查询、模型 429、Rerank 不可用和客户端断连。</p>
-<p class="spoken-line">“我们还需要区分开放负载和封闭负载。”</p>
+<p>林川设计了四类测试。</p>
+<p>第一类：组件基准测试。</p>
+<p>分别测试 pgvector、关键词检索、Rerank、Embedding 和模型服务。</p>
+<p>第二类：端到端负载测试。</p>
+<p>使用真实请求分布，覆盖不同问题长度、历史对话长度、候选数量和输出长度。</p>
+<p>第三类：峰值与突发测试。</p>
+<p>模拟通知推送后，大量用户在短时间内同时进入系统。</p>
+<p>第四类：故障注入测试。</p>
+<p>主动制造 Redis 超时、数据库慢查询、模型 429、Rerank 不可用和客户端断连。</p>
+<p>“我们还需要区分开放负载和封闭负载。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“封闭负载通常固定并发用户数，用户等待响应后再发下一次请求。”</p>
-<p class="spoken-line">“开放负载则按照设定到达速率持续发送请求。”</p>
-<p class="spoken-line">“如果系统变慢，封闭负载可能自然降低请求到达速率，从而掩盖过载问题。”</p>
-<p class="spoken-line">“因此，对流量洪峰的测试，开放负载模型尤其重要。”</p>
-<h3 id="_18">压测必须记录什么？</h3>
+<p>“封闭负载通常固定并发用户数，用户等待响应后再发下一次请求。”</p>
+<p>“开放负载则按照设定到达速率持续发送请求。”</p>
+<p>“如果系统变慢，封闭负载可能自然降低请求到达速率，从而掩盖过载问题。”</p>
+<p>“因此，对流量洪峰的测试，开放负载模型尤其重要。”</p>
+<h3 id="_25">压测必须记录什么？</h3>
 <table>
 <thead>
 <tr>
@@ -895,15 +937,18 @@ Average Latency:
 </tr>
 </tbody>
 </table>
-<p class="spoken-line">“如果只看平均响应时间和成功率，我们可能错过真正的容量问题。”</p>
+<p>“如果只看平均响应时间和成功率，我们可能错过真正的容量问题。”</p>
 <h2 id="trace">第十三幕：故障排查——从日志到 Trace 的最后一公里</h2>
-<p>下午三点。林川开始复盘整个事故。他没有先修改参数。而是要求团队按照统一流程排查。</p>
-<h3 id="_19">第一步：确认故障范围</h3>
-<p class="spoken-line">“是所有请求都慢，还是只有复杂查询慢？”</p>
-<p class="spoken-line">“是所有租户受影响，还是某个租户？”</p>
-<p class="spoken-line">“是检索阶段慢，还是模型生成慢？”</p>
-<p class="spoken-line">“有没有明确的时间起点？”</p>
-<h3 id="_20">第二步：查看黄金信号</h3>
+<p>下午三点。</p>
+<p>林川开始复盘整个事故。</p>
+<p>他没有先修改参数。</p>
+<p>而是要求团队按照统一流程排查。</p>
+<h3 id="_26">第一步：确认故障范围</h3>
+<p>“是所有请求都慢，还是只有复杂查询慢？”</p>
+<p>“是所有租户受影响，还是某个租户？”</p>
+<p>“是检索阶段慢，还是模型生成慢？”</p>
+<p>“有没有明确的时间起点？”</p>
+<h3 id="_27">第二步：查看黄金信号</h3>
 <p>林川要求团队关注：</p>
 <ul>
 <li>延迟。</li>
@@ -912,7 +957,7 @@ Average Latency:
 <li>饱和度。</li>
 </ul>
 <p>这是常见的服务监控思路。</p>
-<h3 id="_21">第三步：检查关键资源</h3>
+<h3 id="_28">第三步：检查关键资源</h3>
 <div class="codehilite"><pre><span></span><code>CPU / Memory / GC
         ↓
 Thread / Event Loop
@@ -925,7 +970,8 @@ Network / SSE
 </code></pre></div>
 
 <h3 id="trace_1">第四步：通过 Trace 找关键路径</h3>
-<p>林川打开一条慢请求的 Trace。<code>RAG Request                 28.4s
+<p>林川打开一条慢请求的 Trace。</p>
+<div class="codehilite"><pre><span></span><code>RAG Request                 28.4s
 │
 ├── Query Rewrite            0.2s
 ├── Hybrid Search            1.1s
@@ -936,18 +982,28 @@ Network / SSE
 └── LLM Generation          22.2s
     ├── Queue Wait           9.5s
     ├── Prefill              2.7s
-    └── Decode              10.0s</code></p>
-<p class="spoken-line">“现在我们知道，最主要的瓶颈在模型服务排队和生成阶段。”</p>
-<p class="spoken-line">“但还要注意，Trace 的阶段耗时可能存在重叠，不能随意相加。”</p>
-<h3 id="_22">第五步：定位根因，而不是只修表面现象</h3>
+    └── Decode              10.0s
+</code></pre></div>
+
+<p>“现在我们知道，最主要的瓶颈在模型服务排队和生成阶段。”</p>
+<p>“但还要注意，Trace 的阶段耗时可能存在重叠，不能随意相加。”</p>
+<h3 id="_29">第五步：定位根因，而不是只修表面现象</h3>
 <p>最终，团队发现事故由多个因素叠加造成：</p>
-<p>第一，通知推送导致流量突发。第二，缓存命中率低，热点查询重复计算。第三，JDBC 阻塞调用占用了不适合的执行资源。第四，数据库连接池等待增加。第五，Rerank 与 LLM 缺乏严格的并发限制。第六，模型网关发生排队和 429。第七，SSE 请求持续时间增加，使在途请求数量继续增长。第八，不合理的重试放大了下游压力。</p>
-<p class="spoken-line">“这不是一个参数能解决的问题。”</p>
+<p>第一，通知推送导致流量突发。</p>
+<p>第二，缓存命中率低，热点查询重复计算。</p>
+<p>第三，JDBC 阻塞调用占用了不适合的执行资源。</p>
+<p>第四，数据库连接池等待增加。</p>
+<p>第五，Rerank 与 LLM 缺乏严格的并发限制。</p>
+<p>第六，模型网关发生排队和 429。</p>
+<p>第七，SSE 请求持续时间增加，使在途请求数量继续增长。</p>
+<p>第八，不合理的重试放大了下游压力。</p>
+<p>“这不是一个参数能解决的问题。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“这是典型的系统性过载。”</p>
+<p>“这是典型的系统性过载。”</p>
 <h2 id="rag_3">第十四幕：架构重建——真正的高并发 RAG</h2>
 <p>2027 年 1 月 7 日。</p>
-<p>经过两天改造，林川重新设计了整套在线服务架构。高并发 RAG 生产架构</p>
+<p>经过两天改造，林川重新设计了整套在线服务架构。</p>
+<p>高并发 RAG 生产架构</p>
 <p>Client / Vue 3</p>
 <p>HTTP + SSE</p>
 <p>API Gateway</p>
@@ -967,14 +1023,15 @@ Network / SSE
 <p>Embedding</p>
 <p>Rerank</p>
 <p>LLM Gateway</p>
-<p>统一生产治理限流 · 熔断 · 舱壁 · 超时 · 灰度 · 监控 · 审计</p>
-<p class="spoken-line">“我们将请求分成不同等级。”</p>
+<p>统一生产治理</p>
+<p>限流 · 熔断 · 舱壁 · 超时 · 灰度 · 监控 · 审计</p>
+<p>“我们将请求分成不同等级。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“简单问题优先走低成本链路。”</p>
-<p class="spoken-line">“复杂问题可以使用 Multi-Query 和更强的 Rerank，但必须受预算约束。”</p>
-<p class="spoken-line">“当模型服务接近饱和时，系统要主动限制新请求，而不是让所有请求无限排队。”</p>
-<p class="spoken-line">“同时，任何降级都不能绕过权限检查。”</p>
-<h3 id="_23">重建后的设计原则</h3>
+<p>“简单问题优先走低成本链路。”</p>
+<p>“复杂问题可以使用 Multi-Query 和更强的 Rerank，但必须受预算约束。”</p>
+<p>“当模型服务接近饱和时，系统要主动限制新请求，而不是让所有请求无限排队。”</p>
+<p>“同时，任何降级都不能绕过权限检查。”</p>
+<h3 id="_30">重建后的设计原则</h3>
 <table>
 <thead>
 <tr>
@@ -1017,35 +1074,45 @@ Network / SSE
 </tr>
 </tbody>
 </table>
-<h2 id="_24">第十五幕：真正的容量，不是服务器数量</h2>
+<h2 id="_31">第十五幕：真正的容量，不是服务器数量</h2>
 <p>2027 年 1 月 10 日。</p>
-<p>星云科技进行了第二次全集团压测。这一次，测试不再只调用简单 HTTP 接口。而是使用真实的问答请求分布。包含短问题、长问题、多轮对话、复杂检索和 SSE 流式输出。测试团队逐步增加请求到达速率。</p>
+<p>星云科技进行了第二次全集团压测。</p>
+<p>这一次，测试不再只调用简单 HTTP 接口。</p>
+<p>而是使用真实的问答请求分布。</p>
+<p>包含短问题、长问题、多轮对话、复杂检索和 SSE 流式输出。</p>
+<p>测试团队逐步增加请求到达速率。</p>
 <p>50 QPS。</p>
 <p>100 QPS。</p>
 <p>150 QPS。</p>
 <p>200 QPS。</p>
-<p>每增加一个档位，团队都会观察系统是否达到稳定状态。是否出现持续排队。是否发生数据库连接池等待。模型网关是否接近 Token 吞吐量上限。P95 和 P99 是否仍然符合目标。</p>
-<p><strong>陈默问：</strong> “我们现在能支撑多少？”</p>
-<p><strong>林川回答：</strong> “我们不能只报一个数字。”</p>
-<p class="spoken-line">“必须附带负载条件。”</p>
-<p class="spoken-line">“例如：在指定的请求长度分布、输出 Token 分布、知识库规模、模型配置和延迟目标下，系统能够稳定处理多少 QPS。”</p>
-<p class="spoken-line">“否则，单独说支持十万并发，没有多少工程意义。”</p>
+<p>每增加一个档位，团队都会观察系统是否达到稳定状态。</p>
+<p>是否出现持续排队。</p>
+<p>是否发生数据库连接池等待。</p>
+<p>模型网关是否接近 Token 吞吐量上限。</p>
+<p>P95 和 P99 是否仍然符合目标。</p>
+<p>陈默问：</p>
+<p>“我们现在能支撑多少？”</p>
+<p>林川回答：</p>
+<p>“我们不能只报一个数字。”</p>
+<p>“必须附带负载条件。”</p>
+<p>“例如：在指定的请求长度分布、输出 Token 分布、知识库规模、模型配置和延迟目标下，系统能够稳定处理多少 QPS。”</p>
+<p>“否则，单独说支持十万并发，没有多少工程意义。”</p>
 <p>陈默点了点头。</p>
-<p class="spoken-line">“那今天的结论呢？”</p>
+<p>“那今天的结论呢？”</p>
 <p>林川看着监控屏幕。</p>
-<p class="spoken-line">“在本次测试条件下，系统已经能够在目标负载内稳定运行。”</p>
-<p class="spoken-line">“但我们还需要持续观察真实流量，并保留容量余量。”</p>
+<p>“在本次测试条件下，系统已经能够在目标负载内稳定运行。”</p>
+<p>“但我们还需要持续观察真实流量，并保留容量余量。”</p>
 <p>他停顿了一下。</p>
-<p class="spoken-line">“成熟的系统，不是永远不会过载。”</p>
-<p class="spoken-line">“而是在接近极限时，能够知道自己正在接近极限，并且有能力保护自己。”</p>
+<p>“成熟的系统，不是永远不会过载。”</p>
+<p>“而是在接近极限时，能够知道自己正在接近极限，并且有能力保护自己。”</p>
 <h2 id="rag_4">本章技术档案：高并发 RAG 的核心公式</h2>
 <h3 id="1-littles-law">1. Little's Law</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi>λ</mi><mi>W</mi></mrow><annotation encoding="application/x-tex"> L=\lambda W </annotation></semantics></math></span></p>
 <p>用于稳定系统中平均在途请求数、吞吐率与平均停留时间之间的关系。</p>
-<h3 id="2_1">2. 模型输出吞吐量上界估算</h3>
+<h3 id="2_2">2. 模型输出吞吐量上界估算</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Q</mi><mi>P</mi><mi>S</mi><mo>≲</mo><mfrac><mtext>Output Tokens/s</mtext><mtext>平均输出 Tokens/Request</mtext></mfrac></mrow><annotation encoding="application/x-tex"> QPS\lesssim \frac{\text{Output Tokens/s}} {\text{平均输出 Tokens/Request}} </annotation></semantics></math></span></p>
 <p>只是输出阶段的粗略约束，不能代替真实模型容量测试。</p>
-<h3 id="3_1">3. 请求总延迟</h3>
+<h3 id="3_2">3. 请求总延迟</h3>
 <p>对于串行阶段：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi mathvariant="normal">_</mi><mtext>total</mtext><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex"> T\_{\text{total}}=\sum_i T_i </annotation></semantics></math></span></p>
 <p>对于并行阶段，端到端延迟取决于关键路径，而不是所有阶段耗时之和。</p>
@@ -1059,38 +1126,56 @@ Network / SSE
 <div class="review-bank">
 <p>先自行作答，再展开对照。参考答案为编辑补充，可结合本章正文深入阅读。</p>
 <button type="button" class="review-toggle">全部展开</button>
-<details class="review-card"><summary>1. 十万在线用户是否等于十万并发？</summary><div class="review-answer"><p>在线人数是会话规模，并发是在同一时刻处于处理中的请求数。稳定条件下可用平均吞吐乘平均响应时间估算在途请求。</p></div>
-
-</details>
-
-<details class="review-card"><summary>2. 为什么 RAG 只有几百 QPS，也可能比普通接口更难支撑？</summary><div class="review-answer"><p>生成耗时长、输出持续占连接，模型 Token 吞吐与检索重排可能成为瓶颈，单看 QPS 会遗漏资源占用与长尾。</p></div></details><details class="review-card"><summary>3. Redis 缓存击穿、穿透、雪崩有什么区别？</summary><div class="review-answer"><p>击穿是热点失效引发并发回源，穿透是查询不存在的数据持续回源，雪崩是大量缓存同时失效或缓存层故障。</p></div></details><details class="review-card"><summary>4. Singleflight 和 Redis 分布式锁有什么区别？</summary><div class="review-answer"><p>Singleflight 通常合并同进程相同请求；分布式锁协调多个进程。需处理超时、租约、持有者校验与异常恢复。</p></div></details><details class="review-card"><summary>5. Java 21 虚拟线程能提升 RAG 吞吐量吗？</summary><div class="review-answer"><p>虚拟线程降低阻塞等待的线程成本，不增加模型、数据库或 CPU 的容量。仍需限制在途请求并测量实际瓶颈。</p></div></details><details class="review-card"><summary>6. WebFlux 中直接使用 JDBC 有什么风险？</summary><div class="review-answer"><p>JDBC 阻塞事件循环会拖慢其他请求。可使用受限线程池隔离阻塞调用或采用合适的响应式驱动，并监控队列。</p></div></details><details class="review-card"><summary>7. SSE 为什么需要背压和取消处理？</summary><div class="review-answer"><p>慢客户端可能导致缓冲持续增长；断开后继续生成会浪费资源。需要有界队列、超时、溢出策略和上游取消。</p></div></details><details class="review-card"><summary>8. HikariCP 连接池是不是越大越好？</summary><div class="review-answer"><p>不是。过大的连接池可能增加数据库竞争。根据数据库容量、事务耗时和等待指标压测选型，并设置超时。</p></div></details><details class="review-card"><summary>9. 限流、熔断和舱壁隔离有什么区别？</summary><div class="review-answer"><p>限流控制进入速率，熔断暂时阻止调用故障依赖，舱壁隔离为不同依赖或业务分配独立资源预算。</p></div></details><details class="review-card"><summary>10. TTFT、TPOT、P95、P99 分别反映什么？</summary><div class="review-answer"><p>TTFT 衡量首 Token 等待，TPOT 衡量后续 Token 间隔；P95/P99 是指定指标分布的长尾分位数，应明确统计对象。</p></div></details><details class="review-card"><summary>11. 为什么普通 HTTP 接口压测不能代表 RAG 性能？</summary><div class="review-answer"><p>普通压测常不覆盖流式连接、输出长度、Token 吞吐、取消和长尾。应使用真实查询分布与生成长度并记录各阶段指标。</p></div></details><details class="review-card"><summary>12. 线上 RAG P99 突然升高，应该怎么排查？</summary><div class="review-answer"><p>先确定影响范围，再检查模型网关、检索、数据库、缓存和队列，结合 Trace 找关键路径，并排查变更、重试放大和资源饱和。</p></div></details>
-
+<details class="review-card"><summary>1. 十万在线用户是否等于十万并发？</summary><div class="review-answer"><p>在线人数是会话规模，并发是在同一时刻处于处理中的请求数。稳定条件下可用平均吞吐乘平均响应时间估算在途请求。</p></div></details>
+<details class="review-card"><summary>2. 为什么 RAG 只有几百 QPS，也可能比普通接口更难支撑？</summary><div class="review-answer"><p>生成耗时长、输出持续占连接，模型 Token 吞吐与检索重排可能成为瓶颈，单看 QPS 会遗漏资源占用与长尾。</p></div></details>
+<details class="review-card"><summary>3. Redis 缓存击穿、穿透、雪崩有什么区别？</summary><div class="review-answer"><p>击穿是热点失效引发并发回源，穿透是查询不存在的数据持续回源，雪崩是大量缓存同时失效或缓存层故障。</p></div></details>
+<details class="review-card"><summary>4. Singleflight 和 Redis 分布式锁有什么区别？</summary><div class="review-answer"><p>Singleflight 通常合并同进程相同请求；分布式锁协调多个进程。需处理超时、租约、持有者校验与异常恢复。</p></div></details>
+<details class="review-card"><summary>5. Java 21 虚拟线程能提升 RAG 吞吐量吗？</summary><div class="review-answer"><p>虚拟线程降低阻塞等待的线程成本，不增加模型、数据库或 CPU 的容量。仍需限制在途请求并测量实际瓶颈。</p></div></details>
+<details class="review-card"><summary>6. WebFlux 中直接使用 JDBC 有什么风险？</summary><div class="review-answer"><p>JDBC 阻塞事件循环会拖慢其他请求。可使用受限线程池隔离阻塞调用或采用合适的响应式驱动，并监控队列。</p></div></details>
+<details class="review-card"><summary>7. SSE 为什么需要背压和取消处理？</summary><div class="review-answer"><p>慢客户端可能导致缓冲持续增长；断开后继续生成会浪费资源。需要有界队列、超时、溢出策略和上游取消。</p></div></details>
+<details class="review-card"><summary>8. HikariCP 连接池是不是越大越好？</summary><div class="review-answer"><p>不是。过大的连接池可能增加数据库竞争。根据数据库容量、事务耗时和等待指标压测选型，并设置超时。</p></div></details>
+<details class="review-card"><summary>9. 限流、熔断和舱壁隔离有什么区别？</summary><div class="review-answer"><p>限流控制进入速率，熔断暂时阻止调用故障依赖，舱壁隔离为不同依赖或业务分配独立资源预算。</p></div></details>
+<details class="review-card"><summary>10. TTFT、TPOT、P95、P99 分别反映什么？</summary><div class="review-answer"><p>TTFT 衡量首 Token 等待，TPOT 衡量后续 Token 间隔；P95/P99 是指定指标分布的长尾分位数，应明确统计对象。</p></div></details>
+<details class="review-card"><summary>11. 为什么普通 HTTP 接口压测不能代表 RAG 性能？</summary><div class="review-answer"><p>普通压测常不覆盖流式连接、输出长度、Token 吞吐、取消和长尾。应使用真实查询分布与生成长度并记录各阶段指标。</p></div></details>
+<details class="review-card"><summary>12. 线上 RAG P99 突然升高，应该怎么排查？</summary><div class="review-answer"><p>先确定影响范围，再检查模型网关、检索、数据库、缓存和队列，结合 Trace 找关键路径，并排查变更、重试放大和资源饱和。</p></div></details>
 </div>
 
-<h2 id="_25">终章：凌晨两点的最后一条告警</h2>
+<h2 id="_32">终章：凌晨两点的最后一条告警</h2>
 <p>2027 年 1 月 11 日，凌晨两点。</p>
-<p>数据中心终于恢复了平静。林川坐在监控屏幕前。CPU 使用率稳定。数据库连接池没有持续排队。Redis 延迟正常。模型网关的并发控制生效。SSE 活跃连接数量随流量正常变化。陈默走到他身后。</p>
-<p class="spoken-line">“现在可以回家了吧？”</p>
+<p>数据中心终于恢复了平静。</p>
+<p>林川坐在监控屏幕前。</p>
+<p>CPU 使用率稳定。</p>
+<p>数据库连接池没有持续排队。</p>
+<p>Redis 延迟正常。</p>
+<p>模型网关的并发控制生效。</p>
+<p>SSE 活跃连接数量随流量正常变化。</p>
+<p>陈默走到他身后。</p>
+<p>“现在可以回家了吧？”</p>
 <p>林川笑了笑。</p>
-<p class="spoken-line">“应该可以。”</p>
-<p>就在这时，屏幕右上角出现了一条新的告警。```
-ALERT: RAG Answer Quality Degradation</p>
-<p>Retrieval Recall@10:
+<p>“应该可以。”</p>
+<p>就在这时，屏幕右上角出现了一条新的告警。</p>
+<div class="codehilite"><pre><span></span><code>ALERT: RAG Answer Quality Degradation
+
+Retrieval Recall@10:
 Baseline: 0.92
-Current:  0.76</p>
-<p>Citation Support Rate:
+Current:  0.76
+
+Citation Support Rate:
 Baseline: 0.94
-Current:  0.81</p>
-<p>Latency:
+Current:  0.81
+
+Latency:
 Normal
-```陈默皱起眉头。</p>
-<p class="spoken-line">“系统不是已经稳定了吗？”</p>
+</code></pre></div>
+
+<p>陈默皱起眉头。</p>
+<p>“系统不是已经稳定了吗？”</p>
 <p>林川盯着屏幕。</p>
-<p class="spoken-line">“性能稳定，不代表答案质量稳定。”</p>
-<p class="spoken-line">“我们刚刚为了降低延迟，调整了检索候选数量和 Rerank 策略。”</p>
-<p class="spoken-line">“现在看来，可能影响了召回和答案质量。”</p>
+<p>“性能稳定，不代表答案质量稳定。”</p>
+<p>“我们刚刚为了降低延迟，调整了检索候选数量和 Rerank 策略。”</p>
+<p>“现在看来，可能影响了召回和答案质量。”</p>
 <p>他缓缓站起身。</p>
-<p class="spoken-line">“下一场战争开始了。”</p>
-<h2 id="_26">本章交互实验</h2>
+<p>“下一场战争开始了。”</p>
+<h2 id="_33">本章交互实验</h2>
 <div class="lab" data-lab="capacity"></div></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-07.html">← 上一章<span>推理引擎——让模型学会有证据地回答</span></a><a href="chapter-09.html">下一章 →<span>评测法庭——如何证明 AI 真的变聪明了</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
 <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>

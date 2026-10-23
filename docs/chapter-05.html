@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>向量数据库的第一次背叛 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
-<body data-chapter="5" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>向量数据库的第一次背叛 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'white';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
+<body data-chapter="5" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换背景：纯白、米白、深色">◐</button></div></header>
 <div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="current" href="chapter-05.html" aria-current="page"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
 <ul>
 <li><a href="#rag">第一卷技术档案：成熟 RAG 的能力清单</a></li>
@@ -15,30 +15,40 @@
 <blockquote>
 <p>工程阅读提示：故事中的金额、吞吐量、延迟与评测成绩是场景示例，不代表可复现的生产基准。代码用于解释设计，落地需结合实际版本、数据与测试。</p>
 </blockquote>
-<p>两周后。系统迎来了第一次内部演示。陈默输入：</p>
-<p class="spoken-line">“企业版退款期限是多少？”</p>
-<p>系统准确找到了退款政策。所有人鼓掌。随后，陈默又输入：</p>
-<p class="spoken-line">“ERR_PAYMENT_4032 是什么意思？”</p>
+<p>两周后。</p>
+<p>系统迎来了第一次内部演示。</p>
+<p>陈默输入：</p>
+<p>“企业版退款期限是多少？”</p>
+<p>系统准确找到了退款政策。</p>
+<p>所有人鼓掌。</p>
+<p>随后，陈默又输入：</p>
+<p>“ERR_PAYMENT_4032 是什么意思？”</p>
 <p>屏幕上的检索结果却是：</p>
 <div class="codehilite"><pre><span></span><code>1. 支付失败的常见原因
 2. 用户权限验证异常
 3. 订单状态不一致
 4. 企业版付款说明
 5. HTTP 403 错误解释
-```真正的文档：
 </code></pre></div>
 
-<p>ERR_PAYMENT_4032
+<p>真正的文档：</p>
+<div class="codehilite"><pre><span></span><code>ERR_PAYMENT_4032
 含义：企业支付账户已被冻结。
 处理方式：联系企业财务管理员。
-```竟然没有进入 Top 5。</p>
+</code></pre></div>
+
+<p>竟然没有进入 Top 5。</p>
 <p>“为什么？”陈默问。</p>
-<p><strong>林川回答：</strong> “因为我们只用了向量检索。”</p>
-<p class="spoken-line">“向量检索擅长语义相似，但不一定擅长精确匹配错误码、订单号、函数名和产品型号。”</p>
-<p class="spoken-line">“ERR_PAYMENT_4032 对人来说是一个明确的标识符，但对 Embedding 模型来说，不一定能够被准确地映射到对应语义。”</p>
+<p>林川回答：</p>
+<p>“因为我们只用了向量检索。”</p>
+<p>“向量检索擅长语义相似，但不一定擅长精确匹配错误码、订单号、函数名和产品型号。”</p>
+<p>“ERR_PAYMENT_4032 对人来说是一个明确的标识符，但对 Embedding 模型来说，不一定能够被准确地映射到对应语义。”</p>
 <p>陈默皱眉。</p>
-<p class="spoken-line">“那怎么办？”</p>
-<p>林川写下两个词。Hybrid Search。混合检索。一条检索链路负责语义：</p>
+<p>“那怎么办？”</p>
+<p>林川写下两个词。</p>
+<p>Hybrid Search。</p>
+<p>混合检索。</p>
+<p>一条检索链路负责语义：</p>
 <div class="codehilite"><pre><span></span><code>Query
   ↓
 Embedding
@@ -46,17 +56,21 @@ Embedding
 pgvector ANN Search
   ↓
 Semantic Candidates
-```另一条链路负责关键词：
 </code></pre></div>
 
-<p>Query
+<p>另一条链路负责关键词：</p>
+<div class="codehilite"><pre><span></span><code>Query
   ↓
 Tokenization
   ↓
 BM25 / Full-text Search
   ↓
 Lexical Candidates
-```随后将两路候选结果融合。他选择了 RRF（Reciprocal Rank Fusion）。公式：</p>
+</code></pre></div>
+
+<p>随后将两路候选结果融合。</p>
+<p>他选择了 RRF（Reciprocal Rank Fusion）。</p>
+<p>公式：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mi>R</mi><mi>F</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">)</mo><mo>=</mo><mo>∑</mo><mi mathvariant="normal">_</mi><mrow><mi>r</mi><mo>∈</mo><mi>R</mi></mrow><mfrac><mn>1</mn><mrow><mi>k</mi><mo>+</mo><mi mathvariant="normal">rank</mi><mo>⁡</mo><mi mathvariant="normal">_</mi><mi>r</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex"> RRF(d)=\sum\_{r\in R}\frac{1}{k+\operatorname{rank}\_r(d)} </annotation></semantics></math></span></p>
 <p>其中：</p>
 <ul>
@@ -65,11 +79,12 @@ Lexical Candidates
 <li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span>：用于平滑排名影响的常数。</li>
 <li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">rank</mi><mo>⁡</mo><mi mathvariant="normal">_</mi><mi>r</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{rank}\_r(d)</annotation></semantics></math></span>：候选在某一路检索中的排名。</li>
 </ul>
-<p class="spoken-line">“RRF 的优点是，不需要强行比较向量相似度与 BM25 分数的绝对数值。”</p>
-<p class="spoken-line">“因为它主要依赖排名。”</p>
-<p><strong>不过林川补充：</strong> “如果两路检索都没召回正确文档，RRF 也救不了。它只负责融合已有候选。”</p>
+<p>“RRF 的优点是，不需要强行比较向量相似度与 BM25 分数的绝对数值。”</p>
+<p>“因为它主要依赖排名。”</p>
+<p>不过林川补充：</p>
+<p>“如果两路检索都没召回正确文档，RRF 也救不了。它只负责融合已有候选。”</p>
 <p>新的检索流程变成：</p>
-<p><code>用户 Query
+<div class="codehilite"><pre><span></span><code>用户 Query
     │
     ├── 向量召回 Top 30
     │
@@ -85,15 +100,21 @@ Lexical Candidates
            Reranker
               │
               ▼
-         最终证据 Top 5</code>Top K 数值仅作为本章设计示例，需要通过真实评测与延迟预算调整。演示再次开始。</p>
-<p class="spoken-line">“ERR_PAYMENT_4032 是什么意思？”</p>
-<p>这一次，正确文档排在第一位。陈默刚准备宣布成功，林川却关闭了演示界面。</p>
-<p class="spoken-line">“还不能上线。”</p>
-<p class="spoken-line">“为什么？”</p>
-<p class="spoken-line">“因为我们现在只是找到了相关文档。”</p>
-<p class="spoken-line">“但一个成熟的 RAG 系统，还必须解决一个更危险的问题。”</p>
-<p class="spoken-line">“什么问题？”</p>
-<p><strong>林川看着屏幕，缓缓说道：</strong> “如果用户找到了他根本没有权限阅读的文档呢？”</p>
+         最终证据 Top 5
+</code></pre></div>
+
+<p>Top K 数值仅作为本章设计示例，需要通过真实评测与延迟预算调整。</p>
+<p>演示再次开始。</p>
+<p>“ERR_PAYMENT_4032 是什么意思？”</p>
+<p>这一次，正确文档排在第一位。</p>
+<p>陈默刚准备宣布成功，林川却关闭了演示界面。</p>
+<p>“还不能上线。”</p>
+<p>“为什么？”</p>
+<p>“因为我们现在只是找到了相关文档。”</p>
+<p>“但一个成熟的 RAG 系统，还必须解决一个更危险的问题。”</p>
+<p>“什么问题？”</p>
+<p>林川看着屏幕，缓缓说道：</p>
+<p>“如果用户找到了他根本没有权限阅读的文档呢？”</p>
 <p>会议室瞬间安静下来。</p>
 <h2 id="rag">第一卷技术档案：成熟 RAG 的能力清单</h2>
 <p>故事中的星云平台最终需要覆盖以下工程能力。</p>

@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>评测法庭——如何证明 AI 真的变聪明了 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
-<body data-chapter="9" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>评测法庭——如何证明 AI 真的变聪明了 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'white';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
+<body data-chapter="9" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换背景：纯白、米白、深色">◐</button></div></header>
 <div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="current" href="chapter-09.html" aria-current="page"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
 <ul>
 <li><a href="#_1">序幕：一次让系统变快，却让答案变错的优化</a></li>
@@ -17,11 +17,16 @@
 <li><a href="#citation-accuracy">第十一幕：Citation Accuracy——引用存在，不代表引用正确</a></li>
 <li><a href="#llm-as-a-judge">第十二幕：LLM-as-a-Judge——让另一个模型来当法官</a></li>
 <li><a href="#ragas">第十三幕：RAGAS——把评测流程变成自动化流水线</a></li>
+<li><a href="#ab">第十四幕：A/B 测试——新版本真的比旧版本好吗？</a></li>
+<li><a href="#2_1">第十五幕：统计显著性——提升 2%，究竟是真进步还是运气？</a></li>
+<li><a href="#_11">第十六幕：灰度发布——不能拿所有用户当实验品</a></li>
+<li><a href="#_13">第十七幕：数据闭环——每一次失败，都成为下一次进步的证据</a></li>
+<li><a href="#java-spring-boot-rag">第十八幕：Java Spring Boot——建立自己的 RAG 评测平台</a></li>
 <li><a href="#rag">第十九幕：最终审判——哪个 RAG 版本才应该上线？</a></li>
-<li><a href="#_10">第二十幕：真正的评测，不是为了证明自己正确</a></li>
-<li><a href="#_11">本章面试法庭：十五道核心追问</a></li>
-<li><a href="#_12">终章：法庭之外，还有一片未知的战场</a></li>
-<li><a href="#_13">本章交互实验</a></li>
+<li><a href="#_16">第二十幕：真正的评测，不是为了证明自己正确</a></li>
+<li><a href="#_17">本章面试法庭：十五道核心追问</a></li>
+<li><a href="#_18">终章：法庭之外，还有一片未知的战场</a></li>
+<li><a href="#_19">本章交互实验</a></li>
 </ul>
 </div>
 </details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 09 <span>/ 09 · 约 54 分钟</span></p><h1>评测法庭——如何证明 AI 真的变聪明了</h1><p class="topics">数据集 · 排序指标 · A/B</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="current" href="chapter-09.html" aria-current="page"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
@@ -40,11 +45,16 @@
 <li><a href="#citation-accuracy">第十一幕：Citation Accuracy——引用存在，不代表引用正确</a></li>
 <li><a href="#llm-as-a-judge">第十二幕：LLM-as-a-Judge——让另一个模型来当法官</a></li>
 <li><a href="#ragas">第十三幕：RAGAS——把评测流程变成自动化流水线</a></li>
+<li><a href="#ab">第十四幕：A/B 测试——新版本真的比旧版本好吗？</a></li>
+<li><a href="#2_1">第十五幕：统计显著性——提升 2%，究竟是真进步还是运气？</a></li>
+<li><a href="#_11">第十六幕：灰度发布——不能拿所有用户当实验品</a></li>
+<li><a href="#_13">第十七幕：数据闭环——每一次失败，都成为下一次进步的证据</a></li>
+<li><a href="#java-spring-boot-rag">第十八幕：Java Spring Boot——建立自己的 RAG 评测平台</a></li>
 <li><a href="#rag">第十九幕：最终审判——哪个 RAG 版本才应该上线？</a></li>
-<li><a href="#_10">第二十幕：真正的评测，不是为了证明自己正确</a></li>
-<li><a href="#_11">本章面试法庭：十五道核心追问</a></li>
-<li><a href="#_12">终章：法庭之外，还有一片未知的战场</a></li>
-<li><a href="#_13">本章交互实验</a></li>
+<li><a href="#_16">第二十幕：真正的评测，不是为了证明自己正确</a></li>
+<li><a href="#_17">本章面试法庭：十五道核心追问</a></li>
+<li><a href="#_18">终章：法庭之外，还有一片未知的战场</a></li>
+<li><a href="#_19">本章交互实验</a></li>
 </ul>
 </div>
 </details><article><h1 id="ai">评测法庭——如何证明 AI 真的变聪明了</h1>
@@ -55,13 +65,22 @@
 <p><a href="https://dev.to/dentity007/-gemma-4-after-24-hours-what-the-community-found-vs-what-google-promised-3a2f?utm_source=chatgpt.com">dev.to</a></p>
 <h2 id="_1">序幕：一次让系统变快，却让答案变错的优化</h2>
 <p>2027 年 1 月 12 日，上午九点。</p>
-<p>星云科技总部，AI 基础设施部。经历了那场十万用户同时涌入的流量事故，林川终于带领团队完成了高并发架构改造。Redis 多级缓存、Singleflight、模型网关、限流熔断、SSE 背压控制、连接池隔离，以及完整的链路追踪系统，全部上线。系统 P95 延迟从 12.8 秒下降到 5.1 秒。P99 从 27 秒下降到 9.3 秒。模型调用成本下降了约 30%。以上均为小说中的虚构测试数据。陈默对这次优化非常满意。</p>
-<p class="spoken-line">“现在可以宣布项目成功了吗？”</p>
-<p>林川刚准备回答，苏晴突然推开会议室的大门。她手里拿着一份测试报告。</p>
-<p class="spoken-line">“不能。”</p>
+<p>星云科技总部，AI 基础设施部。</p>
+<p>经历了那场十万用户同时涌入的流量事故，林川终于带领团队完成了高并发架构改造。</p>
+<p>Redis 多级缓存、Singleflight、模型网关、限流熔断、SSE 背压控制、连接池隔离，以及完整的链路追踪系统，全部上线。</p>
+<p>系统 P95 延迟从 12.8 秒下降到 5.1 秒。</p>
+<p>P99 从 27 秒下降到 9.3 秒。</p>
+<p>模型调用成本下降了约 30%。</p>
+<p>以上均为小说中的虚构测试数据。</p>
+<p>陈默对这次优化非常满意。</p>
+<p>“现在可以宣布项目成功了吗？”</p>
+<p>林川刚准备回答，苏晴突然推开会议室的大门。</p>
+<p>她手里拿着一份测试报告。</p>
+<p>“不能。”</p>
 <p>会议室瞬间安静。</p>
-<p class="spoken-line">“为什么？”</p>
-<p>苏晴将两份回答投影到大屏幕上。用户的问题是：</p>
+<p>“为什么？”</p>
+<p>苏晴将两份回答投影到大屏幕上。</p>
+<p>用户的问题是：</p>
 <blockquote>
 <p>企业版合同生效超过 30 天，如果供应商存在重大交付违约，客户是否还能申请退款？</p>
 </blockquote>
@@ -74,61 +93,83 @@
 <p>不可以。企业版合同生效超过 30 天后原则上不支持退款。</p>
 </blockquote>
 <p>周野愣住了。</p>
-<p class="spoken-line">“怎么又回到了最初的问题？”</p>
+<p>“怎么又回到了最初的问题？”</p>
 <p>苏晴打开检索日志。</p>
-<p class="spoken-line">“因为你们为了降低 Rerank 开销，把候选数量从 30 降到了 5。”</p>
-<p class="spoken-line">“而真正包含例外条款的 Chunk，在第一阶段检索中排名第 8。”</p>
-<p class="spoken-line">“它根本没有机会进入 Reranker。”</p>
-<p>林川沉默了。他意识到一件事。过去几个月，他们不断优化检索算法、Prompt、缓存和推理性能。但每次优化是否真正提升了答案质量，几乎都依赖测试人员的主观判断。有人觉得新版本更聪明。有人觉得旧版本更稳定。开发人员认为 Recall 提升就代表效果提升。产品经理认为回答更流畅就代表效果提升。</p>
+<p>“因为你们为了降低 Rerank 开销，把候选数量从 30 降到了 5。”</p>
+<p>“而真正包含例外条款的 Chunk，在第一阶段检索中排名第 8。”</p>
+<p>“它根本没有机会进入 Reranker。”</p>
+<p>林川沉默了。</p>
+<p>他意识到一件事。</p>
+<p>过去几个月，他们不断优化检索算法、Prompt、缓存和推理性能。</p>
+<p>但每次优化是否真正提升了答案质量，几乎都依赖测试人员的主观判断。</p>
+<p>有人觉得新版本更聪明。</p>
+<p>有人觉得旧版本更稳定。</p>
+<p>开发人员认为 Recall 提升就代表效果提升。</p>
+<p>产品经理认为回答更流畅就代表效果提升。</p>
 <p>但没有人能够回答：</p>
-<p>新版本究竟比旧版本好多少？这种提升是否真实？又是否值得付出额外成本？林川拿起白板笔。写下四个字：</p>
+<p>新版本究竟比旧版本好多少？这种提升是否真实？又是否值得付出额外成本？</p>
+<p>林川拿起白板笔。</p>
+<p>写下四个字：</p>
 <p>评测法庭。</p>
-<p class="spoken-line">“从今天开始，任何 RAG 优化都必须经过评测。”</p>
-<p class="spoken-line">“模型不能自己宣布自己正确。”</p>
-<p class="spoken-line">“开发人员也不能仅凭几个漂亮的案例宣布优化成功。”</p>
-<p class="spoken-line">“我们需要证据。”</p>
+<p>“从今天开始，任何 RAG 优化都必须经过评测。”</p>
+<p>“模型不能自己宣布自己正确。”</p>
+<p>“开发人员也不能仅凭几个漂亮的案例宣布优化成功。”</p>
+<p>“我们需要证据。”</p>
 <h2 id="_2">第一幕：没有标准答案的考试，如何判断谁更聪明？</h2>
-<p>上午十点。林川召集了检索、算法、后端和产品团队。他提出了一个问题。</p>
-<p class="spoken-line">“假设我们有两个 RAG 系统。”</p>
-<p class="spoken-line">“A 系统使用纯向量检索。”</p>
-<p class="spoken-line">“B 系统使用 Hybrid Search、RRF 和 Cross-Encoder Rerank。”</p>
-<p class="spoken-line">“哪个系统更好？”</p>
-<p><strong>周野立刻回答：</strong> “当然是 B。”</p>
+<p>上午十点。</p>
+<p>林川召集了检索、算法、后端和产品团队。</p>
+<p>他提出了一个问题。</p>
+<p>“假设我们有两个 RAG 系统。”</p>
+<p>“A 系统使用纯向量检索。”</p>
+<p>“B 系统使用 Hybrid Search、RRF 和 Cross-Encoder Rerank。”</p>
+<p>“哪个系统更好？”</p>
+<p>周野立刻回答：</p>
+<p>“当然是 B。”</p>
 <p>林川摇头。</p>
-<p class="spoken-line">“为什么？”</p>
-<p class="spoken-line">“因为技术更先进。”</p>
-<p class="spoken-line">“技术更复杂，不等于结果更好。”</p>
-<p class="spoken-line">“如果知识库很小、问题简单，B 可能没有明显收益，反而增加延迟和成本。”</p>
-<p class="spoken-line">“我们需要在同一批问题上比较它们。”</p>
+<p>“为什么？”</p>
+<p>“因为技术更先进。”</p>
+<p>“技术更复杂，不等于结果更好。”</p>
+<p>“如果知识库很小、问题简单，B 可能没有明显收益，反而增加延迟和成本。”</p>
+<p>“我们需要在同一批问题上比较它们。”</p>
 <p>苏晴补充道：</p>
-<p class="spoken-line">“而且不能只比较回答文本。”</p>
-<p class="spoken-line">“我们必须拆分整个 RAG Pipeline。”</p>
-<p>她画出了系统架构。RAG 质量评测的四个层次</p>
+<p>“而且不能只比较回答文本。”</p>
+<p>“我们必须拆分整个 RAG Pipeline。”</p>
+<p>她画出了系统架构。</p>
+<p>RAG 质量评测的四个层次</p>
 <p>1</p>
-<p>第一层：数据质量文档解析、Chunk 完整性、元数据、权限与版本</p>
+<p>第一层：数据质量</p>
+<p>文档解析、Chunk 完整性、元数据、权限与版本</p>
 <p>2</p>
-<p>第二层：检索质量召回、排序、证据覆盖、权限正确性</p>
+<p>第二层：检索质量</p>
+<p>召回、排序、证据覆盖、权限正确性</p>
 <p>3</p>
-<p>第三层：生成质量正确性、忠实度、完整性、引用与拒答</p>
+<p>第三层：生成质量</p>
+<p>正确性、忠实度、完整性、引用与拒答</p>
 <p>4</p>
-<p>第四层：系统质量延迟、吞吐量、成本、稳定性、用户体验</p>
-<p class="spoken-line">“检索准确，不代表回答准确。”</p>
+<p>第四层：系统质量</p>
+<p>延迟、吞吐量、成本、稳定性、用户体验</p>
+<p>“检索准确，不代表回答准确。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“回答准确，也不代表系统能够稳定服务用户。”</p>
-<p class="spoken-line">“如果答案正确，但需要一分钟才能返回，用户可能仍然无法接受。”</p>
-<p class="spoken-line">“如果答案正确，却泄露了其他租户的商业机密，那就是严重事故。”</p>
-<p class="spoken-line">“所以成熟 RAG 的评测必须是多维度的。”</p>
+<p>“回答准确，也不代表系统能够稳定服务用户。”</p>
+<p>“如果答案正确，但需要一分钟才能返回，用户可能仍然无法接受。”</p>
+<p>“如果答案正确，却泄露了其他租户的商业机密，那就是严重事故。”</p>
+<p>“所以成熟 RAG 的评测必须是多维度的。”</p>
 <h2 id="golden-dataset-ai">第二幕：Golden Dataset——给 AI 建立一份真正的考试题库</h2>
-<p>上午十一点。苏晴带来了一份 Excel。里面有 100 道测试问题。周野看了几眼。</p>
-<p class="spoken-line">“这些问题都是你自己编的吗？”</p>
-<p class="spoken-line">“是。”</p>
-<p class="spoken-line">“那有一个问题。”</p>
+<p>上午十一点。</p>
+<p>苏晴带来了一份 Excel。</p>
+<p>里面有 100 道测试问题。</p>
+<p>周野看了几眼。</p>
+<p>“这些问题都是你自己编的吗？”</p>
+<p>“是。”</p>
+<p>“那有一个问题。”</p>
 <p>林川说。</p>
-<p class="spoken-line">“你知道答案的这些问题，未必代表真实用户会问的问题。”</p>
+<p>“你知道答案的这些问题，未必代表真实用户会问的问题。”</p>
 <p>苏晴点头。</p>
-<p class="spoken-line">“所以我们需要构建 Golden Dataset。”</p>
+<p>“所以我们需要构建 Golden Dataset。”</p>
 <h3 id="1-golden-dataset">1. Golden Dataset 是什么？</h3>
-<p>Golden Dataset，也叫黄金评测数据集。它是一组经过审查、带有可信参考信息的测试样本。在 RAG 场景中，一条样本可以包含：</p>
+<p>Golden Dataset，也叫黄金评测数据集。</p>
+<p>它是一组经过审查、带有可信参考信息的测试样本。</p>
+<p>在 RAG 场景中，一条样本可以包含：</p>
 <div class="codehilite"><pre><span></span><code>{
   &quot;questionId&quot;: &quot;Q001&quot;,
   &quot;question&quot;: &quot;超过30天发生重大交付违约能否退款？&quot;,
@@ -143,11 +184,14 @@
 }
 </code></pre></div>
 
-<p><strong>林川提醒：</strong> “参考答案不一定只有一种正确表达。”</p>
-<p class="spoken-line">“有些问题存在多种合理回答。”</p>
-<p class="spoken-line">“因此，除了 Reference Answer，我们最好还要记录关键事实、必要条件、禁止出现的错误结论，以及对应证据。”</p>
+<p>林川提醒：</p>
+<p>“参考答案不一定只有一种正确表达。”</p>
+<p>“有些问题存在多种合理回答。”</p>
+<p>“因此，除了 Reference Answer，我们最好还要记录关键事实、必要条件、禁止出现的错误结论，以及对应证据。”</p>
 <p>例如：</p>
-<p>黄金样本 Q001问题：超过 30 天发生重大交付违约，能否退款？必须包含的事实</p>
+<p>黄金样本 Q001</p>
+<p>问题：超过 30 天发生重大交付违约，能否退款？</p>
+<p>必须包含的事实</p>
 <ul>
 <li>超过 30 天原则上不支持退款。</li>
 <li>重大交付违约属于特殊申请情形。</li>
@@ -160,17 +204,30 @@
 <li>“重大违约必然全额退款。”</li>
 <li>“审批一定在三个工作日内完成。”</li>
 </ul>
-<p>参考证据DOC_10086 / 第 7 版 / 第 3.2.1、3.2.2 节</p>
-<p class="spoken-line">“这样我们就不只是比较模型输出和参考答案的文字相似度。”</p>
-<p class="spoken-line">“而是能够检查关键事实是否完整、是否出现错误推断。”</p>
+<p>参考证据</p>
+<p>DOC_10086 / 第 7 版 / 第 3.2.1、3.2.2 节</p>
+<p>“这样我们就不只是比较模型输出和参考答案的文字相似度。”</p>
+<p>“而是能够检查关键事实是否完整、是否出现错误推断。”</p>
 <h3 id="2">2. 黄金数据从哪里来？</h3>
-<p>林川将数据来源分成四类。第一类，真实用户查询。来自生产日志，但需要脱敏、权限控制和合法的数据使用流程。第二类，业务专家编写。适合覆盖高风险制度、合同、财务和安全问题。第三类，根据文档生成合成问题。可以让 LLM 根据 Chunk 生成问题，再由人工或规则审核。第四类，历史失败案例。例如模型幻觉、检索遗漏、引用错误、权限越权和拒答失败。</p>
-<p><strong>周野问：</strong> “是不是直接让 LLM 对每个 Chunk 生成十个问题就可以了？”</p>
-<p><strong>林川回答：</strong> “可以用来扩充候选样本，但不能直接全部当成黄金数据。”</p>
-<p class="spoken-line">“因为模型生成的问题可能过于简单，答案可能直接复制原文，也可能产生错误前提。”</p>
-<p class="spoken-line">“而且这种数据往往缺少真实用户的口语化表达、歧义、错别字和跨文档推理需求。”</p>
+<p>林川将数据来源分成四类。</p>
+<p>第一类，真实用户查询。</p>
+<p>来自生产日志，但需要脱敏、权限控制和合法的数据使用流程。</p>
+<p>第二类，业务专家编写。</p>
+<p>适合覆盖高风险制度、合同、财务和安全问题。</p>
+<p>第三类，根据文档生成合成问题。</p>
+<p>可以让 LLM 根据 Chunk 生成问题，再由人工或规则审核。</p>
+<p>第四类，历史失败案例。</p>
+<p>例如模型幻觉、检索遗漏、引用错误、权限越权和拒答失败。</p>
+<p>周野问：</p>
+<p>“是不是直接让 LLM 对每个 Chunk 生成十个问题就可以了？”</p>
+<p>林川回答：</p>
+<p>“可以用来扩充候选样本，但不能直接全部当成黄金数据。”</p>
+<p>“因为模型生成的问题可能过于简单，答案可能直接复制原文，也可能产生错误前提。”</p>
+<p>“而且这种数据往往缺少真实用户的口语化表达、歧义、错别字和跨文档推理需求。”</p>
 <h3 id="3">3. 黄金数据必须覆盖不同难度</h3>
-<p>苏晴设计了一份数据分布。Golden Dataset 分类分布（示例）共 1000 条评测样本</p>
+<p>苏晴设计了一份数据分布。</p>
+<p>Golden Dataset 分类分布（示例）</p>
+<p>共 1000 条评测样本</p>
 <table>
 <thead>
 <tr>
@@ -204,37 +261,42 @@
 <blockquote>
 <p>原稿图表的各类别数量未保留，此处仅列出覆盖范围，不推断样本配比。</p>
 </blockquote>
-<p class="spoken-line">“我们不能只用简单事实问答评测复杂 RAG。”</p>
+<p>“我们不能只用简单事实问答评测复杂 RAG。”</p>
 <p>苏晴说。</p>
-<p class="spoken-line">“否则系统可能在简单问题上表现很好，却在多条件、版本冲突和权限场景中失败。”</p>
+<p>“否则系统可能在简单问题上表现很好，却在多条件、版本冲突和权限场景中失败。”</p>
 <h3 id="4">4. 数据集还要防止污染</h3>
-<p><strong>林川补充：</strong> “如果开发人员不断根据测试集调整 Prompt，最后可能只是把系统调到特别适合这批题。”</p>
-<p class="spoken-line">“这就是评测集过拟合。”</p>
+<p>林川补充：</p>
+<p>“如果开发人员不断根据测试集调整 Prompt，最后可能只是把系统调到特别适合这批题。”</p>
+<p>“这就是评测集过拟合。”</p>
 <p>因此，他提出三套数据：</p>
 <ul>
 <li>开发集：允许反复调参。</li>
 <li>验证集：用于选择模型与配置。</li>
 <li>独立测试集：用于最终评估，尽量减少反复查看与针对性调优。</li>
 </ul>
-<p class="spoken-line">“还要防止同一份文档衍生出的高度相似问题同时出现在训练或调优数据和独立测试数据中。”</p>
-<p class="spoken-line">“否则结果可能过于乐观。”</p>
+<p>“还要防止同一份文档衍生出的高度相似问题同时出现在训练或调优数据和独立测试数据中。”</p>
+<p>“否则结果可能过于乐观。”</p>
 <h2 id="_3">第三幕：人工标注——谁有资格宣布答案正确？</h2>
-<p>下午一点。苏晴组织了一次人工标注会议。三名业务专家分别判断同一个问题。问题：</p>
+<p>下午一点。</p>
+<p>苏晴组织了一次人工标注会议。</p>
+<p>三名业务专家分别判断同一个问题。</p>
+<p>问题：</p>
 <blockquote>
 <p>企业版合同超过 30 天后，发生重大交付违约是否可以退款？</p>
 </blockquote>
 <p>专家 A：</p>
-<p class="spoken-line">“可以。”</p>
+<p>“可以。”</p>
 <p>专家 B：</p>
-<p class="spoken-line">“不一定。”</p>
+<p>“不一定。”</p>
 <p>专家 C：</p>
-<p class="spoken-line">“可以申请，但不保证审批通过。”</p>
+<p>“可以申请，但不保证审批通过。”</p>
 <p>周野皱眉。</p>
-<p class="spoken-line">“三个人的答案都不一样，那谁是标准答案？”</p>
-<p><strong>林川回答：</strong> “这就是标注规范的重要性。”</p>
-<p class="spoken-line">“问题里的‘可以退款’存在歧义。”</p>
-<p class="spoken-line">“它可能表示可以提交申请，也可能表示一定能够获得退款。”</p>
-<p class="spoken-line">“如果不明确标注标准，不同标注人员就会产生分歧。”</p>
+<p>“三个人的答案都不一样，那谁是标准答案？”</p>
+<p>林川回答：</p>
+<p>“这就是标注规范的重要性。”</p>
+<p>“问题里的‘可以退款’存在歧义。”</p>
+<p>“它可能表示可以提交申请，也可能表示一定能够获得退款。”</p>
+<p>“如果不明确标注标准，不同标注人员就会产生分歧。”</p>
 <h3 id="_4">标注规范设计</h3>
 <p>苏晴制定了三种标签：</p>
 <table>
@@ -267,29 +329,40 @@
 <li>是否满足用户意图。</li>
 <li>是否存在越权内容。</li>
 </ul>
-<p><strong>林川强调：</strong> “不要把多个维度混成一个模糊的‘好或不好’。”</p>
-<p class="spoken-line">“否则我们不知道模型究竟哪里出了问题。”</p>
+<p>林川强调：</p>
+<p>“不要把多个维度混成一个模糊的‘好或不好’。”</p>
+<p>“否则我们不知道模型究竟哪里出了问题。”</p>
 <h3 id="_5">双人标注与仲裁</h3>
-<p>对于关键样本，苏晴安排两名标注人员独立判断。如果两人不一致，再由第三名专家仲裁。团队还计算标注一致性。例如 Cohen's Kappa：</p>
+<p>对于关键样本，苏晴安排两名标注人员独立判断。</p>
+<p>如果两人不一致，再由第三名专家仲裁。</p>
+<p>团队还计算标注一致性。</p>
+<p>例如 Cohen's Kappa：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>κ</mi><mo>=</mo><mfrac><mrow><msub><mi>P</mi><mi>o</mi></msub><mo>−</mo><msub><mi>P</mi><mi>e</mi></msub></mrow><mrow><mn>1</mn><mo>−</mo><msub><mi>P</mi><mi>e</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex"> \kappa=\frac{P_o-P_e}{1-P_e} </annotation></semantics></math></span></p>
 <p>其中：</p>
 <ul>
 <li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>o</mi></msub></mrow><annotation encoding="application/x-tex">P_o</annotation></semantics></math></span>：实际观察到的一致比例。</li>
 <li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>e</mi></msub></mrow><annotation encoding="application/x-tex">P_e</annotation></semantics></math></span>：按标签边际分布估计的偶然一致比例。</li>
 </ul>
-<p class="spoken-line">“但 Kappa 也不是万能指标。”</p>
-<p><strong>苏晴解释。</strong> “它会受到类别分布影响。”</p>
-<p class="spoken-line">“如果绝大多数样本都是 Supported，即使表面一致率很高，Kappa 也可能表现不同。”</p>
-<p class="spoken-line">“因此要结合混淆矩阵、分歧案例和业务风险理解。”</p>
+<p>“但 Kappa 也不是万能指标。”</p>
+<p>苏晴解释。</p>
+<p>“它会受到类别分布影响。”</p>
+<p>“如果绝大多数样本都是 Supported，即使表面一致率很高，Kappa 也可能表现不同。”</p>
+<p>“因此要结合混淆矩阵、分歧案例和业务风险理解。”</p>
 <p>林川点头。</p>
-<p class="spoken-line">“黄金数据的质量，决定了后续所有评测的可信度。”</p>
+<p>“黄金数据的质量，决定了后续所有评测的可信度。”</p>
 <h2 id="recallk">第四幕：Recall\@K——正确证据究竟有没有被找到？</h2>
-<p>下午两点。林川将团队带进了检索评测室。大屏幕上显示一条问题：</p>
+<p>下午两点。</p>
+<p>林川将团队带进了检索评测室。</p>
+<p>大屏幕上显示一条问题：</p>
 <blockquote>
 <p>企业版超过 30 天发生重大交付违约，可以申请退款吗？</p>
 </blockquote>
-<p>标注人员确认有三条相关 Chunk。<code>Relevant Chunks:
-A, B, C</code>检索系统返回前五条：</p>
+<p>标注人员确认有三条相关 Chunk。</p>
+<div class="codehilite"><pre><span></span><code>Relevant Chunks:
+A, B, C
+</code></pre></div>
+
+<p>检索系统返回前五条：</p>
 <div class="codehilite"><pre><span></span><code>Rank 1: A
 Rank 2: D
 Rank 3: B
@@ -297,34 +370,42 @@ Rank 4: E
 Rank 5: F
 </code></pre></div>
 
-<p><strong>周野问：</strong> “这个结果算好还是不好？”</p>
-<p><strong>林川回答：</strong> “先计算 Recall\@K。”</p>
+<p>周野问：</p>
+<p>“这个结果算好还是不好？”</p>
+<p>林川回答：</p>
+<p>“先计算 Recall\@K。”</p>
 <h3 id="1-recallk">1. Recall\@K</h3>
 <p>Recall\@K 衡量所有已标注相关文档中，有多少出现在前 K 个检索结果里。</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∣</mi><mi>R</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>v</mi><mi>a</mi><mi>n</mi><mi>t</mi><mo>∩</mo><mi>R</mi><mi>e</mi><mi>t</mi><mi>r</mi><mi>i</mi><mi>e</mi><mi>v</mi><mi>e</mi><mi>d</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mi mathvariant="normal">∣</mi></mrow><mrow><mi mathvariant="normal">∣</mi><mi>R</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>v</mi><mi>a</mi><mi>n</mi><mi>t</mi><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex"> Recall\@K= \frac{|Relevant\cap Retrieved\@K|} {|Relevant|} </annotation></semantics></math></span></p>
 <p>本例中：</p>
-<p>相关 Chunk：A、B、C，共 3 条。Top 5 命中：A、B，共 2 条。因此：</p>
+<p>相关 Chunk：A、B、C，共 3 条。</p>
+<p>Top 5 命中：A、B，共 2 条。</p>
+<p>因此：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mstyle mathcolor="#cc0000"><mtext>\@</mtext></mstyle><mn>5</mn><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>≈</mo><mn>0.667</mn></mrow><annotation encoding="application/x-tex"> Recall\@5=\frac23\approx0.667 </annotation></semantics></math></span></p>
-<p class="spoken-line">“这意味着已标注的相关证据中，有三分之二进入了 Top 5。”</p>
-<p class="spoken-line">“但 C 没有被召回。”</p>
+<p>“这意味着已标注的相关证据中，有三分之二进入了 Top 5。”</p>
+<p>“但 C 没有被召回。”</p>
 <h3 id="recallk_1">Recall\@K 为什么重要？</h3>
 <p>林川指着最初的退款问题。</p>
-<p class="spoken-line">“如果特殊退款条款没有进入候选集合，后续 Cross-Encoder 再强，也无法把它找回来。”</p>
-<p class="spoken-line">“这就是检索召回的上限问题。”</p>
-<p class="spoken-line">“不过，Recall\@K 也依赖相关文档标注是否完整。”</p>
-<p class="spoken-line">“如果我们只标注了一部分相关 Chunk，计算结果就可能存在偏差。”</p>
+<p>“如果特殊退款条款没有进入候选集合，后续 Cross-Encoder 再强，也无法把它找回来。”</p>
+<p>“这就是检索召回的上限问题。”</p>
+<p>“不过，Recall\@K 也依赖相关文档标注是否完整。”</p>
+<p>“如果我们只标注了一部分相关 Chunk，计算结果就可能存在偏差。”</p>
 <h2 id="precisionk">第五幕：Precision\@K——找到了多少真正有用的内容？</h2>
-<p><strong>周野问：</strong> “Recall 越高越好吗？”</p>
-<p><strong>林川回答：</strong> “如果我们直接返回整个知识库，Recall 当然可能很高。”</p>
-<p class="spoken-line">“但这显然不是一个好的检索系统。”</p>
-<p class="spoken-line">“因为大部分内容都是噪声。”</p>
-<p class="spoken-line">“所以还需要 Precision\@K。”</p>
+<p>周野问：</p>
+<p>“Recall 越高越好吗？”</p>
+<p>林川回答：</p>
+<p>“如果我们直接返回整个知识库，Recall 当然可能很高。”</p>
+<p>“但这显然不是一个好的检索系统。”</p>
+<p>“因为大部分内容都是噪声。”</p>
+<p>“所以还需要 Precision\@K。”</p>
 <h3 id="1-precisionk">1. Precision\@K</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><mi>n</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∣</mi><mi>R</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>v</mi><mi>a</mi><mi>n</mi><mi>t</mi><mo>∩</mo><mi>R</mi><mi>e</mi><mi>t</mi><mi>r</mi><mi>i</mi><mi>e</mi><mi>v</mi><mi>e</mi><mi>d</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mi mathvariant="normal">∣</mi></mrow><mi>K</mi></mfrac></mrow><annotation encoding="application/x-tex"> Precision\@K= \frac{|Relevant\cap Retrieved\@K|}{K} </annotation></semantics></math></span></p>
 <p>刚才的 Top 5：</p>
-<p>A、D、B、E、F。其中 A、B 相关。所以：</p>
+<p>A、D、B、E、F。</p>
+<p>其中 A、B 相关。</p>
+<p>所以：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><mi>n</mi><mstyle mathcolor="#cc0000"><mtext>\@</mtext></mstyle><mn>5</mn><mo>=</mo><mfrac><mn>2</mn><mn>5</mn></mfrac><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex"> Precision\@5=\frac25=0.4 </annotation></semantics></math></span></p>
-<p class="spoken-line">“这意味着前五条结果里，只有 40% 被标注为相关。”</p>
+<p>“这意味着前五条结果里，只有 40% 被标注为相关。”</p>
 <h3 id="recall-precision">Recall 与 Precision 的权衡</h3>
 <p>林川展示两种检索策略。</p>
 <table>
@@ -353,37 +434,50 @@ Rank 5: F
 </tr>
 </tbody>
 </table>
-<p class="spoken-line">“策略 A 找到了更多相关证据，但混入了大量噪声。”</p>
-<p class="spoken-line">“策略 B 返回结果更精确，但可能遗漏部分重要证据。”</p>
-<p class="spoken-line">“哪种更好，要看后续 Rerank、Context Packing 和生成阶段的表现。”</p>
-<p class="spoken-line">“不能只凭单个指标做决定。”</p>
+<p>“策略 A 找到了更多相关证据，但混入了大量噪声。”</p>
+<p>“策略 B 返回结果更精确，但可能遗漏部分重要证据。”</p>
+<p>“哪种更好，要看后续 Rerank、Context Packing 和生成阶段的表现。”</p>
+<p>“不能只凭单个指标做决定。”</p>
 <h2 id="hit-rate-mrr">第六幕：Hit Rate 与 MRR——找到和排在前面，是两回事</h2>
-<p>下午三点。苏晴提出一个问题。</p>
-<p class="spoken-line">“假设用户只需要一条证据就能回答。”</p>
-<p class="spoken-line">“那么 Recall\@K 是否有点复杂？”</p>
+<p>下午三点。</p>
+<p>苏晴提出一个问题。</p>
+<p>“假设用户只需要一条证据就能回答。”</p>
+<p>“那么 Recall\@K 是否有点复杂？”</p>
 <p>林川点头。</p>
-<p class="spoken-line">“这时 Hit Rate 很有价值。”</p>
+<p>“这时 Hit Rate 很有价值。”</p>
 <h3 id="1-hit-ratek">1. Hit Rate\@K</h3>
 <p>对于单条查询，如果 Top K 至少包含一条相关结果，就算命中。</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>H</mi><mi>i</mi><mi>t</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mo stretchy="false">(</mo><mi>q</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>1</mn><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext>Top K 至少命中一条相关结果</mtext></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> </mtext><mn>0</mn><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext>否则</mtext></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex"> Hit\@K(q)= \begin{cases} 1,&amp;\text{Top K 至少命中一条相关结果}\\\ 0,&amp;\text{否则} \end{cases} </annotation></semantics></math></span></p>
-<p>多条查询的 Hit Rate\@K 就是命中查询占比。例如：</p>
+<p>多条查询的 Hit Rate\@K 就是命中查询占比。</p>
+<p>例如：</p>
 <p>100 道题。</p>
-<p>其中 85 道题的 Top 5 至少包含一条相关 Chunk。那么：</p>
+<p>其中 85 道题的 Top 5 至少包含一条相关 Chunk。</p>
+<p>那么：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>H</mi><mi>i</mi><mi>t</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mstyle mathcolor="#cc0000"><mtext>\@</mtext></mstyle><mn>5</mn><mo>=</mo><mn>85</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> HitRate\@5=85\\% </annotation></semantics></math></span></p>
-<p class="spoken-line">“Hit Rate 适合衡量是否至少找到了一个可用证据。”</p>
-<p class="spoken-line">“但它不能衡量是否找齐所有必要证据。”</p>
+<p>“Hit Rate 适合衡量是否至少找到了一个可用证据。”</p>
+<p>“但它不能衡量是否找齐所有必要证据。”</p>
 <h3 id="2-mrrmean-reciprocal-rank">2. MRR：Mean Reciprocal Rank</h3>
 <p>林川继续写道：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mi>R</mi><mi>R</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi mathvariant="normal">∣</mi><mi>Q</mi><mi mathvariant="normal">∣</mi></mrow></mfrac><mo>∑</mo><mi mathvariant="normal">_</mi><mrow><mi>q</mi><mo>∈</mo><mi>Q</mi></mrow><mfrac><mn>1</mn><mrow><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>q</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex"> MRR=\frac1{|Q|} \sum\_{q\in Q}\frac1{rank_q} </annotation></semantics></math></span></p>
-<p>其中 <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">rank_q</annotation></semantics></math></span> 是第一条相关结果的排名。如果没有找到相关结果，该查询贡献 0。假设三条查询：</p>
-<p>第一条，相关结果排名第 1。第二条，相关结果排名第 2。第三条，相关结果排名第 5。那么：</p>
+<p>其中 <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi>a</mi><mi>n</mi><msub><mi>k</mi><mi>q</mi></msub></mrow><annotation encoding="application/x-tex">rank_q</annotation></semantics></math></span> 是第一条相关结果的排名。</p>
+<p>如果没有找到相关结果，该查询贡献 0。</p>
+<p>假设三条查询：</p>
+<p>第一条，相关结果排名第 1。</p>
+<p>第二条，相关结果排名第 2。</p>
+<p>第三条，相关结果排名第 5。</p>
+<p>那么：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mi>R</mi><mi>R</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac></mrow><mn>3</mn></mfrac><mo>≈</mo><mn>0.567</mn></mrow><annotation encoding="application/x-tex"> MRR=\frac{1+\frac12+\frac15}{3} \approx0.567 </annotation></semantics></math></span></p>
-<p class="spoken-line">“MRR 特别关注第一条相关结果出现得有多早。”</p>
-<p class="spoken-line">“它适合某些导航式或单答案检索任务。”</p>
-<p class="spoken-line">“但对于需要多条证据才能完成的 RAG 问答，MRR 不能独立代表整体检索质量。”</p>
+<p>“MRR 特别关注第一条相关结果出现得有多早。”</p>
+<p>“它适合某些导航式或单答案检索任务。”</p>
+<p>“但对于需要多条证据才能完成的 RAG 问答，MRR 不能独立代表整体检索质量。”</p>
 <h2 id="ndcg">第七幕：nDCG——不同证据的重要性并不相同</h2>
 <p>2027 年 1 月 13 日。</p>
-<p>检索团队又遇到了一个问题。有些 Chunk 只是提到了退款。有些 Chunk 包含完整的特殊退款条件。有些 Chunk 则包含审批要求。它们虽然都相关，但重要性明显不同。林川决定引入 nDCG。</p>
+<p>检索团队又遇到了一个问题。</p>
+<p>有些 Chunk 只是提到了退款。</p>
+<p>有些 Chunk 包含完整的特殊退款条件。</p>
+<p>有些 Chunk 则包含审批要求。</p>
+<p>它们虽然都相关，但重要性明显不同。</p>
+<p>林川决定引入 nDCG。</p>
 <h3 id="1">1. 为什么需要分级相关性？</h3>
 <p>他设计了四级标签：</p>
 <table>
@@ -412,7 +506,7 @@ Rank 5: F
 </tr>
 </tbody>
 </table>
-<p class="spoken-line">“如果一个高度相关的 Chunk 排在第一位，应该比弱相关 Chunk 排在第一位获得更高评价。”</p>
+<p>“如果一个高度相关的 Chunk 排在第一位，应该比弱相关 Chunk 排在第一位获得更高评价。”</p>
 <h3 id="2-dcg">2. DCG</h3>
 <p>一种常见定义是：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>D</mi><mi>C</mi><mi>G</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mo>=</mo><mo>∑</mo><mi mathvariant="normal">_</mi><msup><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>K</mi></msup><mfrac><mrow><msup><mn>2</mn><mrow><mi>r</mi><mi>e</mi><msub><mi>l</mi><mi>i</mi></msub></mrow></msup><mo>−</mo><mn>1</mn></mrow><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false">(</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex"> DCG\@K= \sum\_{i=1}^{K} \frac{2^{rel_i}-1}{\log_2(i+1)} </annotation></semantics></math></span></p>
@@ -423,56 +517,80 @@ Rank 5: F
 </ul>
 <p>然后计算理想排序下的 IDCG。</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mi>D</mi><mi>C</mi><mi>G</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle><mo>=</mo><mfrac><mrow><mi>D</mi><mi>C</mi><mi>G</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle></mrow><mrow><mi>I</mi><mi>D</mi><mi>C</mi><mi>G</mi><mstyle mathcolor="#cc0000"><mtext>\@K</mtext></mstyle></mrow></mfrac></mrow><annotation encoding="application/x-tex"> nDCG\@K=\frac{DCG\@K}{IDCG\@K} </annotation></semantics></math></span></p>
-<p class="spoken-line">“当理想 DCG 非零时，nDCG 通常位于 0 到 1 之间。”</p>
-<p class="spoken-line">“如果查询没有任何相关结果，需要明确规定如何处理，不能直接除以零。”</p>
+<p>“当理想 DCG 非零时，nDCG 通常位于 0 到 1 之间。”</p>
+<p>“如果查询没有任何相关结果，需要明确规定如何处理，不能直接除以零。”</p>
 <h3 id="_6">交互式排序实验</h3>
-<p>nDCG 排序实验点击上下箭头调整结果排序，观察 nDCG 如何变化。</p>
+<p>nDCG 排序实验</p>
+<p>点击上下箭头调整结果排序，观察 nDCG 如何变化。</p>
 <p>1</p>
-<p>弱相关文档相关性等级：1</p>
+<p>弱相关文档</p>
+<p>相关性等级：1</p>
 <p>2</p>
-<p>关键证据相关性等级：3</p>
+<p>关键证据</p>
+<p>相关性等级：3</p>
 <p>3</p>
-<p>无关文档相关性等级：0</p>
+<p>无关文档</p>
+<p>相关性等级：0</p>
 <p>4</p>
-<p>相关文档相关性等级：2当前 nDCG\@4</p>
+<p>相关文档</p>
+<p>相关性等级：2</p>
+<p>当前 nDCG\@4</p>
 <p class="metric-value">0.714</p>
 
-<p>越接近 1，说明重要证据越靠前。恢复理想排序周野尝试把关键证据移到第一位。nDCG 明显提升。</p>
-<p class="spoken-line">“原来如此。”</p>
-<p class="spoken-line">“Recall 关注是否找到了。”</p>
-<p class="spoken-line">“MRR 关注第一条相关结果的位置。”</p>
-<p class="spoken-line">“nDCG 则可以利用分级相关性，评价整个排序列表。”</p>
+<p>越接近 1，说明重要证据越靠前。</p>
+<p>恢复理想排序</p>
+<p>周野尝试把关键证据移到第一位。</p>
+<p>nDCG 明显提升。</p>
+<p>“原来如此。”</p>
+<p>“Recall 关注是否找到了。”</p>
+<p>“MRR 关注第一条相关结果的位置。”</p>
+<p>“nDCG 则可以利用分级相关性，评价整个排序列表。”</p>
 <p>林川点头。</p>
-<p class="spoken-line">“这几个指标没有绝对的高低之分。”</p>
-<p class="spoken-line">“它们回答的是不同问题。”</p>
+<p>“这几个指标没有绝对的高低之分。”</p>
+<p>“它们回答的是不同问题。”</p>
 <h2 id="context-precision-context-recall">第八幕：Context Precision 与 Context Recall——证据真的够用吗？</h2>
 <p>1 月 14 日。</p>
-<p>检索指标已经建立。但苏晴提出了一个新的问题。</p>
-<p class="spoken-line">“我们的检索 Top 20 里可能包含正确证据。”</p>
-<p class="spoken-line">“但 Context Packing 最终只选择了 5 条。”</p>
-<p class="spoken-line">“如果关键证据在 Packing 时被丢弃，检索 Recall 再高也没有意义。”</p>
+<p>检索指标已经建立。</p>
+<p>但苏晴提出了一个新的问题。</p>
+<p>“我们的检索 Top 20 里可能包含正确证据。”</p>
+<p>“但 Context Packing 最终只选择了 5 条。”</p>
+<p>“如果关键证据在 Packing 时被丢弃，检索 Recall 再高也没有意义。”</p>
 <p>林川意识到：</p>
 <p>必须区分候选检索质量与最终上下文质量。</p>
 <h3 id="1-context-precision">1. Context Precision</h3>
-<p>Context Precision 关注最终提供给生成模型的上下文中，相关信息是否集中、排序是否合理。但这个名称在不同评测框架中可能有不同定义。例如，RAGAS 中的某些 Context Precision 实现，会基于相关上下文的排名计算平均精度式指标，而不是简单统计相关 Chunk 比例。因此：</p>
+<p>Context Precision 关注最终提供给生成模型的上下文中，相关信息是否集中、排序是否合理。</p>
+<p>但这个名称在不同评测框架中可能有不同定义。</p>
+<p>例如，RAGAS 中的某些 Context Precision 实现，会基于相关上下文的排名计算平均精度式指标，而不是简单统计相关 Chunk 比例。</p>
+<p>因此：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mtext>相关Chunk数量</mtext><mtext>上下文Chunk总数</mtext></mfrac></mrow><annotation encoding="application/x-tex"> \frac{\text{相关Chunk数量}}{\text{上下文Chunk总数}} </annotation></semantics></math></span></p>
 <p>更接近一种简单的上下文精度比例，不能无条件等同于所有框架的 Context Precision。</p>
 <h3 id="2-context-recall">2. Context Recall</h3>
-<p>Context Recall 关注最终上下文是否覆盖回答所需的事实。假设参考答案包含四个关键事实：</p>
-<p>A：超过 30 天原则上不支持退款。B：重大交付违约可以申请特殊退款。C：需要商务审批。D：最终结果以书面通知为准。最终上下文只包含 A、B、C。那么一种基于事实覆盖的简化计算是：</p>
+<p>Context Recall 关注最终上下文是否覆盖回答所需的事实。</p>
+<p>假设参考答案包含四个关键事实：</p>
+<p>A：超过 30 天原则上不支持退款。</p>
+<p>B：重大交付违约可以申请特殊退款。</p>
+<p>C：需要商务审批。</p>
+<p>D：最终结果以书面通知为准。</p>
+<p>最终上下文只包含 A、B、C。</p>
+<p>那么一种基于事实覆盖的简化计算是：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>o</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi><mi>R</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>l</mi><mo>=</mo><mfrac><mn>3</mn><mn>4</mn></mfrac><mo>=</mo><mn>0.75</mn></mrow><annotation encoding="application/x-tex"> ContextRecall=\frac34=0.75 </annotation></semantics></math></span></p>
-<p class="spoken-line">“但真正的实现需要判断事实是否被证据支持。”</p>
+<p>“但真正的实现需要判断事实是否被证据支持。”</p>
 <p>苏晴说。</p>
-<p class="spoken-line">“不能只看关键词是否出现。”</p>
+<p>“不能只看关键词是否出现。”</p>
 <h3 id="3_1">3. 两个指标为什么需要一起看？</h3>
-<p>林川展示了两套上下文。上下文 A：</p>
-<p>包含 20 条 Chunk，其中 4 条有用。上下文 B：</p>
-<p>包含 5 条 Chunk，其中 4 条有用。如果两者都覆盖了回答所需的全部事实，那么 B 通常更节省 Token，也可能减少噪声。</p>
-<p><strong>但如果 B 删除了一个关键例外条款，它就可能导致错误回答。</strong> “所以 Context Packing 的优化目标，不是单纯减少 Chunk 数量。”</p>
-<p class="spoken-line">“而是在预算内尽量保留完整、准确、可引用的证据。”</p>
+<p>林川展示了两套上下文。</p>
+<p>上下文 A：</p>
+<p>包含 20 条 Chunk，其中 4 条有用。</p>
+<p>上下文 B：</p>
+<p>包含 5 条 Chunk，其中 4 条有用。</p>
+<p>如果两者都覆盖了回答所需的全部事实，那么 B 通常更节省 Token，也可能减少噪声。</p>
+<p>但如果 B 删除了一个关键例外条款，它就可能导致错误回答。</p>
+<p>“所以 Context Packing 的优化目标，不是单纯减少 Chunk 数量。”</p>
+<p>“而是在预算内尽量保留完整、准确、可引用的证据。”</p>
 <h2 id="faithfulness">第九幕：Faithfulness——模型说的每一句话，都要接受审判</h2>
 <p>1 月 15 日。</p>
-<p>生成评测正式开始。苏晴给系统输入：</p>
+<p>生成评测正式开始。</p>
+<p>苏晴给系统输入：</p>
 <blockquote>
 <p>特殊退款审批需要多久？</p>
 </blockquote>
@@ -480,39 +598,48 @@ Rank 5: F
 <blockquote>
 <p>特殊退款由商务部门审批，最终以书面通知为准。</p>
 </blockquote>
-<p><strong>模型回答：</strong></p>
+<p>模型回答：</p>
 <blockquote>
 <p>特殊退款由商务部门审批，通常三个工作日内完成。</p>
 </blockquote>
-<p><strong>周野说道：</strong> “回答挺合理的。”</p>
-<p><strong>林川立刻反问：</strong> “合理不代表有依据。”</p>
-<p class="spoken-line">“证据没有提到三个工作日。”</p>
-<p class="spoken-line">“这就是 Faithfulness 评测要解决的问题。”</p>
+<p>周野说道：</p>
+<p>“回答挺合理的。”</p>
+<p>林川立刻反问：</p>
+<p>“合理不代表有依据。”</p>
+<p>“证据没有提到三个工作日。”</p>
+<p>“这就是 Faithfulness 评测要解决的问题。”</p>
 <h3 id="1-faithfulness">1. Faithfulness 是什么？</h3>
-<p>Faithfulness，也常称为忠实度。它衡量生成答案中的事实性陈述是否受到给定上下文支持。注意：</p>
-<p>Faithfulness 不完全等于事实正确性。例如：</p>
+<p>Faithfulness，也常称为忠实度。</p>
+<p>它衡量生成答案中的事实性陈述是否受到给定上下文支持。</p>
+<p>注意：</p>
+<p>Faithfulness 不完全等于事实正确性。</p>
+<p>例如：</p>
 <p>证据中错误地写着：</p>
 <blockquote>
 <p>北京是法国首都。</p>
 </blockquote>
-<p><strong>模型回答：</strong></p>
+<p>模型回答：</p>
 <blockquote>
 <p>根据文档，北京是法国首都。</p>
 </blockquote>
-<p>从证据忠实度角度看，模型忠实复述了上下文。但从客观事实正确性角度看，这句话显然错误。</p>
-<p class="spoken-line">“所以我们必须区分：”</p>
+<p>从证据忠实度角度看，模型忠实复述了上下文。</p>
+<p>但从客观事实正确性角度看，这句话显然错误。</p>
+<p>“所以我们必须区分：”</p>
 <ul>
 <li>是否忠于提供的证据。</li>
 <li>是否符合真实世界或权威业务事实。</li>
 </ul>
-<p class="spoken-line">“对于企业 RAG，文档版本和权威性同样重要。”</p>
+<p>“对于企业 RAG，文档版本和权威性同样重要。”</p>
 <h3 id="2-claim-level-faithfulness">2. Claim-level Faithfulness</h3>
-<p>苏晴将回答拆成两条事实。```
-Claim 1:
-特殊退款由商务部门审批。</p>
-<p>Claim 2:
+<p>苏晴将回答拆成两条事实。</p>
+<div class="codehilite"><pre><span></span><code>Claim 1:
+特殊退款由商务部门审批。
+
+Claim 2:
 审批通常三个工作日内完成。
-```判断：</p>
+</code></pre></div>
+
+<p>判断：</p>
 <table>
 <thead>
 <tr>
@@ -535,71 +662,93 @@ Claim 1:
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mi>a</mi><mi>i</mi><mi>t</mi><mi>h</mi><mi>f</mi><mi>u</mi><mi>l</mi><mi>n</mi><mi>e</mi><mi>s</mi><mi>s</mi><mo>=</mo><mfrac><mtext>Supported Claims</mtext><mtext>Total Claims</mtext></mfrac></mrow><annotation encoding="application/x-tex"> Faithfulness= \frac{\text{Supported Claims}} {\text{Total Claims}} </annotation></semantics></math></span></p>
 <p>本例：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>F</mi><mi>a</mi><mi>i</mi><mi>t</mi><mi>h</mi><mi>f</mi><mi>u</mi><mi>l</mi><mi>n</mi><mi>e</mi><mi>s</mi><mi>s</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex"> Faithfulness=\frac12=0.5 </annotation></semantics></math></span></p>
-<p class="spoken-line">“这是一种常见的事实支持率思路。”</p>
-<p><strong>林川解释。</strong> “但真实评测还要处理部分支持、互相矛盾、无法判断和重要性不同的事实。”</p>
-<p class="spoken-line">“而且如果模型回答完全没有事实性陈述，分母可能为零，需要专门定义处理规则。”</p>
+<p>“这是一种常见的事实支持率思路。”</p>
+<p>林川解释。</p>
+<p>“但真实评测还要处理部分支持、互相矛盾、无法判断和重要性不同的事实。”</p>
+<p>“而且如果模型回答完全没有事实性陈述，分母可能为零，需要专门定义处理规则。”</p>
 <h2 id="answer-relevancy">第十幕：Answer Relevancy——正确，但答非所问</h2>
-<p>下午三点。另一条评测样本出现了。</p>
+<p>下午三点。</p>
+<p>另一条评测样本出现了。</p>
 <p>用户问：</p>
 <blockquote>
 <p>特殊退款审批需要多久？</p>
 </blockquote>
-<p><strong>模型回答：</strong></p>
+<p>模型回答：</p>
 <blockquote>
 <p>特殊退款由商务部门负责审批。</p>
 </blockquote>
-<p><strong>周野说道：</strong> “这句话是正确的。”</p>
-<p><strong>苏晴回答：</strong> “但用户问的是时间。”</p>
-<p class="spoken-line">“模型没有回答问题。”</p>
+<p>周野说道：</p>
+<p>“这句话是正确的。”</p>
+<p>苏晴回答：</p>
+<p>“但用户问的是时间。”</p>
+<p>“模型没有回答问题。”</p>
 <h3 id="answer-relevancy_1">Answer Relevancy 是什么？</h3>
-<p>Answer Relevancy 关注回答是否与用户的问题相关、是否切中用户意图。它与 Faithfulness 不同。Faithfulness 与 Relevancy 的四种组合高忠实度 · 高相关性</p>
-<p class="spoken-line">“现有资料未提供审批时限，无法确认具体需要多久。”</p>
+<p>Answer Relevancy 关注回答是否与用户的问题相关、是否切中用户意图。</p>
+<p>它与 Faithfulness 不同。</p>
+<p>Faithfulness 与 Relevancy 的四种组合</p>
+<p>高忠实度 · 高相关性</p>
+<p>“现有资料未提供审批时限，无法确认具体需要多久。”</p>
 <p>高忠实度 · 低相关性</p>
-<p class="spoken-line">“特殊退款由商务部门负责审批。”</p>
+<p>“特殊退款由商务部门负责审批。”</p>
 <p>低忠实度 · 高相关性</p>
-<p class="spoken-line">“审批一定在三个工作日内完成。”</p>
+<p>“审批一定在三个工作日内完成。”</p>
 <p>低忠实度 · 低相关性</p>
-<p class="spoken-line">“我们公司的退款服务非常完善。”</p>
-<p><strong>林川补充：</strong> “Answer Relevancy 的具体计算也取决于评测方法。”</p>
-<p class="spoken-line">“有些方法会从答案反向生成问题，再比较生成问题与原问题的语义相似度。”</p>
-<p class="spoken-line">“也有方法直接使用 LLM Judge 判断回答是否满足用户意图。”</p>
-<p class="spoken-line">“但仅靠语义相似度可能误判。”</p>
-<p class="spoken-line">“例如回答反复重复用户问题，语义上很相近，却没有提供有效信息。”</p>
-<p class="spoken-line">“因此，我们还需要 Answer Completeness、Correctness 等维度。”</p>
+<p>“我们公司的退款服务非常完善。”</p>
+<p>林川补充：</p>
+<p>“Answer Relevancy 的具体计算也取决于评测方法。”</p>
+<p>“有些方法会从答案反向生成问题，再比较生成问题与原问题的语义相似度。”</p>
+<p>“也有方法直接使用 LLM Judge 判断回答是否满足用户意图。”</p>
+<p>“但仅靠语义相似度可能误判。”</p>
+<p>“例如回答反复重复用户问题，语义上很相近，却没有提供有效信息。”</p>
+<p>“因此，我们还需要 Answer Completeness、Correctness 等维度。”</p>
 <h2 id="citation-accuracy">第十一幕：Citation Accuracy——引用存在，不代表引用正确</h2>
 <p>1 月 16 日。</p>
 <p>苏晴打开一条回答：</p>
 <blockquote>
 <p>企业版超过 30 天后，如果发生重大交付违约，可以申请特殊退款。[E1]</p>
 </blockquote>
-<p>她点开 E1。发现 E1 指向的是《员工考勤制度》。周野看得目瞪口呆。</p>
-<p class="spoken-line">“模型怎么会引用这个？”</p>
-<p><strong>林川回答：</strong> “因为模型可能在生成时错误选择引用 ID。”</p>
-<p class="spoken-line">“所以 Citation 必须独立评测。”</p>
+<p>她点开 E1。</p>
+<p>发现 E1 指向的是《员工考勤制度》。</p>
+<p>周野看得目瞪口呆。</p>
+<p>“模型怎么会引用这个？”</p>
+<p>林川回答：</p>
+<p>“因为模型可能在生成时错误选择引用 ID。”</p>
+<p>“所以 Citation 必须独立评测。”</p>
 <h3 id="_7">引用评测的三个层次</h3>
-<p>第一，Citation Validity。引用 ID 是否存在于当前请求的授权证据集合。第二，Citation Accuracy。引用是否指向正确的文档、版本、页码或章节。第三，Attribution Support。被引用的证据是否真正支持对应陈述。</p>
-<p><strong>林川提出：</strong> “引用系统应该由后端维护 Evidence ID 到文档元数据的映射。”</p>
-<p class="spoken-line">“模型只允许选择已有 Evidence ID。”</p>
-<p class="spoken-line">“生成结束后，再对引用进行验证。”</p>
+<p>第一，Citation Validity。</p>
+<p>引用 ID 是否存在于当前请求的授权证据集合。</p>
+<p>第二，Citation Accuracy。</p>
+<p>引用是否指向正确的文档、版本、页码或章节。</p>
+<p>第三，Attribution Support。</p>
+<p>被引用的证据是否真正支持对应陈述。</p>
+<p>林川提出：</p>
+<p>“引用系统应该由后端维护 Evidence ID 到文档元数据的映射。”</p>
+<p>“模型只允许选择已有 Evidence ID。”</p>
+<p>“生成结束后，再对引用进行验证。”</p>
 <h3 id="_8">引用支持率</h3>
-<p>假设模型产生了 10 个引用关系。其中 8 个引用能够支持对应事实。则：</p>
+<p>假设模型产生了 10 个引用关系。</p>
+<p>其中 8 个引用能够支持对应事实。</p>
+<p>则：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>i</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>S</mi><mi>u</mi><mi>p</mi><mi>p</mi><mi>o</mi><mi>r</mi><mi>t</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mfrac><mn>8</mn><mn>10</mn></mfrac><mo>=</mo><mn>0.8</mn></mrow><annotation encoding="application/x-tex"> CitationSupportRate=\frac8{10}=0.8 </annotation></semantics></math></span></p>
-<p class="spoken-line">“但这个指标仍然不完整。”</p>
+<p>“但这个指标仍然不完整。”</p>
 <p>苏晴说。</p>
-<p class="spoken-line">“因为模型可能只给部分事实加引用。”</p>
-<p class="spoken-line">“如果有十个事实，只有两个事实有引用，即使这两个引用都正确，也不能说整体引用质量很好。”</p>
-<p class="spoken-line">“因此还需要衡量 Citation Coverage。”</p>
+<p>“因为模型可能只给部分事实加引用。”</p>
+<p>“如果有十个事实，只有两个事实有引用，即使这两个引用都正确，也不能说整体引用质量很好。”</p>
+<p>“因此还需要衡量 Citation Coverage。”</p>
 <p>例如：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>i</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>C</mi><mi>o</mi><mi>v</mi><mi>e</mi><mi>r</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>=</mo><mfrac><mtext>需要引用且已提供引用的事实数</mtext><mtext>需要引用的事实总数</mtext></mfrac></mrow><annotation encoding="application/x-tex"> CitationCoverage= \frac{\text{需要引用且已提供引用的事实数}} {\text{需要引用的事实总数}} </annotation></semantics></math></span></p>
-<p class="spoken-line">“最终我们需要同时考虑引用覆盖率和引用支持率。”</p>
+<p>“最终我们需要同时考虑引用覆盖率和引用支持率。”</p>
 <h2 id="llm-as-a-judge">第十二幕：LLM-as-a-Judge——让另一个模型来当法官</h2>
 <p>1 月 17 日。</p>
-<p>人工评测已经进行了一周。苏晴发现一个问题。</p>
-<p class="spoken-line">“如果每次修改 Prompt，都需要专家重新评测几千条问题，成本太高了。”</p>
-<p><strong>林川回答：</strong> “所以我们需要自动化评判。”</p>
-<p class="spoken-line">“其中一种重要方法，就是 LLM-as-a-Judge。”</p>
+<p>人工评测已经进行了一周。</p>
+<p>苏晴发现一个问题。</p>
+<p>“如果每次修改 Prompt，都需要专家重新评测几千条问题，成本太高了。”</p>
+<p>林川回答：</p>
+<p>“所以我们需要自动化评判。”</p>
+<p>“其中一种重要方法，就是 LLM-as-a-Judge。”</p>
 <h3 id="1-llm-judge">1. LLM Judge 的基本原理</h3>
-<p>使用一个模型评估另一个模型的输出。例如：</p>
+<p>使用一个模型评估另一个模型的输出。</p>
+<p>例如：</p>
 <p>输入：</p>
 <ul>
 <li>用户问题。</li>
@@ -617,17 +766,27 @@ Claim 1:
 }
 </code></pre></div>
 
-<p><strong>林川强调：</strong> “这里的分数只是评判模型依据规则生成的评价。”</p>
-<p class="spoken-line">“不是客观概率。”</p>
-<p class="spoken-line">“而且 Judge 本身也会出错。”</p>
+<p>林川强调：</p>
+<p>“这里的分数只是评判模型依据规则生成的评价。”</p>
+<p>“不是客观概率。”</p>
+<p>“而且 Judge 本身也会出错。”</p>
 <h3 id="2-llm-judge">2. LLM Judge 的偏差</h3>
-<p>苏晴列出了几种常见问题。位置偏差。在比较 A、B 两个答案时，评判模型可能偏好某个展示位置。长度偏差。更长、更流畅的答案可能获得不合理的高分。自我偏好。</p>
+<p>苏晴列出了几种常见问题。</p>
+<p>位置偏差。</p>
+<p>在比较 A、B 两个答案时，评判模型可能偏好某个展示位置。</p>
+<p>长度偏差。</p>
+<p>更长、更流畅的答案可能获得不合理的高分。</p>
+<p>自我偏好。</p>
 <p>某些模型可能偏好与自身表达风格相近的回答。</p>
-<p>知识偏差。Judge 可能依赖自身知识，而不是严格依据提供证据判断。提示敏感性。稍微修改评分 Prompt，就可能改变结果。</p>
+<p>知识偏差。</p>
+<p>Judge 可能依赖自身知识，而不是严格依据提供证据判断。</p>
+<p>提示敏感性。</p>
+<p>稍微修改评分 Prompt，就可能改变结果。</p>
 <h3 id="3-judge">3. 如何降低 Judge 偏差？</h3>
-<p><strong>林川提出：</strong> “我们不能只调用一次 Judge 就宣布结论。”</p>
-<p class="spoken-line">“对于重要比较，可以交换答案顺序、使用明确的评分 Rubric、要求逐项证据判断，并通过人工标注集校准。”</p>
-<p class="spoken-line">“还可以使用多个 Judge 进行交叉评估，但不能认为多个模型投票就一定正确。”</p>
+<p>林川提出：</p>
+<p>“我们不能只调用一次 Judge 就宣布结论。”</p>
+<p>“对于重要比较，可以交换答案顺序、使用明确的评分 Rubric、要求逐项证据判断，并通过人工标注集校准。”</p>
+<p>“还可以使用多个 Judge 进行交叉评估，但不能认为多个模型投票就一定正确。”</p>
 <h3 id="4-judge-prompt">4. 一个 Judge Prompt</h3>
 <div class="codehilite"><pre><span></span><code>你是企业 RAG 评测员。
 
@@ -647,21 +806,24 @@ Claim 1:
 - 输出符合指定 JSON Schema 的结果。
 </code></pre></div>
 
-<p><strong>周野问：</strong> “那我们是不是可以完全取消人工评测？”</p>
+<p>周野问：</p>
+<p>“那我们是不是可以完全取消人工评测？”</p>
 <p>林川摇头。</p>
-<p class="spoken-line">“不能。”</p>
-<p class="spoken-line">“LLM Judge 更适合作为规模化辅助工具。”</p>
-<p class="spoken-line">“高风险样本、争议样本和评判模型不确定的样本，仍然需要人工复核。”</p>
+<p>“不能。”</p>
+<p>“LLM Judge 更适合作为规模化辅助工具。”</p>
+<p>“高风险样本、争议样本和评判模型不确定的样本，仍然需要人工复核。”</p>
 <h2 id="ragas">第十三幕：RAGAS——把评测流程变成自动化流水线</h2>
 <p>1 月 18 日。</p>
 <p>苏晴带来了一套开源评测框架。</p>
-<p class="spoken-line">“RAGAS。”</p>
+<p>“RAGAS。”</p>
 <p>林川看着屏幕。</p>
-<p class="spoken-line">“它可以帮助我们自动计算一部分 RAG 指标。”</p>
+<p>“它可以帮助我们自动计算一部分 RAG 指标。”</p>
 <h3 id="ragas_1">RAGAS 是什么？</h3>
-<p>Ragas 是面向 RAG 与 LLM 应用的评测框架，支持多种基于参考答案、上下文、模型评判和其他信号的指标。具体指标名称、输入要求与实现方式可能随版本变化。</p>
-<p><strong>林川提醒：</strong> “不能把 RAGAS 理解成一个能自动判断所有答案对错的万能工具。”</p>
-<p class="spoken-line">“它只是评测工具链的一部分。”</p>
+<p>Ragas 是面向 RAG 与 LLM 应用的评测框架，支持多种基于参考答案、上下文、模型评判和其他信号的指标。</p>
+<p>具体指标名称、输入要求与实现方式可能随版本变化。</p>
+<p>林川提醒：</p>
+<p>“不能把 RAGAS 理解成一个能自动判断所有答案对错的万能工具。”</p>
+<p>“它只是评测工具链的一部分。”</p>
 <h3 id="_9">一条自动化评测流水线</h3>
 <table>
 <thead>
@@ -702,284 +864,316 @@ Claim 1:
 </tbody>
 </table>
 <h3 id="python">一个简化的 Python 评测示例</h3>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>from ragas import evaluatefrom ragas.metrics import (    Faithfulness,    AnswerRelevancy,)# 以下为概念示例。# 具体 API、指标类与字段依赖所使用的 Ragas 版本。
-```林川特别要求团队固定依赖版本。
+<div class="codehilite"><pre><span></span><code>from ragas import evaluatefrom ragas.metrics import (    Faithfulness,    AnswerRelevancy,)# 以下为概念示例。# 具体 API、指标类与字段依赖所使用的 Ragas 版本。
+</code></pre></div>
 
-“评测框架升级，也可能改变指标计算方式。”
-
-“如果我们没有记录版本，今天的 0.85 和下个月的 0.85 未必完全可比。”
-
-## 第十四幕：A/B 测试——新版本真的比旧版本好吗？
-
-1 月 20 日。
-
-检索团队完成了一项优化。版本 A：
-
-Dense Retrieval + Rerank。版本 B：
-
-Hybrid Search + RRF + Rerank。离线评测显示：
-
-| 指标           | A    | B    |
-| ------------ | ---- | ---- |
-| Recall\@10   | 0.86 | 0.92 |
-| nDCG\@10     | 0.78 | 0.84 |
-| Faithfulness | 0.89 | 0.91 |
-| P95 延迟       | 3.8s | 4.6s |
-
-虚构的实验数据。
-
-**周野兴奋地说道：** “B 明显更好，可以全量上线了！”
-
-**林川回答：** “还不能。”
-
-“离线评测证明 B 在这套数据集上表现更好。”
-
-“但真实用户的请求分布可能不同。”
-
-“我们还需要线上验证。”
-
-### A/B 测试是什么？
-
-将符合条件的用户随机分配到不同实验组。A 组使用旧版本。B 组使用新版本。然后比较预先定义的指标。例如：
-
-- 用户是否获得有用答案。
-- 用户是否继续追问。
-- 是否点击引用。
-- 用户反馈。
-- 延迟。
-- 成本。
-- 错误率。
-
-**但林川提醒：** “用户点击引用不一定代表答案好。”
-
-“继续追问也可能是用户正常深入探索，而不是回答失败。”
-
-“所以线上代理指标必须谨慎解释。”
-
-### 如何随机分组？
-
-对于多轮对话 RAG，林川建议按用户或会话进行稳定分组，而不是每个请求随机切换版本。否则同一段对话可能前后使用不同的检索策略，造成体验不一致和实验污染。例如：
-</code></pre></div></details>
-
-<p>int bucket = Math.floorMod(
+<p>林川特别要求团队固定依赖版本。</p>
+<p>“评测框架升级，也可能改变指标计算方式。”</p>
+<p>“如果我们没有记录版本，今天的 0.85 和下个月的 0.85 未必完全可比。”</p>
+<h2 id="ab">第十四幕：A/B 测试——新版本真的比旧版本好吗？</h2>
+<p>1 月 20 日。</p>
+<p>检索团队完成了一项优化。</p>
+<p>版本 A：</p>
+<p>Dense Retrieval + Rerank。</p>
+<p>版本 B：</p>
+<p>Hybrid Search + RRF + Rerank。</p>
+<p>离线评测显示：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recall\@10</td>
+<td>0.86</td>
+<td>0.92</td>
+</tr>
+<tr>
+<td>nDCG\@10</td>
+<td>0.78</td>
+<td>0.84</td>
+</tr>
+<tr>
+<td>Faithfulness</td>
+<td>0.89</td>
+<td>0.91</td>
+</tr>
+<tr>
+<td>P95 延迟</td>
+<td>3.8s</td>
+<td>4.6s</td>
+</tr>
+</tbody>
+</table>
+<p>虚构的实验数据。</p>
+<p>周野兴奋地说道：</p>
+<p>“B 明显更好，可以全量上线了！”</p>
+<p>林川回答：</p>
+<p>“还不能。”</p>
+<p>“离线评测证明 B 在这套数据集上表现更好。”</p>
+<p>“但真实用户的请求分布可能不同。”</p>
+<p>“我们还需要线上验证。”</p>
+<h3 id="ab_1">A/B 测试是什么？</h3>
+<p>将符合条件的用户随机分配到不同实验组。</p>
+<p>A 组使用旧版本。</p>
+<p>B 组使用新版本。</p>
+<p>然后比较预先定义的指标。</p>
+<p>例如：</p>
+<ul>
+<li>用户是否获得有用答案。</li>
+<li>用户是否继续追问。</li>
+<li>是否点击引用。</li>
+<li>用户反馈。</li>
+<li>延迟。</li>
+<li>成本。</li>
+<li>错误率。</li>
+</ul>
+<p>但林川提醒：</p>
+<p>“用户点击引用不一定代表答案好。”</p>
+<p>“继续追问也可能是用户正常深入探索，而不是回答失败。”</p>
+<p>“所以线上代理指标必须谨慎解释。”</p>
+<h3 id="_10">如何随机分组？</h3>
+<p>对于多轮对话 RAG，林川建议按用户或会话进行稳定分组，而不是每个请求随机切换版本。</p>
+<p>否则同一段对话可能前后使用不同的检索策略，造成体验不一致和实验污染。</p>
+<p>例如：</p>
+<div class="codehilite"><pre><span></span><code>int bucket = Math.floorMod(
     stableHash(userId + experimentSalt),
     100
-);</p>
-<p>boolean useVariantB = bucket &lt; 10;</p>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>“这里假设 10% 的实验桶分配给 B。”
-
-“真实系统还要考虑实验配置、用户分层、跨设备一致性、租户影响和随机化质量。”
-
-## 第十五幕：统计显著性——提升 2%，究竟是真进步还是运气？
-
-1 月 22 日。
-
-A/B 实验运行了一段时间。苏晴带来了结果。A 组：
-
-10,000 个独立实验单位中，7,000 个达到预定义成功标准。
-
-B 组：
-
-10,000 个独立实验单位中，7,200 个达到成功标准。
-
-成功率分别为：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>p</mi><mi>A</mi></msub><mo>=</mo><mn>70</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> p_A=70\\% </annotation></semantics></math></span>
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>p</mi><mi>B</mi></msub><mo>=</mo><mn>72</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> p_B=72\\% </annotation></semantics></math></span>
-
-绝对提升：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>=</mo><mn>72</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> \Delta=72\\%-70\\%=2\text{个百分点} </annotation></semantics></math></span>
-
-**周野说道：** “B 提升了 2%，可以上线了。”
-
-**林川回答：** “先不要急。”
-
-“我们还需要判断，这个差异是否可能由随机波动造成。”
-
-### 1. 统计显著性是什么？
-
-在随机实验中，即使 A、B 实际效果完全相同，抽样结果也可能出现差异。统计检验尝试判断观察到的差异是否与某个零假设相容。常见零假设：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>p</mi><mi>A</mi></msub><mo>=</mo><msub><mi>p</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex"> H_0:p_A=p_B </annotation></semantics></math></span>
-
-备择假设：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>p</mi><mi>A</mi></msub><mo mathvariant="normal">≠</mo><msub><mi>p</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex"> H_1:p_A\neq p_B </annotation></semantics></math></span>
-
-### 2. 简化的双比例检验
-
-对于独立、随机分配且满足近似条件的二项结果，可以使用双比例 z 检验。合并成功率：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><mi>p</mi><mo>^</mo></mover><mo>=</mo><mfrac><mrow><mn>7000</mn><mo>+</mo><mn>7200</mn></mrow><mn>20000</mn></mfrac><mo>=</mo><mn>0.71</mn></mrow><annotation encoding="application/x-tex"> \hat p=\frac{7000+7200}{20000}=0.71 </annotation></semantics></math></span>
-
-标准误：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><msqrt><mrow><mover accent="true"><mi>p</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mrow><mo fence="true">(</mo><mfrac><mn>1</mn><mn>10000</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>10000</mn></mfrac><mo fence="true">)</mo></mrow></mrow></msqrt></mrow><annotation encoding="application/x-tex"> SE=\sqrt{\hat p(1-\hat p) \left(\frac1{10000}+\frac1{10000}\right)} </annotation></semantics></math></span>
-
-约为：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>E</mi><mo>≈</mo><mn>0.00642</mn></mrow><annotation encoding="application/x-tex"> SE\approx0.00642 </annotation></semantics></math></span>
-
-于是：
-
-<span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>z</mi><mo>=</mo><mfrac><mrow><mn>0.72</mn><mo>−</mo><mn>0.70</mn></mrow><mn>0.00642</mn></mfrac><mo>≈</mo><mn>3.12</mn></mrow><annotation encoding="application/x-tex"> z=\frac{0.72-0.70}{0.00642} \approx3.12 </annotation></semantics></math></span>
-
-双侧 p 值约为 0.0018。
-
-“在这个简化假设下，结果具有统计显著性。”
-
-林川说。
-
-“但统计显著，不代表业务价值一定足够大。”
-
-“我们还要考虑延迟、成本、安全性和实际收益。”
-
-“而且如果实验单位之间不独立，例如同一用户产生多条相关请求，就不能简单把每条请求当成独立样本。”
-
-### 交互式 A/B 实验计算
-
-A/B 实验：成功率差异与置信区间
-
-| 示例参数 / 结果 | 数值 |
-| --- | --- |
-| 每组样本量 | 10,000 |
-| A 组成功率 | 70% |
-| B 组成功率 | 72% |
-| 绝对差异 | 2.0 个百分点 |
-| 95% 近似置信区间 | 0.74 至 3.26 个百分点 |
-
-在这些简化假设下，区间不包含 0，B 组成功率较高的证据较强。采用独立二项样本的 Wald 正态近似，仅供理解统计原理。真实实验应考虑实验单位、聚类相关性、样本量设计、多重比较及提前查看结果等问题。
-
-**苏晴问：** “那我们应该什么时候停止实验？”
-
-**林川回答：** “最好在实验开始前确定主要指标、样本量、最小可检测效果和停止规则。”
-
-“不能每天查看一次 p 值，一旦小于 0.05 就立刻宣布成功。”
-
-“这种反复窥探可能增加错误发现的风险。”
-
-## 第十六幕：灰度发布——不能拿所有用户当实验品
-
-1 月 24 日。
-
-版本 B 通过离线评测和线上实验。
-
-**陈默问：** “现在能全量上线了吗？”
-
-**林川回答：** “可以进入灰度发布阶段，但仍然需要观察。”
-
-### 灰度发布与 A/B 测试有什么区别？
-
-A/B 测试主要用于比较方案效果，强调实验设计和因果推断。灰度发布主要用于降低上线风险，强调逐步扩大流量和快速回滚。两者可以结合，但目的不同。
-
-### 一种典型灰度策略
-
-示例：分阶段扩大新版本流量
-
-| 阶段 | 流量比例 | 验证重点 |
-| --- | --- | --- |
-| 第一阶段 | 1% | 验证基础稳定性 |
-| 第二阶段 | 5% | 观察低比例真实流量 |
-| 第三阶段 | 20% | 扩大业务覆盖 |
-| 第四阶段 | 50% | 重点检查尾延迟与成本 |
-| 最终阶段 | 100% | 通过门禁后全量 |
-
-仅为示例阶段，不代表所有系统都应采用这些固定比例。林川为每个阶段设置了门禁。例如：
-
-- 关键事实正确性不得明显下降。
-- 权限越权测试必须通过。
-- Citation Support 不得出现严重回归。
-- P95/P99 不得超过约定阈值。
-- 模型调用成本必须在预算内。
-- 错误率不能明显恶化。
-
-“如果关键安全指标失败，立即停止灰度。”
-
-“如果只是轻微延迟波动，则根据预先定义的策略判断。”
-
-“不能所有指标都用同一套处理方式。”
-
-## 第十七幕：数据闭环——每一次失败，都成为下一次进步的证据
-
-2027 年 1 月 27 日。
-
-星云 RAG 平台终于建立了完整的评测流程。但林川认为，真正重要的工作才刚刚开始。
-
-“离线评测只能覆盖已知问题。”
-
-“真实用户总会提出我们没有想到的问题。”
-
-“因此，系统必须建立持续的数据闭环。”
-
-### 数据闭环如何工作？
-
-| 环节 | 工作内容 |
-| --- | --- |
-| 生产请求 | 在合规与授权范围内采集必要数据 |
-| 异常与低质量信号 | 用户反馈、低置信度、引用失败、拒答异常 |
-| 失败样本分析 | 区分解析、召回、排序、生成、权限问题 |
-| 人工审核与标注 | 补充可靠标签与参考证据 |
-| Golden Dataset 更新 | 版本化、去重、分类与质量检查 |
-| 回归评测与灰度 | 比较新旧版本，验证收益与风险 |
-
-新样本持续反馈到下一轮质量改进
-
-### 失败归因为什么重要？
-
-林川举了一个例子。
-
-用户问：
-
-&gt; 2027 年最新差旅报销标准是多少？
-
-模型给出了 2026 年的标准。这可能由多种原因导致：
-
-1. 文档解析阶段没有正确处理 2027 年文档。
-2. 文档入库时版本 metadata 错误。
-3. Query Understanding 没有识别“2027 年最新”。
-4. 检索阶段没有进行版本过滤。
-5. Rerank 把旧版本排在前面。
-6. Context Packing 删除了新版本证据。
-7. 模型忽略了新版本证据。
-
-“如果我们只知道最终答案错误，就很难优化。”
-
-“但如果有完整 Trace 和证据记录，就可以定位问题发生在哪个阶段。”
-
-“这就是 Observability 与 Evaluation 结合的价值。”
-
-## 第十八幕：Java Spring Boot——建立自己的 RAG 评测平台
-
-1 月 30 日。
-
-林川开始将评测系统工程化。他决定采用 Java Spring Boot 管理评测任务，PostgreSQL 存储评测数据，Python Worker 执行部分 LLM 评测。
-
-### 1. 评测平台架构
-
-Evaluation Dashboard · Vue 3
-
-Spring Boot Evaluation API
-
-任务管理 · 数据集管理 · 版本对比
-
-Evaluation Scheduler
-
-任务拆分 · 并发控制 · 重试 · 状态机
-
-Java Worker
-
-运行 RAG Pipeline、检索指标
-
-Python Worker
-
-RAGAS、LLM JudgePostgreSQL + 对象存储 + Metrics
-
-### 2. 评测任务数据模型
-</code></pre></div></details>
-
-<p>public record EvaluationTask(
+);
+
+boolean useVariantB = bucket &lt; 10;
+</code></pre></div>
+
+<p>“这里假设 10% 的实验桶分配给 B。”</p>
+<p>“真实系统还要考虑实验配置、用户分层、跨设备一致性、租户影响和随机化质量。”</p>
+<h2 id="2_1">第十五幕：统计显著性——提升 2%，究竟是真进步还是运气？</h2>
+<p>1 月 22 日。</p>
+<p>A/B 实验运行了一段时间。</p>
+<p>苏晴带来了结果。</p>
+<p>A 组：</p>
+<p>10,000 个独立实验单位中，7,000 个达到预定义成功标准。</p>
+<p>B 组：</p>
+<p>10,000 个独立实验单位中，7,200 个达到成功标准。</p>
+<p>成功率分别为：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>p</mi><mi>A</mi></msub><mo>=</mo><mn>70</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> p_A=70\\% </annotation></semantics></math></span></p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>p</mi><mi>B</mi></msub><mo>=</mo><mn>72</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> p_B=72\\% </annotation></semantics></math></span></p>
+<p>绝对提升：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>=</mo><mn>72</mn><mspace linebreak="newline"></mspace></mrow><annotation encoding="application/x-tex"> \Delta=72\\%-70\\%=2\text{个百分点} </annotation></semantics></math></span></p>
+<p>周野说道：</p>
+<p>“B 提升了 2%，可以上线了。”</p>
+<p>林川回答：</p>
+<p>“先不要急。”</p>
+<p>“我们还需要判断，这个差异是否可能由随机波动造成。”</p>
+<h3 id="1_1">1. 统计显著性是什么？</h3>
+<p>在随机实验中，即使 A、B 实际效果完全相同，抽样结果也可能出现差异。</p>
+<p>统计检验尝试判断观察到的差异是否与某个零假设相容。</p>
+<p>常见零假设：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>p</mi><mi>A</mi></msub><mo>=</mo><msub><mi>p</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex"> H_0:p_A=p_B </annotation></semantics></math></span></p>
+<p>备择假设：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><msub><mi>p</mi><mi>A</mi></msub><mo mathvariant="normal">≠</mo><msub><mi>p</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex"> H_1:p_A\neq p_B </annotation></semantics></math></span></p>
+<h3 id="2_2">2. 简化的双比例检验</h3>
+<p>对于独立、随机分配且满足近似条件的二项结果，可以使用双比例 z 检验。</p>
+<p>合并成功率：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><mi>p</mi><mo>^</mo></mover><mo>=</mo><mfrac><mrow><mn>7000</mn><mo>+</mo><mn>7200</mn></mrow><mn>20000</mn></mfrac><mo>=</mo><mn>0.71</mn></mrow><annotation encoding="application/x-tex"> \hat p=\frac{7000+7200}{20000}=0.71 </annotation></semantics></math></span></p>
+<p>标准误：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>E</mi><mo>=</mo><msqrt><mrow><mover accent="true"><mi>p</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mover accent="true"><mi>p</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mrow><mo fence="true">(</mo><mfrac><mn>1</mn><mn>10000</mn></mfrac><mo>+</mo><mfrac><mn>1</mn><mn>10000</mn></mfrac><mo fence="true">)</mo></mrow></mrow></msqrt></mrow><annotation encoding="application/x-tex"> SE=\sqrt{\hat p(1-\hat p) \left(\frac1{10000}+\frac1{10000}\right)} </annotation></semantics></math></span></p>
+<p>约为：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>E</mi><mo>≈</mo><mn>0.00642</mn></mrow><annotation encoding="application/x-tex"> SE\approx0.00642 </annotation></semantics></math></span></p>
+<p>于是：</p>
+<p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>z</mi><mo>=</mo><mfrac><mrow><mn>0.72</mn><mo>−</mo><mn>0.70</mn></mrow><mn>0.00642</mn></mfrac><mo>≈</mo><mn>3.12</mn></mrow><annotation encoding="application/x-tex"> z=\frac{0.72-0.70}{0.00642} \approx3.12 </annotation></semantics></math></span></p>
+<p>双侧 p 值约为 0.0018。</p>
+<p>“在这个简化假设下，结果具有统计显著性。”</p>
+<p>林川说。</p>
+<p>“但统计显著，不代表业务价值一定足够大。”</p>
+<p>“我们还要考虑延迟、成本、安全性和实际收益。”</p>
+<p>“而且如果实验单位之间不独立，例如同一用户产生多条相关请求，就不能简单把每条请求当成独立样本。”</p>
+<h3 id="ab_2">交互式 A/B 实验计算</h3>
+<p>A/B 实验：成功率差异与置信区间</p>
+<table>
+<thead>
+<tr>
+<th>示例参数 / 结果</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每组样本量</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td>A 组成功率</td>
+<td>70%</td>
+</tr>
+<tr>
+<td>B 组成功率</td>
+<td>72%</td>
+</tr>
+<tr>
+<td>绝对差异</td>
+<td>2.0 个百分点</td>
+</tr>
+<tr>
+<td>95% 近似置信区间</td>
+<td>0.74 至 3.26 个百分点</td>
+</tr>
+</tbody>
+</table>
+<p>在这些简化假设下，区间不包含 0，B 组成功率较高的证据较强。</p>
+<p>采用独立二项样本的 Wald 正态近似，仅供理解统计原理。真实实验应考虑实验单位、聚类相关性、样本量设计、多重比较及提前查看结果等问题。</p>
+<p>苏晴问：</p>
+<p>“那我们应该什么时候停止实验？”</p>
+<p>林川回答：</p>
+<p>“最好在实验开始前确定主要指标、样本量、最小可检测效果和停止规则。”</p>
+<p>“不能每天查看一次 p 值，一旦小于 0.05 就立刻宣布成功。”</p>
+<p>“这种反复窥探可能增加错误发现的风险。”</p>
+<h2 id="_11">第十六幕：灰度发布——不能拿所有用户当实验品</h2>
+<p>1 月 24 日。</p>
+<p>版本 B 通过离线评测和线上实验。</p>
+<p>陈默问：</p>
+<p>“现在能全量上线了吗？”</p>
+<p>林川回答：</p>
+<p>“可以进入灰度发布阶段，但仍然需要观察。”</p>
+<h3 id="ab_3">灰度发布与 A/B 测试有什么区别？</h3>
+<p>A/B 测试主要用于比较方案效果，强调实验设计和因果推断。</p>
+<p>灰度发布主要用于降低上线风险，强调逐步扩大流量和快速回滚。</p>
+<p>两者可以结合，但目的不同。</p>
+<h3 id="_12">一种典型灰度策略</h3>
+<p>示例：分阶段扩大新版本流量</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>流量比例</th>
+<th>验证重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一阶段</td>
+<td>1%</td>
+<td>验证基础稳定性</td>
+</tr>
+<tr>
+<td>第二阶段</td>
+<td>5%</td>
+<td>观察低比例真实流量</td>
+</tr>
+<tr>
+<td>第三阶段</td>
+<td>20%</td>
+<td>扩大业务覆盖</td>
+</tr>
+<tr>
+<td>第四阶段</td>
+<td>50%</td>
+<td>重点检查尾延迟与成本</td>
+</tr>
+<tr>
+<td>最终阶段</td>
+<td>100%</td>
+<td>通过门禁后全量</td>
+</tr>
+</tbody>
+</table>
+<p>仅为示例阶段，不代表所有系统都应采用这些固定比例。</p>
+<p>林川为每个阶段设置了门禁。</p>
+<p>例如：</p>
+<ul>
+<li>关键事实正确性不得明显下降。</li>
+<li>权限越权测试必须通过。</li>
+<li>Citation Support 不得出现严重回归。</li>
+<li>P95/P99 不得超过约定阈值。</li>
+<li>模型调用成本必须在预算内。</li>
+<li>错误率不能明显恶化。</li>
+</ul>
+<p>“如果关键安全指标失败，立即停止灰度。”</p>
+<p>“如果只是轻微延迟波动，则根据预先定义的策略判断。”</p>
+<p>“不能所有指标都用同一套处理方式。”</p>
+<h2 id="_13">第十七幕：数据闭环——每一次失败，都成为下一次进步的证据</h2>
+<p>2027 年 1 月 27 日。</p>
+<p>星云 RAG 平台终于建立了完整的评测流程。</p>
+<p>但林川认为，真正重要的工作才刚刚开始。</p>
+<p>“离线评测只能覆盖已知问题。”</p>
+<p>“真实用户总会提出我们没有想到的问题。”</p>
+<p>“因此，系统必须建立持续的数据闭环。”</p>
+<h3 id="_14">数据闭环如何工作？</h3>
+<table>
+<thead>
+<tr>
+<th>环节</th>
+<th>工作内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生产请求</td>
+<td>在合规与授权范围内采集必要数据</td>
+</tr>
+<tr>
+<td>异常与低质量信号</td>
+<td>用户反馈、低置信度、引用失败、拒答异常</td>
+</tr>
+<tr>
+<td>失败样本分析</td>
+<td>区分解析、召回、排序、生成、权限问题</td>
+</tr>
+<tr>
+<td>人工审核与标注</td>
+<td>补充可靠标签与参考证据</td>
+</tr>
+<tr>
+<td>Golden Dataset 更新</td>
+<td>版本化、去重、分类与质量检查</td>
+</tr>
+<tr>
+<td>回归评测与灰度</td>
+<td>比较新旧版本，验证收益与风险</td>
+</tr>
+</tbody>
+</table>
+<p>新样本持续反馈到下一轮质量改进</p>
+<h3 id="_15">失败归因为什么重要？</h3>
+<p>林川举了一个例子。</p>
+<p>用户问：</p>
+<blockquote>
+<p>2027 年最新差旅报销标准是多少？</p>
+</blockquote>
+<p>模型给出了 2026 年的标准。</p>
+<p>这可能由多种原因导致：</p>
+<ol>
+<li>文档解析阶段没有正确处理 2027 年文档。</li>
+<li>文档入库时版本 metadata 错误。</li>
+<li>Query Understanding 没有识别“2027 年最新”。</li>
+<li>检索阶段没有进行版本过滤。</li>
+<li>Rerank 把旧版本排在前面。</li>
+<li>Context Packing 删除了新版本证据。</li>
+<li>模型忽略了新版本证据。</li>
+</ol>
+<p>“如果我们只知道最终答案错误，就很难优化。”</p>
+<p>“但如果有完整 Trace 和证据记录，就可以定位问题发生在哪个阶段。”</p>
+<p>“这就是 Observability 与 Evaluation 结合的价值。”</p>
+<h2 id="java-spring-boot-rag">第十八幕：Java Spring Boot——建立自己的 RAG 评测平台</h2>
+<p>1 月 30 日。</p>
+<p>林川开始将评测系统工程化。</p>
+<p>他决定采用 Java Spring Boot 管理评测任务，PostgreSQL 存储评测数据，Python Worker 执行部分 LLM 评测。</p>
+<h3 id="1_2">1. 评测平台架构</h3>
+<p>Evaluation Dashboard · Vue 3</p>
+<p>Spring Boot Evaluation API</p>
+<p>任务管理 · 数据集管理 · 版本对比</p>
+<p>Evaluation Scheduler</p>
+<p>任务拆分 · 并发控制 · 重试 · 状态机</p>
+<p>Java Worker</p>
+<p>运行 RAG Pipeline、检索指标</p>
+<p>Python Worker</p>
+<p>RAGAS、LLM Judge</p>
+<p>PostgreSQL + 对象存储 + Metrics</p>
+<h3 id="2_3">2. 评测任务数据模型</h3>
+<div class="codehilite"><pre><span></span><code>public record EvaluationTask(
     UUID taskId,
     String datasetVersion,
     String pipelineVersion,
@@ -988,112 +1182,101 @@ RAGAS、LLM JudgePostgreSQL + 对象存储 + Metrics
     String promptVersion,
     String judgeVersion,
     EvaluationStatus status
-) {}</p>
-<div class="codehilite"><pre><span></span><code>**林川解释：** “每次评测必须记录完整配置。”
-
-“否则我们看到 Recall 从 0.85 变成 0.90，却不知道究竟是 Embedding、Rerank、Chunk Size 还是数据集发生了变化。”
-
-### 3. Recall\@K 的 Java 实现
+) {}
 </code></pre></div>
 
-<p>public static double recallAtK(
-        List<String> retrievedIds,
-        Set<String> relevantIds,
-        int k) {</p>
-<div class="codehilite"><pre><span></span><code>if (k &lt;= 0) {
-    throw new IllegalArgumentException(&quot;k must be positive&quot;);
-}
+<p>林川解释：</p>
+<p>“每次评测必须记录完整配置。”</p>
+<p>“否则我们看到 Recall 从 0.85 变成 0.90，却不知道究竟是 Embedding、Rerank、Chunk Size 还是数据集发生了变化。”</p>
+<h3 id="3-recallk-java">3. Recall\@K 的 Java 实现</h3>
+<div class="codehilite"><pre><span></span><code>public static double recallAtK(
+        List&lt;String&gt; retrievedIds,
+        Set&lt;String&gt; relevantIds,
+        int k) {
 
-if (relevantIds.isEmpty()) {
-    throw new IllegalArgumentException(
-        &quot;No relevant documents for this query&quot;
-    );
-}
-
-long hits = retrievedIds.stream()
-    .limit(k)
-    .distinct()
-    .filter(relevantIds::contains)
-    .count();
-
-return (double) hits / relevantIds.size();
-</code></pre></div>
-
-<p>}</p>
-<div class="codehilite"><pre><span></span><code>“这里假设我们使用 Chunk ID 作为相关性判断单位。”
-
-“如果检索返回的是文档级结果，而标注是 Chunk 级结果，就必须先统一粒度。”
-
-“另外，对于没有相关文档的不可回答问题，应该单独设计评测，而不是直接算 Recall。”
-
-### 4. MRR 的 Java 实现
-</code></pre></div>
-
-<p>public static double reciprocalRank(
-        List<String> retrievedIds,
-        Set<String> relevantIds) {</p>
-<div class="codehilite"><pre><span></span><code>for (int i = 0; i &lt; retrievedIds.size(); i++) {
-    if (relevantIds.contains(retrievedIds.get(i))) {
-        return 1.0 / (i + 1);
+    if (k &lt;= 0) {
+        throw new IllegalArgumentException(&quot;k must be positive&quot;);
     }
-}
 
-return 0.0;
+    if (relevantIds.isEmpty()) {
+        throw new IllegalArgumentException(
+            &quot;No relevant documents for this query&quot;
+        );
+    }
+
+    long hits = retrievedIds.stream()
+        .limit(k)
+        .distinct()
+        .filter(relevantIds::contains)
+        .count();
+
+    return (double) hits / relevantIds.size();
+}
 </code></pre></div>
 
-<p>}</p>
-<div class="codehilite"><pre><span></span><code>### 5. nDCG 的 Java 实现
+<p>“这里假设我们使用 Chunk ID 作为相关性判断单位。”</p>
+<p>“如果检索返回的是文档级结果，而标注是 Chunk 级结果，就必须先统一粒度。”</p>
+<p>“另外，对于没有相关文档的不可回答问题，应该单独设计评测，而不是直接算 Recall。”</p>
+<h3 id="4-mrr-java">4. MRR 的 Java 实现</h3>
+<div class="codehilite"><pre><span></span><code>public static double reciprocalRank(
+        List&lt;String&gt; retrievedIds,
+        Set&lt;String&gt; relevantIds) {
+
+    for (int i = 0; i &lt; retrievedIds.size(); i++) {
+        if (relevantIds.contains(retrievedIds.get(i))) {
+            return 1.0 / (i + 1);
+        }
+    }
+
+    return 0.0;
+}
 </code></pre></div>
 
-<p>public static double ndcgAtK(
-        List<String> retrievedIds,
-        Map<String, Integer> relevance,
-        int k) {</p>
-<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>double dcg = 0.0;
+<h3 id="5-ndcg-java">5. nDCG 的 Java 实现</h3>
+<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>public static double ndcgAtK(
+        List&lt;String&gt; retrievedIds,
+        Map&lt;String, Integer&gt; relevance,
+        int k) {
 
-for (int i = 0; i &lt; Math.min(k, retrievedIds.size()); i++) {
-    int rel = relevance.getOrDefault(
-        retrievedIds.get(i), 0
-    );
+    double dcg = 0.0;
 
-    dcg += (Math.pow(2, rel) - 1)
-        / (Math.log(i + 2) / Math.log(2));
+    for (int i = 0; i &lt; Math.min(k, retrievedIds.size()); i++) {
+        int rel = relevance.getOrDefault(
+            retrievedIds.get(i), 0
+        );
+
+        dcg += (Math.pow(2, rel) - 1)
+            / (Math.log(i + 2) / Math.log(2));
+    }
+
+    List&lt;Integer&gt; ideal = relevance.values().stream()
+        .sorted(Comparator.reverseOrder())
+        .limit(k)
+        .toList();
+
+    double idcg = 0.0;
+
+    for (int i = 0; i &lt; ideal.size(); i++) {
+        int rel = ideal.get(i);
+
+        idcg += (Math.pow(2, rel) - 1)
+            / (Math.log(i + 2) / Math.log(2));
+    }
+
+    return idcg == 0 ? 0 : dcg / idcg;
 }
-
-List&lt;Integer&gt; ideal = relevance.values().stream()
-    .sorted(Comparator.reverseOrder())
-    .limit(k)
-    .toList();
-
-double idcg = 0.0;
-
-for (int i = 0; i &lt; ideal.size(); i++) {
-    int rel = ideal.get(i);
-
-    idcg += (Math.pow(2, rel) - 1)
-        / (Math.log(i + 2) / Math.log(2));
-}
-
-return idcg == 0 ? 0 : dcg / idcg;
 </code></pre></div></details>
 
-<p>}</p>
-<div class="codehilite"><pre><span></span><code>“这是一个基础实现。”
-
-林川说。
-
-“生产版本还要处理重复 ID、负相关等级、不同标注粒度和大规模批量计算。”
-
-### 6. 评测任务异步化
-
-**苏晴问：** “如果一次评测有十万条样本，HTTP 请求不是会超时吗？”
-
-**林川回答：** “所以评测必须异步执行。”
-
-他设计了任务状态机：
-</code></pre></div>
-
-<p>CREATED
+<p>“这是一个基础实现。”</p>
+<p>林川说。</p>
+<p>“生产版本还要处理重复 ID、负相关等级、不同标注粒度和大规模批量计算。”</p>
+<h3 id="6">6. 评测任务异步化</h3>
+<p>苏晴问：</p>
+<p>“如果一次评测有十万条样本，HTTP 请求不是会超时吗？”</p>
+<p>林川回答：</p>
+<p>“所以评测必须异步执行。”</p>
+<p>他设计了任务状态机：</p>
+<div class="codehilite"><pre><span></span><code>CREATED
    ↓
 QUEUED
    ↓
@@ -1101,16 +1284,19 @@ RUNNING
    ├── COMPLETED
    ├── FAILED
    └── CANCELLED
-```</p>
-<p class="spoken-line">“API 只负责创建任务。”</p>
-<p class="spoken-line">“Worker 异步执行。”</p>
-<p class="spoken-line">“结果逐步落库。”</p>
-<p class="spoken-line">“前端通过轮询或 SSE 查看进度。”</p>
-<p class="spoken-line">“任务需要支持断点续跑、幂等处理、失败重试和取消。”</p>
-<p class="spoken-line">“尤其 LLM Judge 会产生额外模型费用，必须设置任务预算和并发限制。”</p>
+</code></pre></div>
+
+<p>“API 只负责创建任务。”</p>
+<p>“Worker 异步执行。”</p>
+<p>“结果逐步落库。”</p>
+<p>“前端通过轮询或 SSE 查看进度。”</p>
+<p>“任务需要支持断点续跑、幂等处理、失败重试和取消。”</p>
+<p>“尤其 LLM Judge 会产生额外模型费用，必须设置任务预算和并发限制。”</p>
 <h2 id="rag">第十九幕：最终审判——哪个 RAG 版本才应该上线？</h2>
 <p>2027 年 2 月 3 日。</p>
-<p>评测法庭第一次正式开庭。苏晴将两个版本的最终报告投影到屏幕上。以下为小说中的虚构评测结果。</p>
+<p>评测法庭第一次正式开庭。</p>
+<p>苏晴将两个版本的最终报告投影到屏幕上。</p>
+<p>以下为小说中的虚构评测结果。</p>
 <table>
 <thead>
 <tr>
@@ -1168,63 +1354,101 @@ RUNNING
 </tbody>
 </table>
 <p>陈默看着报告。</p>
-<p class="spoken-line">“B 的质量更好，但更慢、更贵。”</p>
-<p class="spoken-line">“我们到底选哪个？”</p>
-<p><strong>林川回答：</strong> “不能只看哪个版本的综合分数更高。”</p>
-<p class="spoken-line">“首先要确定业务目标。”</p>
-<p class="spoken-line">“如果是普通 FAQ，A 可能已经足够。”</p>
-<p class="spoken-line">“如果是合同、财务和合规知识，B 的更高证据忠实度可能更有价值。”</p>
-<p class="spoken-line">“因此，我们可以采用分层策略。”</p>
-<p>简单查询走低成本链路。复杂、高风险查询走高质量链路。但这种路由本身也需要评测，避免将高风险问题错误分类为简单问题。</p>
-<p><strong>苏晴补充：</strong> “另外，我们不能随便给 Faithfulness、Recall 和延迟加权，算出一个看起来精确的总分。”</p>
-<p class="spoken-line">“因为不同指标的尺度、风险和业务价值不同。”</p>
-<p class="spoken-line">“更合理的方式是先设置不可违反的质量与安全门槛，再在满足门槛的方案中比较延迟和成本。”</p>
+<p>“B 的质量更好，但更慢、更贵。”</p>
+<p>“我们到底选哪个？”</p>
+<p>林川回答：</p>
+<p>“不能只看哪个版本的综合分数更高。”</p>
+<p>“首先要确定业务目标。”</p>
+<p>“如果是普通 FAQ，A 可能已经足够。”</p>
+<p>“如果是合同、财务和合规知识，B 的更高证据忠实度可能更有价值。”</p>
+<p>“因此，我们可以采用分层策略。”</p>
+<p>简单查询走低成本链路。</p>
+<p>复杂、高风险查询走高质量链路。</p>
+<p>但这种路由本身也需要评测，避免将高风险问题错误分类为简单问题。</p>
+<p>苏晴补充：</p>
+<p>“另外，我们不能随便给 Faithfulness、Recall 和延迟加权，算出一个看起来精确的总分。”</p>
+<p>“因为不同指标的尺度、风险和业务价值不同。”</p>
+<p>“更合理的方式是先设置不可违反的质量与安全门槛，再在满足门槛的方案中比较延迟和成本。”</p>
 <p>林川点头。</p>
-<p class="spoken-line">“这才是成熟工程决策。”</p>
-<h2 id="_10">第二十幕：真正的评测，不是为了证明自己正确</h2>
-<p>夜晚十一点。评测大厅里只剩下林川和苏晴。苏晴打开了过去三个月的项目记录。最初，他们只有一个简单的 RAG Demo。上传 PDF。切分文本。生成 Embedding。向量检索。拼接 Prompt。调用大模型。后来，他们加入了 Heading Path、Hybrid Search、Rerank、权限控制、Citation、缓存、模型网关和 SSE。系统越来越复杂。但林川突然意识到：</p>
+<p>“这才是成熟工程决策。”</p>
+<h2 id="_16">第二十幕：真正的评测，不是为了证明自己正确</h2>
+<p>夜晚十一点。</p>
+<p>评测大厅里只剩下林川和苏晴。</p>
+<p>苏晴打开了过去三个月的项目记录。</p>
+<p>最初，他们只有一个简单的 RAG Demo。</p>
+<p>上传 PDF。</p>
+<p>切分文本。</p>
+<p>生成 Embedding。</p>
+<p>向量检索。</p>
+<p>拼接 Prompt。</p>
+<p>调用大模型。</p>
+<p>后来，他们加入了 Heading Path、Hybrid Search、Rerank、权限控制、Citation、缓存、模型网关和 SSE。</p>
+<p>系统越来越复杂。</p>
+<p>但林川突然意识到：</p>
 <p>真正让系统走向成熟的，不是增加了多少组件，而是终于能够判断每个组件是否真的创造了价值。</p>
-<p><strong>苏晴问：</strong> “你现在觉得什么是最重要的 RAG 指标？”</p>
+<p>苏晴问：</p>
+<p>“你现在觉得什么是最重要的 RAG 指标？”</p>
 <p>林川想了想。</p>
-<p class="spoken-line">“没有一个指标能够代表全部质量。”</p>
-<p class="spoken-line">“Recall 告诉我们有没有找到证据。”</p>
-<p class="spoken-line">“nDCG 告诉我们重要证据排得是否靠前。”</p>
-<p class="spoken-line">“Faithfulness 告诉我们回答是否受到证据支持。”</p>
-<p class="spoken-line">“Citation Support 告诉我们引用是否可信。”</p>
-<p class="spoken-line">“P95 和 P99 告诉我们用户是否需要等待太久。”</p>
-<p class="spoken-line">“成本告诉我们系统能否长期运行。”</p>
-<p class="spoken-line">“安全评测告诉我们系统有没有越过不可触碰的边界。”</p>
+<p>“没有一个指标能够代表全部质量。”</p>
+<p>“Recall 告诉我们有没有找到证据。”</p>
+<p>“nDCG 告诉我们重要证据排得是否靠前。”</p>
+<p>“Faithfulness 告诉我们回答是否受到证据支持。”</p>
+<p>“Citation Support 告诉我们引用是否可信。”</p>
+<p>“P95 和 P99 告诉我们用户是否需要等待太久。”</p>
+<p>“成本告诉我们系统能否长期运行。”</p>
+<p>“安全评测告诉我们系统有没有越过不可触碰的边界。”</p>
 <p>他关掉屏幕。</p>
-<p class="spoken-line">“真正的评测，是让每一次优化都可以被质疑、被复现、被验证。”</p>
-<h2 id="_11">本章面试法庭：十五道核心追问</h2>
+<p>“真正的评测，是让每一次优化都可以被质疑、被复现、被验证。”</p>
+<h2 id="_17">本章面试法庭：十五道核心追问</h2>
 <div class="review-bank">
 <p>先自行作答，再展开对照。参考答案为编辑补充，可结合本章正文深入阅读。</p>
 <button type="button" class="review-toggle">全部展开</button>
-<details class="review-card"><summary>1. 如何设计一个成熟的 RAG 评测体系？</summary><div class="review-answer"><p>分层评估检索、上下文、生成、引用及安全，同时记录延迟和成本。离线黄金集与线上反馈互补，并设定上线门槛。</p></div>
-
-</details>
-
-<details class="review-card"><summary>2. Golden Dataset 应该如何构建？</summary><div class="review-answer"><p>从真实任务与故障采样，覆盖难度、权限与拒答场景，明确标注规范、复核争议，并隔离训练、调参与测试数据。</p></div></details><details class="review-card"><summary>3. Recall@K 与 Precision@K 的区别？</summary><div class="review-answer"><p>Recall@K 是相关项中被前 K 项找回的比例；Precision@K 是前 K 项中相关项的比例。先定义相关性和去重单位。</p></div></details><details class="review-card"><summary>4. Hit Rate 与 Recall@K 有什么区别？</summary><div class="review-answer"><p>Hit Rate 关心一次查询是否至少命中一项相关结果；Recall 关心相关结果找回了多少，二者不可互换。</p></div></details><details class="review-card"><summary>5. MRR 和 nDCG 分别适合什么场景？</summary><div class="review-answer"><p>MRR 强调首个相关结果出现的位置；nDCG 兼顾多项结果的分级相关性和排序。应明确截断 K 与理想排序集合。</p></div></details><details class="review-card"><summary>6. Context Precision 和 Context Recall 怎么理解？</summary><div class="review-answer"><p>Context Precision 关注上下文中的有效内容及排序；Context Recall 关注参考答案所需信息是否被覆盖。具体计算口径随指标实现而异。</p></div></details><details class="review-card"><summary>7. Faithfulness 与 Correctness 有什么区别？</summary><div class="review-answer"><p>Faithfulness 看答案是否受给定上下文支持，Correctness 看答案是否正确。错误证据也可能产生忠实但错误的回答。</p></div></details><details class="review-card"><summary>8. Answer Relevancy 高，为什么答案仍可能错误？</summary><div class="review-answer"><p>相关性衡量是否回应问题，并不保证事实正确、证据充分或引用可靠。需要分别评估这些维度。</p></div></details><details class="review-card"><summary>9. Citation Accuracy 应该怎么评测？</summary><div class="review-answer"><p>检查引用资源是否存在、定位是否准确、是否支持对应主张以及关键主张是否有充分引用，可结合人工抽检。</p></div></details><details class="review-card"><summary>10. LLM-as-a-Judge 有哪些风险？</summary><div class="review-answer"><p>存在位置偏差、措辞偏差、自我偏好与不稳定性。应校准评分标准、使用人工对照并记录评测模型和版本。</p></div></details><details class="review-card"><summary>11. RAGAS 能否代替人工评测？</summary><div class="review-answer"><p>不能。自动指标适合规模化筛查和回归，复杂事实、安全边界与争议样本仍需要人工复核。</p></div></details><details class="review-card"><summary>12. 如何判断 Rerank 是否真正有效？</summary><div class="review-answer"><p>在相同候选、查询和预算下做消融对比，观察排序与最终回答质量，以及延迟、成本和不同任务切片的退化。</p></div></details><details class="review-card"><summary>13. A/B 测试与灰度发布有什么区别？</summary><div class="review-answer"><p>A/B 随机分组比较方案效果；灰度逐步扩大曝光以控制风险。二者可结合，但灰度本身不保证因果可比。</p></div></details><details class="review-card"><summary>14. 为什么统计显著不代表值得上线？</summary><div class="review-answer"><p>大样本可能让很小的差异显著。还要看效应量、置信区间、成本、安全和业务价值，避免反复窥视与多重比较误判。</p></div></details><details class="review-card"><summary>15. 如何建立 RAG 数据闭环？</summary><div class="review-answer"><p>采集经过隐私处理的失败反馈，归因到检索、权限或生成等环节，审核进入数据集，迭代后做回归与灰度验证。</p></div></details>
-
+<details class="review-card"><summary>1. 如何设计一个成熟的 RAG 评测体系？</summary><div class="review-answer"><p>分层评估检索、上下文、生成、引用及安全，同时记录延迟和成本。离线黄金集与线上反馈互补，并设定上线门槛。</p></div></details>
+<details class="review-card"><summary>2. Golden Dataset 应该如何构建？</summary><div class="review-answer"><p>从真实任务与故障采样，覆盖难度、权限与拒答场景，明确标注规范、复核争议，并隔离训练、调参与测试数据。</p></div></details>
+<details class="review-card"><summary>3. Recall@K 与 Precision@K 的区别？</summary><div class="review-answer"><p>Recall@K 是相关项中被前 K 项找回的比例；Precision@K 是前 K 项中相关项的比例。先定义相关性和去重单位。</p></div></details>
+<details class="review-card"><summary>4. Hit Rate 与 Recall@K 有什么区别？</summary><div class="review-answer"><p>Hit Rate 关心一次查询是否至少命中一项相关结果；Recall 关心相关结果找回了多少，二者不可互换。</p></div></details>
+<details class="review-card"><summary>5. MRR 和 nDCG 分别适合什么场景？</summary><div class="review-answer"><p>MRR 强调首个相关结果出现的位置；nDCG 兼顾多项结果的分级相关性和排序。应明确截断 K 与理想排序集合。</p></div></details>
+<details class="review-card"><summary>6. Context Precision 和 Context Recall 怎么理解？</summary><div class="review-answer"><p>Context Precision 关注上下文中的有效内容及排序；Context Recall 关注参考答案所需信息是否被覆盖。具体计算口径随指标实现而异。</p></div></details>
+<details class="review-card"><summary>7. Faithfulness 与 Correctness 有什么区别？</summary><div class="review-answer"><p>Faithfulness 看答案是否受给定上下文支持，Correctness 看答案是否正确。错误证据也可能产生忠实但错误的回答。</p></div></details>
+<details class="review-card"><summary>8. Answer Relevancy 高，为什么答案仍可能错误？</summary><div class="review-answer"><p>相关性衡量是否回应问题，并不保证事实正确、证据充分或引用可靠。需要分别评估这些维度。</p></div></details>
+<details class="review-card"><summary>9. Citation Accuracy 应该怎么评测？</summary><div class="review-answer"><p>检查引用资源是否存在、定位是否准确、是否支持对应主张以及关键主张是否有充分引用，可结合人工抽检。</p></div></details>
+<details class="review-card"><summary>10. LLM-as-a-Judge 有哪些风险？</summary><div class="review-answer"><p>存在位置偏差、措辞偏差、自我偏好与不稳定性。应校准评分标准、使用人工对照并记录评测模型和版本。</p></div></details>
+<details class="review-card"><summary>11. RAGAS 能否代替人工评测？</summary><div class="review-answer"><p>不能。自动指标适合规模化筛查和回归，复杂事实、安全边界与争议样本仍需要人工复核。</p></div></details>
+<details class="review-card"><summary>12. 如何判断 Rerank 是否真正有效？</summary><div class="review-answer"><p>在相同候选、查询和预算下做消融对比，观察排序与最终回答质量，以及延迟、成本和不同任务切片的退化。</p></div></details>
+<details class="review-card"><summary>13. A/B 测试与灰度发布有什么区别？</summary><div class="review-answer"><p>A/B 随机分组比较方案效果；灰度逐步扩大曝光以控制风险。二者可结合，但灰度本身不保证因果可比。</p></div></details>
+<details class="review-card"><summary>14. 为什么统计显著不代表值得上线？</summary><div class="review-answer"><p>大样本可能让很小的差异显著。还要看效应量、置信区间、成本、安全和业务价值，避免反复窥视与多重比较误判。</p></div></details>
+<details class="review-card"><summary>15. 如何建立 RAG 数据闭环？</summary><div class="review-answer"><p>采集经过隐私处理的失败反馈，归因到检索、权限或生成等环节，审核进入数据集，迭代后做回归与灰度验证。</p></div></details>
 </div>
 
-<h2 id="_12">终章：法庭之外，还有一片未知的战场</h2>
+<h2 id="_18">终章：法庭之外，还有一片未知的战场</h2>
 <p>2027 年 2 月 5 日，凌晨零点。</p>
-<p>林川收到了来自集团 CTO 的一封邮件。邮件标题：</p>
+<p>林川收到了来自集团 CTO 的一封邮件。</p>
+<p>邮件标题：</p>
 <blockquote>
 <p>星云 RAG 平台下一阶段建设任务。</p>
 </blockquote>
-<p>他打开邮件。里面只有一句话。</p>
+<p>他打开邮件。</p>
+<p>里面只有一句话。</p>
 <blockquote>
 <p>我们已经能够回答知识库中的问题。下一阶段，希望系统能够真正帮助员工完成工作。</p>
 </blockquote>
-<p>林川陷入沉思。过去几个月，RAG 帝国已经学会了寻找证据、理解证据、引用证据和验证答案。但它仍然只能回答问题。</p>
+<p>林川陷入沉思。</p>
+<p>过去几个月，RAG 帝国已经学会了寻找证据、理解证据、引用证据和验证答案。</p>
+<p>但它仍然只能回答问题。</p>
 <p>如果用户问：</p>
 <blockquote>
 <p>帮我查一下本月报销政策，核对我的报销单，并根据制度创建审批申请。</p>
 </blockquote>
-<p>传统 RAG 最多只能告诉用户应该怎么做。它不能自动查询报销单。不能调用审批系统。不能执行跨系统工作流。更不能在复杂任务中自主规划、执行和恢复。林川看着窗外。他意识到，RAG 帝国的下一次进化，已经不再只是检索与生成。而是行动。</p>
-<h2 id="_13">本章交互实验</h2>
+<p>传统 RAG 最多只能告诉用户应该怎么做。</p>
+<p>它不能自动查询报销单。</p>
+<p>不能调用审批系统。</p>
+<p>不能执行跨系统工作流。</p>
+<p>更不能在复杂任务中自主规划、执行和恢复。</p>
+<p>林川看着窗外。</p>
+<p>他意识到，RAG 帝国的下一次进化，已经不再只是检索与生成。</p>
+<p>而是行动。</p>
+<h2 id="_19">本章交互实验</h2>
 <div class="lab" data-lab="ranking"></div>
+
 <div class="lab" data-lab="ab"></div></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-08.html">← 上一章<span>十万并发的夜晚</span></a><a href="index.html">全书完 →<span>返回全书目录</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
 <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>

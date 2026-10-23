@@ -4,9 +4,12 @@
   const read = key => { try { return localStorage.getItem(key); } catch { return null; } };
   const save = (key, value) => { try { localStorage.setItem(key, value); } catch {} };
   $('#theme').addEventListener('click', () => {
-    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    const themes = ['white', 'light', 'dark'];
+    const theme = themes[(themes.indexOf(document.documentElement.dataset.theme) + 1) % themes.length];
     document.documentElement.dataset.theme = theme; save('rag-theme', theme);
+    $('#theme').textContent = {white:'纯白',light:'米白',dark:'深色'}[theme];
   });
+  $('#theme').textContent = {white:'纯白',light:'米白',dark:'深色'}[document.documentElement.dataset.theme] || '纯白';
   let size = Math.max(14, Math.min(26, Number(read('rag-size')) || 18));
   document.documentElement.style.setProperty('--reader-size', `${size}px`);
   for (const [id, change] of [['smaller', -1], ['larger', 1]]) {
