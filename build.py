@@ -39,6 +39,7 @@ def render(source,toc=False):
         if block.count('\n') < 25: return block
         return '<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary>'+block+'</details>'
     rendered=re.sub(r'<div class="codehilite">.*?</div>',fold_code,rendered,flags=re.S)
+    rendered=re.sub(r'<p>(“[^<]*”)</p>',r'<p class="spoken-line">\1</p>',rendered)
     return rendered,md.toc
 
 metadata=[]; search=[]

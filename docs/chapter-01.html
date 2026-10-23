@@ -15,66 +15,48 @@
 <blockquote>
 <p>工程阅读提示：故事中的金额、吞吐量、延迟与评测成绩是场景示例，不代表可复现的生产基准。代码用于解释设计，落地需结合实际版本、数据与测试。</p>
 </blockquote>
-<p>公元 2026 年，星云科技总部。</p>
-<p>凌晨两点四十七分。</p>
-<p>整栋大楼只剩下第十七层还亮着灯。</p>
-<p>会议室里，技术总监陈默将一份事故报告重重地摔在桌上。</p>
-<p>“谁能告诉我，为什么我们的 AI 客服会告诉客户，企业版软件支持无条件退款？”</p>
-<p>会议室鸦雀无声。</p>
-<p>屏幕上显示着客户与 AI 的对话。</p>
-<p>客户：</p>
-<p>“我们购买企业版已经四个月了，现在想退款，可以吗？”</p>
-<p>AI 客服：</p>
-<p>“当然可以。根据公司的退款政策，企业版客户在购买后六个月内均可申请无条件全额退款。”</p>
+<p>公元 2026 年，星云科技总部。凌晨两点四十七分。整栋大楼只剩下第十七层还亮着灯。会议室里，技术总监陈默将一份事故报告重重地摔在桌上。</p>
+<p class="spoken-line">“谁能告诉我，为什么我们的 AI 客服会告诉客户，企业版软件支持无条件退款？”</p>
+<p>会议室鸦雀无声。屏幕上显示着客户与 AI 的对话。客户：</p>
+<p class="spoken-line">“我们购买企业版已经四个月了，现在想退款，可以吗？”</p>
+<p><strong>AI 客服：</strong></p>
+<p class="spoken-line">“当然可以。根据公司的退款政策，企业版客户在购买后六个月内均可申请无条件全额退款。”</p>
 <p>然而，公司的真实政策是：</p>
 <blockquote>
 <p>企业版客户在合同生效后 30 天内，符合合同约定条件的，可以申请退款。超过 30 天原则上不支持退款，特殊情况需要商务审批。</p>
 </blockquote>
-<p>客户已经截图，并以 AI 的答复为依据提出了退款要求。</p>
-<p>涉及金额：三百万元。</p>
-<p>“模型为什么会胡说八道？”</p>
-<p>陈默看向坐在角落里的年轻工程师林川。</p>
-<p>林川是刚加入公司的 Java 后端工程师。</p>
-<p>他看了一眼事故日志。</p>
-<div class="codehilite"><pre><span></span><code>Request:
-企业版购买四个月可以退款吗？
-
-Model:
-GPT-compatible LLM
-
-Context:
-无
-
-Response:
-企业版支持六个月无条件退款。
-
-Latency:
-1240ms
-
-Status:
+<p>客户已经截图，并以 AI 的答复为依据提出了退款要求。涉及金额：三百万元。</p>
+<p class="spoken-line">“模型为什么会胡说八道？”</p>
+<p>陈默看向坐在角落里的年轻工程师林川。林川是刚加入公司的 Java 后端工程师。他看了一眼事故日志。```
+Request:
+企业版购买四个月可以退款吗？</p>
+<p>Model:
+GPT-compatible LLM</p>
+<p>Context:
+无</p>
+<p>Response:
+企业版支持六个月无条件退款。</p>
+<p>Latency:
+1240ms</p>
+<p>Status:
 200 OK
-</code></pre></div>
-
-<p>林川皱起眉头。</p>
-<p>“我们没有给模型提供公司的退款政策？”</p>
-<p>“没有。”</p>
-<p>“那它凭什么知道？”</p>
+```林川皱起眉头。</p>
+<p class="spoken-line">“我们没有给模型提供公司的退款政策？”</p>
+<p class="spoken-line">“没有。”</p>
+<p class="spoken-line">“那它凭什么知道？”</p>
 <p>陈默沉默了。</p>
-<p>林川继续说道：</p>
-<p>“它根本不知道公司的真实政策。它只是根据训练时学到的语言模式，生成了一个看起来合理的答案。”</p>
-<p>“那怎么办？重新训练模型？”</p>
-<p>“不一定。”</p>
+<p><strong>林川继续说道：</strong> “它根本不知道公司的真实政策。它只是根据训练时学到的语言模式，生成了一个看起来合理的答案。”</p>
+<p class="spoken-line">“那怎么办？重新训练模型？”</p>
+<p class="spoken-line">“不一定。”</p>
 <p>林川站起身，在白板上写下三个字母。</p>
 <h2 id="rag">RAG</h2>
-<p>Retrieval-Augmented Generation。</p>
-<p>检索增强生成。</p>
-<p>“我们不需要让模型记住公司所有的知识。”</p>
-<p>“我们需要让它在回答问题之前，先找到公司真正的知识。”</p>
-<p>陈默问：</p>
-<p>“这不就是搜索一下文档，再把结果塞给大模型？”</p>
+<p>Retrieval-Augmented Generation。检索增强生成。</p>
+<p class="spoken-line">“我们不需要让模型记住公司所有的知识。”</p>
+<p class="spoken-line">“我们需要让它在回答问题之前，先找到公司真正的知识。”</p>
+<p><strong>陈默问：</strong> “这不就是搜索一下文档，再把结果塞给大模型？”</p>
 <p>林川摇头。</p>
-<p>“如果只是这样，我们最多能做出一个 Demo。”</p>
-<p>“但要让它服务十万名员工、管理上百万份文档、支持多租户权限、持续更新知识、控制成本、能够追踪每一次错误……”</p>
+<p class="spoken-line">“如果只是这样，我们最多能做出一个 Demo。”</p>
+<p class="spoken-line">“但要让它服务十万名员工、管理上百万份文档、支持多租户权限、持续更新知识、控制成本、能够追踪每一次错误……”</p>
 <p>他停顿了一下。</p>
-<p>“我们需要建造一套真正的企业级 RAG 系统。”</p></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="index.html">← 全书目录<span>回到故事起点</span></a><a href="chapter-02.html">下一章 →<span>一张决定系统命运的架构图</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
+<p class="spoken-line">“我们需要建造一套真正的企业级 RAG 系统。”</p></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="index.html">← 全书目录<span>回到故事起点</span></a><a href="chapter-02.html">下一章 →<span>一张决定系统命运的架构图</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
 <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>

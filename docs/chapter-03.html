@@ -11,8 +11,7 @@
 <blockquote>
 <p>工程阅读提示：故事中的金额、吞吐量、延迟与评测成绩是场景示例，不代表可复现的生产基准。代码用于解释设计，落地需结合实际版本、数据与测试。</p>
 </blockquote>
-<p>项目启动第三天。</p>
-<p>运维负责人带来一份数据统计。</p>
+<p>项目启动第三天。运维负责人带来一份数据统计。</p>
 <table>
 <thead>
 <tr>
@@ -39,44 +38,39 @@
 </tr>
 </tbody>
 </table>
-<p>以上为小说设定的业务规模，并非真实项目测试数据。</p>
-<p>林川的同事周野看了一眼统计表。</p>
-<p>“简单啊。遍历文件，提取文本，切块，调用 Embedding，写入 pgvector。”</p>
-<p>他很快写出一段代码。</p>
-<div class="codehilite"><pre><span></span><code>for (Document doc : documents) {
+<p>以上为小说设定的业务规模，并非真实项目测试数据。林川的同事周野看了一眼统计表。</p>
+<p class="spoken-line">“简单啊。遍历文件，提取文本，切块，调用 Embedding，写入 pgvector。”</p>
+<p>他很快写出一段代码。```
+for (Document doc : documents) {
     String text = parser.parse(doc);
-    List&lt;Chunk&gt; chunks = splitter.split(text);
-
-    for (Chunk chunk : chunks) {
-        float[] vector = embedding.embed(chunk.text());
-        vectorStore.save(chunk, vector);
-    }
+    List<Chunk> chunks = splitter.split(text);</p>
+<div class="codehilite"><pre><span></span><code>for (Chunk chunk : chunks) {
+    float[] vector = embedding.embed(chunk.text());
+    vectorStore.save(chunk, vector);
 }
 </code></pre></div>
 
-<p>代码只有七行。</p>
-<p>周野满意地提交了 PR。</p>
-<p>林川却没有批准。</p>
-<p>“如果第 29 万份文档解析失败怎么办？”</p>
-<p>“跳过？”</p>
-<p>“如果某份 PDF 包含 800 页扫描图片？”</p>
-<p>“调用 OCR。”</p>
-<p>“如果 OCR 服务超时？”</p>
-<p>“重试。”</p>
-<p>“如果重试期间服务重启？”</p>
+<p>}
+```代码只有七行。周野满意地提交了 PR。林川却没有批准。</p>
+<p class="spoken-line">“如果第 29 万份文档解析失败怎么办？”</p>
+<p class="spoken-line">“跳过？”</p>
+<p class="spoken-line">“如果某份 PDF 包含 800 页扫描图片？”</p>
+<p class="spoken-line">“调用 OCR。”</p>
+<p class="spoken-line">“如果 OCR 服务超时？”</p>
+<p class="spoken-line">“重试。”</p>
+<p class="spoken-line">“如果重试期间服务重启？”</p>
 <p>周野不说话了。</p>
-<p>林川继续问：</p>
-<p>“如果文档已经更新，旧向量还在怎么办？”</p>
-<p>“如果两个 Worker 同时处理同一份文档呢？”</p>
-<p>“如果 Embedding 模型升级，向量维度发生变化呢？”</p>
-<p>“如果客户删除文档，系统还能检索到旧内容呢？”</p>
+<p><strong>林川继续问：</strong> “如果文档已经更新，旧向量还在怎么办？”</p>
+<p class="spoken-line">“如果两个 Worker 同时处理同一份文档呢？”</p>
+<p class="spoken-line">“如果 Embedding 模型升级，向量维度发生变化呢？”</p>
+<p class="spoken-line">“如果客户删除文档，系统还能检索到旧内容呢？”</p>
 <p>七行代码突然显得格外脆弱。</p>
 <h3 id="_2">第一场工程改造：文档状态机</h3>
 <p>林川设计了如下状态：</p>
 <ol class="engineering-flow"><li>PENDING</li><li>PARSING</li><li>CHUNKING</li><li>EMBEDDING</li><li>INDEXING</li><li>READY</li><li>任一阶段失败 → FAILED / RETRY_WAIT</li></ol>
 
-<p>“注意，”林川说，“状态机不是简单地给数据库加一个 status 字段。”</p>
-<p>“它必须有明确的状态转移规则。”</p>
+<p class="spoken-line">“注意，”林川说，“状态机不是简单地给数据库加一个 status 字段。”</p>
+<p class="spoken-line">“它必须有明确的状态转移规则。”</p>
 <p>例如：</p>
 <div class="codehilite"><pre><span></span><code>UPDATE document_task
 SET status = &#39;PARSING&#39;,
@@ -84,32 +78,32 @@ SET status = &#39;PARSING&#39;,
     updated_at = NOW()
 WHERE id = :taskId
   AND status = &#39;PENDING&#39;;
+```只有更新成功的 Worker，才获得本次处理权。对于可能长时间运行的任务，还需要租约、超时接管和防止过期 Worker 写入的机制。而消息队列采用至少一次投递语义时，业务逻辑必须能够容忍重复消息。
+
+“我们追求的不是消息绝对只执行一次。”
+
+“而是即使重复执行，也不会破坏最终业务结果。”
+
+周野点点头。
+
+“也就是说，消息至少一次投递 + 业务幂等 + 状态持久化，比幻想消息永不重复更现实。”
+
+“没错。”
+
+### 第二场工程改造：文档版本
+
+林川又在白板上写下：
 </code></pre></div>
 
-<p>只有更新成功的 Worker，才获得本次处理权。</p>
-<p>对于可能长时间运行的任务，还需要租约、超时接管和防止过期 Worker 写入的机制。</p>
-<p>而消息队列采用至少一次投递语义时，业务逻辑必须能够容忍重复消息。</p>
-<p>“我们追求的不是消息绝对只执行一次。”</p>
-<p>“而是即使重复执行，也不会破坏最终业务结果。”</p>
-<p>周野点点头。</p>
-<p>“也就是说，消息至少一次投递 + 业务幂等 + 状态持久化，比幻想消息永不重复更现实。”</p>
-<p>“没错。”</p>
-<h3 id="_3">第二场工程改造：文档版本</h3>
-<p>林川又在白板上写下：</p>
-<div class="codehilite"><pre><span></span><code>document_id: DOC_10086
+<p>document_id: DOC_10086
 version: 7
 status: READY
 embedding_model: embedding-v2
 chunk_strategy: heading-path-v3
-</code></pre></div>
-
-<p>“同一份文档可以有多个处理版本，但在线检索只应该看到当前有效版本。”</p>
-<p>新版本构建期间，旧版本继续服务。</p>
-<p>当新版本所有 Chunk 和向量准备完毕，系统再通过事务更新数据库中的活动版本指针。</p>
-<p>随后，后台异步清理旧版本。</p>
-<p>“这样，即使重新解析失败，也不会直接让线上知识消失。”</p>
-<p>陈默听完后问：</p>
-<p>“这是不是有点像蓝绿发布？”</p>
-<p>林川回答：</p>
-<p>“思想相似。都是先构建新版本，再切换流量或可见性。”</p></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-02.html">← 上一章<span>一张决定系统命运的架构图</span></a><a href="chapter-04.html">下一章 →<span>被切碎的法律条款</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
+```</p>
+<p class="spoken-line">“同一份文档可以有多个处理版本，但在线检索只应该看到当前有效版本。”</p>
+<p>新版本构建期间，旧版本继续服务。当新版本所有 Chunk 和向量准备完毕，系统再通过事务更新数据库中的活动版本指针。随后，后台异步清理旧版本。</p>
+<p class="spoken-line">“这样，即使重新解析失败，也不会直接让线上知识消失。”</p>
+<p><strong>陈默听完后问：</strong> “这是不是有点像蓝绿发布？”</p>
+<p><strong>林川回答：</strong> “思想相似。都是先构建新版本，再切换流量或可见性。”</p></article><section class="practice"><h2>把原理放进实验</h2><p>调整参数，观察系统如何变化。所有实验均在当前浏览器中运行。</p><a href="practice.html">查看全部交互实验 →</a> · <a href="editorial.html">内容整理与技术校正 →</a></section><nav class="chapter-nav" aria-label="上下章"><a href="chapter-02.html">← 上一章<span>一张决定系统命运的架构图</span></a><a href="chapter-04.html">下一章 →<span>被切碎的法律条款</span></a></nav></main></div><footer><a href="index.html">RAG 帝国</a><p>在故事中理解系统，在实验中观察原理。<span>全书 9 章 · 全书完结</span></p><a href="https://github.com/wupzl/rag-empire-reader">项目源码 ↗</a></footer>
 <dialog id="search-dialog" aria-labelledby="search-title"><div class="search-top"><h2 id="search-title">在帝国里寻找答案</h2><button id="search-close" aria-label="关闭搜索">关闭 ×</button></div><label for="query">关键词或代码，例如 Redis、背压、Checkpoint</label><input id="query" type="search" autocomplete="off" placeholder="搜索全书正文…"><p id="search-status" role="status">输入关键词，搜索 9 章内容</p><div id="search-results"></div></dialog></body></html>
