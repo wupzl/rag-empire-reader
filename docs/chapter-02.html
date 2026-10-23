@@ -14,22 +14,32 @@
 <p>第二天上午九点。</p>
 <p>林川在白板上画出了系统的第一版架构。</p>
 <p>星云企业级 RAG 平台 · 总体架构</p>
-<p>用户入口</p>
-<p>Vue 3 · API Gateway · Spring Security / JWT</p>
-<p>知识入库链路</p>
-<p>文件上传与校验</p>
-<p>解析 / OCR / 结构识别</p>
-<p>Heading Path 分块</p>
-<p>Embedding 向量化</p>
-<p>PostgreSQL + pgvector</p>
-<p>在线问答链路</p>
-<p>Query 理解 / 改写</p>
-<p>Hybrid Search 混合检索</p>
-<p>Rerank 重排序</p>
-<p>上下文构造 / LLM</p>
-<p>SSE 流式回答 + 引用</p>
-<p>横向生产能力</p>
-<p>权限隔离 · Redis · 消息队列 · 可观测性 · 评测 · 灰度 · 审计</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>组件 / 链路</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用户入口</td>
+<td>Vue 3 · API Gateway · Spring Security / JWT</td>
+</tr>
+<tr>
+<td>知识入库</td>
+<td>文件上传与校验 → 解析 / OCR / 结构识别 → Heading Path 分块 → Embedding 向量化 → PostgreSQL + pgvector</td>
+</tr>
+<tr>
+<td>在线问答</td>
+<td>Query 理解 / 改写 → Hybrid Search 混合检索 → Rerank 重排序 → 上下文构造 / LLM → SSE 流式回答 + 引用</td>
+</tr>
+<tr>
+<td>生产能力</td>
+<td>权限隔离 · Redis · 消息队列 · 可观测性 · 评测 · 灰度 · 审计</td>
+</tr>
+</tbody>
+</table>
 <p>陈默盯着架构图。</p>
 <p>“为什么要分成两条链路？”</p>
 <p>林川回答：</p>

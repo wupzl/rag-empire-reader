@@ -20,7 +20,7 @@
 <li><a href="#_20">本章交互实验</a></li>
 </ul>
 </div>
-</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 06 <span>/ 09 · 约 53 分钟</span></p><h1>权限之墙——一场险些泄露的商业机密</h1><p class="topics">多租户 · 权限 · 安全</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="current" href="chapter-06.html" aria-current="page"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
+</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 06 <span>/ 09 · 约 54 分钟</span></p><h1>权限之墙——一场险些泄露的商业机密</h1><p class="topics">多租户 · 权限 · 安全</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="current" href="chapter-06.html" aria-current="page"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
 <ul>
 <li><a href="#_2">第一幕：那个不应该出现的答案</a></li>
 <li><a href="#_3">第二幕：身份认证，不等于数据授权</a></li>
@@ -567,22 +567,18 @@ return candidates.stream()
 <p>更严重的是，如果开发人员不小心在过滤前执行了 Rerank、日志输出或上下文构造，未授权内容就可能进入其他系统。</p>
 <h3 id="_9">两种检索方案的区别</h3>
 <p>错误的主流程：全局 Top K 后过滤</p>
-<p>全租户 / 全权限向量库</p>
-<p>全局向量 Top 10</p>
-<p>应用层权限过滤</p>
-<p>可能漏召回授权内容，并增加未授权候选被处理的风险</p>
+<ol class="engineering-flow"><li>全租户 / 全权限向量库</li><li>全局向量 Top 10</li><li>应用层权限过滤</li><li>可能漏召回授权内容，并增加未授权候选被处理的风险</li></ol>
+
 <p>目标流程：在检索查询中强制权限约束</p>
-<p>租户约束 + Document ACL + 状态检查</p>
-<p>在授权数据集合上检索候选</p>
-<p>Rerank → Context → LLM</p>
-<p>最终进入模型上下文的证据必须经过有效授权</p>
+<ol class="engineering-flow"><li>租户约束 + Document ACL + 状态检查</li><li>在授权数据集合上检索候选</li><li>Rerank → Context → LLM</li><li>最终进入模型上下文的证据必须经过有效授权</li></ol>
+
 <p>“但是 PostgreSQL + pgvector 怎么实现？”</p>
 <p>周野问。</p>
 <p>林川打开 SQL 编辑器。</p>
 <h3 id="postgresql">PostgreSQL：带权限条件的向量检索</h3>
 <p>首先，构建一个简化的查询。</p>
 <p>假设当前用户为 <code>:userId</code>，租户为 <code>:tenantId</code>，应用已经通过可信身份系统确定用户身份。</p>
-<div class="codehilite"><pre><span></span><code>SELECT
+<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary><div class="codehilite"><pre><span></span><code>SELECT
     c.id,
     c.document_id,
     c.content,
@@ -616,7 +612,7 @@ WHERE c.tenant_id = :tenantId
   )
 ORDER BY distance
 LIMIT 10;
-</code></pre></div>
+</code></pre></div></details>
 
 <p>“注意，这是一个教学版查询。”</p>
 <p>“它只演示用户级 ACL。真正的权限判定还要合并角色、部门、用户组、知识库继承和密级规则。”</p>

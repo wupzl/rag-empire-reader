@@ -34,6 +34,11 @@ def render(source,toc=False):
     if formulas:
         run=subprocess.run(['node',str(ROOT/'render-math.cjs')],input=json.dumps(formulas),text=True,encoding='utf-8',capture_output=True,check=True)
         for i,value in enumerate(json.loads(run.stdout)): rendered=rendered.replace(f'MATHTOKEN{i}END',value)
+    def fold_code(m):
+        block=m[0]
+        if block.count('\n') < 25: return block
+        return '<details class="code-disclosure"><summary>展开代码 / 结构示例（较长）</summary>'+block+'</details>'
+    rendered=re.sub(r'<div class="codehilite">.*?</div>',fold_code,rendered,flags=re.S)
     return rendered,md.toc
 
 metadata=[]; search=[]

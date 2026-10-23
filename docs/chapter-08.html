@@ -5,7 +5,6 @@
 <ul>
 <li><a href="#_2">序幕：十万人同时按下回车</a></li>
 <li><a href="#qps">第一幕：并发量，不等于 QPS</a></li>
-<li><a href="#4500">4,500</a></li>
 <li><a href="#redis">第二幕：Redis 的第一道防线——缓存不是越多越好</a></li>
 <li><a href="#_4">第三幕：请求合并——五千个人问同一个问题</a></li>
 <li><a href="#java-21">第四幕：Java 21 虚拟线程——百万线程的神话</a></li>
@@ -21,11 +20,6 @@
 <li><a href="#rag_3">第十四幕：架构重建——真正的高并发 RAG</a></li>
 <li><a href="#_31">第十五幕：真正的容量，不是服务器数量</a></li>
 <li><a href="#rag_4">本章技术档案：高并发 RAG 的核心公式</a></li>
-<li><a href="#1-littles-law">1. Little's Law</a></li>
-<li><a href="#2_2">2. 模型输出吞吐量上界估算</a></li>
-<li><a href="#3_2">3. 请求总延迟</a></li>
-<li><a href="#4_1">4. 缓存命中率</a></li>
-<li><a href="#5">5. 错误率</a></li>
 <li><a href="#rag_5">技术面试：高并发 RAG 的十二道追问</a></li>
 <li><a href="#_32">终章：凌晨两点的最后一条告警</a></li>
 <li><a href="#_33">本章交互实验</a></li>
@@ -35,7 +29,6 @@
 <ul>
 <li><a href="#_2">序幕：十万人同时按下回车</a></li>
 <li><a href="#qps">第一幕：并发量，不等于 QPS</a></li>
-<li><a href="#4500">4,500</a></li>
 <li><a href="#redis">第二幕：Redis 的第一道防线——缓存不是越多越好</a></li>
 <li><a href="#_4">第三幕：请求合并——五千个人问同一个问题</a></li>
 <li><a href="#java-21">第四幕：Java 21 虚拟线程——百万线程的神话</a></li>
@@ -51,11 +44,6 @@
 <li><a href="#rag_3">第十四幕：架构重建——真正的高并发 RAG</a></li>
 <li><a href="#_31">第十五幕：真正的容量，不是服务器数量</a></li>
 <li><a href="#rag_4">本章技术档案：高并发 RAG 的核心公式</a></li>
-<li><a href="#1-littles-law">1. Little's Law</a></li>
-<li><a href="#2_2">2. 模型输出吞吐量上界估算</a></li>
-<li><a href="#3_2">3. 请求总延迟</a></li>
-<li><a href="#4_1">4. 缓存命中率</a></li>
-<li><a href="#5">5. 错误率</a></li>
 <li><a href="#rag_5">技术面试：高并发 RAG 的十二道追问</a></li>
 <li><a href="#_32">终章：凌晨两点的最后一条告警</a></li>
 <li><a href="#_33">本章交互实验</a></li>
@@ -173,13 +161,28 @@
 <p>“所以我们需要区分在线用户数、活跃 SSE 连接数、入口 QPS 和模型推理并发。”</p>
 <h3 id="_3">并发计算实验</h3>
 <p>Little's Law：估算平均在途请求数</p>
-<p>稳定完成吞吐率</p>
-<p>300 QPS</p>
-<p>平均请求持续时间</p>
-<p>15 秒</p>
-<p>估算平均在途请求数</p>
-<h2 id="4500">4,500</h2>
-<p>300 × 15 = 4,500</p>
+<table>
+<thead>
+<tr>
+<th>参数 / 结果</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>稳定完成吞吐率</td>
+<td>300 QPS</td>
+</tr>
+<tr>
+<td>平均请求持续时间</td>
+<td>15 秒</td>
+</tr>
+<tr>
+<td>平均在途请求</td>
+<td>300 × 15 = 4,500</td>
+</tr>
+</tbody>
+</table>
 <p>适用于稳定系统的平均值估算，不代表峰值并发，也不能直接推导 CPU、内存或模型容量。</p>
 <p>林川看向陈默。</p>
 <p>“我们之前压测的普通接口，几十毫秒就能完成。”</p>
@@ -762,7 +765,9 @@ public String callLlm(String prompt)
 <h3 id="rag">一组 RAG 延迟数据</h3>
 <p>RAG 请求延迟分位数（模拟数据）</p>
 <p>单位：秒</p>
-<p>0 s8 s16 s24 s32 sP50P90P95P99</p>
+<blockquote>
+<p>原稿此处仅保留坐标轴标签，未提供可恢复的各分位数数值，因此省略图表。下方阶段耗时用于说明关键路径，不能替代分位数数据。</p>
+</blockquote>
 <p>林川解释：</p>
 <p>“P99 很高，可能是数据库慢查询、模型排队、下游超时、重试、GC 或网络问题。”</p>
 <p>“我们不能只看一个总延迟。”</p>
@@ -1101,20 +1106,20 @@ Network / SSE
 <p>“成熟的系统，不是永远不会过载。”</p>
 <p>“而是在接近极限时，能够知道自己正在接近极限，并且有能力保护自己。”</p>
 <h2 id="rag_4">本章技术档案：高并发 RAG 的核心公式</h2>
-<h2 id="1-littles-law">1. Little's Law</h2>
+<h3 id="1-littles-law">1. Little's Law</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi>λ</mi><mi>W</mi></mrow><annotation encoding="application/x-tex"> L=\lambda W </annotation></semantics></math></span></p>
 <p>用于稳定系统中平均在途请求数、吞吐率与平均停留时间之间的关系。</p>
-<h2 id="2_2">2. 模型输出吞吐量上界估算</h2>
+<h3 id="2_2">2. 模型输出吞吐量上界估算</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Q</mi><mi>P</mi><mi>S</mi><mo>≲</mo><mfrac><mtext>Output Tokens/s</mtext><mtext>平均输出 Tokens/Request</mtext></mfrac></mrow><annotation encoding="application/x-tex"> QPS\lesssim \frac{\text{Output Tokens/s}} {\text{平均输出 Tokens/Request}} </annotation></semantics></math></span></p>
 <p>只是输出阶段的粗略约束，不能代替真实模型容量测试。</p>
-<h2 id="3_2">3. 请求总延迟</h2>
+<h3 id="3_2">3. 请求总延迟</h3>
 <p>对于串行阶段：</p>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi mathvariant="normal">_</mi><mtext>total</mtext><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex"> T\_{\text{total}}=\sum_i T_i </annotation></semantics></math></span></p>
 <p>对于并行阶段，端到端延迟取决于关键路径，而不是所有阶段耗时之和。</p>
-<h2 id="4_1">4. 缓存命中率</h2>
+<h3 id="4_1">4. 缓存命中率</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>H</mi><mi>i</mi><mi>t</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mfrac><mtext>Cache Hits</mtext><mrow><mtext>Cache Hits</mtext><mo>+</mo><mtext>Cache Misses</mtext></mrow></mfrac></mrow><annotation encoding="application/x-tex"> HitRate= \frac{\text{Cache Hits}} {\text{Cache Hits}+\text{Cache Misses}} </annotation></semantics></math></span></p>
 <p>缓存命中率高不一定代表系统整体性能好，还要关注命中路径的安全性、延迟和缓存维护成本。</p>
-<h2 id="5">5. 错误率</h2>
+<h3 id="5">5. 错误率</h3>
 <p><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi>r</mi><mi>r</mi><mi>o</mi><mi>r</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><mfrac><mtext>失败请求数</mtext><mtext>总请求数</mtext></mfrac></mrow><annotation encoding="application/x-tex"> ErrorRate= \frac{\text{失败请求数}} {\text{总请求数}} </annotation></semantics></math></span></p>
 <p>需要明确定义失败类型，例如 HTTP 错误、超时、模型失败和业务拒答。</p>
 <h2 id="rag_5">技术面试：高并发 RAG 的十二道追问</h2>

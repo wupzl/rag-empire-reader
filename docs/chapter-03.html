@@ -2,18 +2,10 @@
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="description" content="RAG 帝国：以 Java 后端工程师的视角，在小说和交互实验中理解RAG 工程。全书 9 章，全书完结。"><title>五十万份文档的入侵 · RAG 帝国</title><script>try{document.documentElement.dataset.theme=localStorage.getItem('rag-theme')||'dark';document.documentElement.style.setProperty('--reader-size',Math.max(14,Math.min(26,Number(localStorage.getItem('rag-size'))||18))+'px')}catch(e){}</script><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shelf-nav.css"><link rel="stylesheet" href="labs.css"><script src="app.js" defer></script><script src="labs.js" defer></script></head>
 <body data-chapter="3" data-count="9"><a class="skip" href="#main">跳到正文</a><div id="progress" aria-hidden="true"></div><header class="topbar"><a class="brand" href="index.html"><span class="emblem" aria-hidden="true">D<span>↗</span></span><span>RAG 帝国<small>THE RAG EMPIRE</small></span></a><nav class="shelf-nav" aria-label="学习项目导航"><a class="shelf-home" href="/">← 学习书架</a><details class="shelf-switch"><summary>切换项目 ▾</summary><div class="shelf-menu"><a href="/pytorch-apprentice/">PyTorch：炼金术士的学徒</a><a href="/ai-era-reader/">AI 纪元</a><a href="/data-empire-reader/">数据帝国</a><a href="/rag-empire-reader/" aria-current="true">RAG 帝国</a></div></details></nav><div class="controls"><button id="search-open" aria-label="搜索全书">搜索 <kbd>/</kbd></button><button id="smaller" aria-label="缩小字号">A−</button><button id="larger" aria-label="增大字号">A＋</button><button id="theme" aria-label="切换深浅色主题">◐</button></div></header>
 <div class="reader-layout"><aside class="sidebar"><p class="eyebrow">THE EMPIRE’S JOURNEY</p><nav aria-label="全书章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="current" href="chapter-03.html" aria-current="page"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><details class="local-toc" open><summary>本章线索</summary><div class="toc">
-<ul>
-<li><a href="#50">50万</a></li>
-<li><a href="#28">2.8</a></li>
-<li><a href="#3000">3000</a></li>
-</ul>
+<ul></ul>
 </div>
 </details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 03 <span>/ 09 · 约 5 分钟</span></p><h1>五十万份文档的入侵</h1><p class="topics">文档接入 · 版本</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="current" href="chapter-03.html" aria-current="page"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
-<ul>
-<li><a href="#50">50万</a></li>
-<li><a href="#28">2.8</a></li>
-<li><a href="#3000">3000</a></li>
-</ul>
+<ul></ul>
 </div>
 </details><article><h1 id="_1">五十万份文档的入侵</h1>
 <blockquote>
@@ -21,15 +13,32 @@
 </blockquote>
 <p>项目启动第三天。</p>
 <p>运维负责人带来一份数据统计。</p>
-<p>历史文档</p>
-<h2 id="50">50万</h2>
-<p>份</p>
-<p>总数据量</p>
-<h2 id="28">2.8</h2>
-<p>TB</p>
-<p>每日新增</p>
-<h2 id="3000">3000</h2>
-<p>份</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+<th>单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>历史文档</td>
+<td><p class="metric-value">50万</p></td>
+<td>份</td>
+</tr>
+<tr>
+<td>总数据量</td>
+<td><p class="metric-value">2.8</p></td>
+<td>TB</td>
+</tr>
+<tr>
+<td>每日新增</td>
+<td><p class="metric-value">3000</p></td>
+<td>份</td>
+</tr>
+</tbody>
+</table>
 <p>以上为小说设定的业务规模，并非真实项目测试数据。</p>
 <p>林川的同事周野看了一眼统计表。</p>
 <p>“简单啊。遍历文件，提取文本，切块，调用 Embedding，写入 pgvector。”</p>
@@ -64,13 +73,8 @@
 <p>七行代码突然显得格外脆弱。</p>
 <h3 id="_2">第一场工程改造：文档状态机</h3>
 <p>林川设计了如下状态：</p>
-<p>PENDING</p>
-<p>PARSING</p>
-<p>CHUNKING</p>
-<p>EMBEDDING</p>
-<p>INDEXING</p>
-<p>READY</p>
-<p>任一阶段失败 → FAILED / RETRY_WAIT</p>
+<ol class="engineering-flow"><li>PENDING</li><li>PARSING</li><li>CHUNKING</li><li>EMBEDDING</li><li>INDEXING</li><li>READY</li><li>任一阶段失败 → FAILED / RETRY_WAIT</li></ol>
+
 <p>“注意，”林川说，“状态机不是简单地给数据库加一个 status 字段。”</p>
 <p>“它必须有明确的状态转移规则。”</p>
 <p>例如：</p>
