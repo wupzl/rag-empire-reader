@@ -24,7 +24,7 @@
 <li><a href="#_11">本章交互实验</a></li>
 </ul>
 </div>
-</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 07 <span>/ 09 · 约 43 分钟</span></p><h1>推理引擎——让模型学会有证据地回答</h1><p class="topics">混合检索 · 推理 · 引用</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="current" href="chapter-07.html" aria-current="page"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
+</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 07 <span>/ 09 · 约 48 分钟</span></p><h1>推理引擎——让模型学会有证据地回答</h1><p class="topics">混合检索 · 推理 · 引用</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="" href="chapter-06.html"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="current" href="chapter-07.html" aria-current="page"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
 <ul>
 <li><a href="#_2">第一幕：一份正确的证据，一次错误的回答</a></li>
 <li><a href="#query-understanding">第二幕：Query Understanding——用户说的话，不一定是他真正要问的</a></li>
@@ -1153,20 +1153,23 @@ public Flux&lt;ServerSentEvent&lt;String&gt;&gt; chat(
 <p>“不是组件数量。”</p>
 <p>“而是每个组件都有明确的问题、可验证的收益和可控的失败方式。”</p>
 <h2 id="_9">技术面试：推理引擎的十二道核心追问</h2>
-<p>模拟面试 · 点击展开回答</p>
-<p>全部展开</p>
-<p>1. Query Rewrite 和 Multi-Query 有什么区别？</p>
-<p>2. HyDE 为什么可能提升检索效果？</p>
-<p>3. Hybrid Search 为什么比单纯向量检索更适合企业知识库？</p>
-<p>4. RRF 为什么不直接使用分数加权？</p>
-<p>5. Bi-Encoder 与 Cross-Encoder 有什么区别？</p>
-<p>6. Rerank Top K 应该怎么选？</p>
-<p>7. 什么是 Lost in the Middle？</p>
-<p>8. Context Packing 与简单截断有什么区别？</p>
-<p>9. Citation 和 Groundedness 有什么区别？</p>
-<p>10. RAG 如何降低幻觉？</p>
-<p>11. WebFlux SSE 如何处理背压和取消？</p>
-<p>12. 如何衡量一个 RAG Pipeline 是否值得上线？</p>
+<div class="review-bank">
+<p>先自行作答，再展开对照。参考答案为编辑补充，可结合本章正文深入阅读。</p>
+<button type="button" class="review-toggle">全部展开</button>
+<details class="review-card"><summary>1. Query Rewrite 和 Multi-Query 有什么区别？</summary><div class="review-answer"><p>Rewrite 将原问题改写为更适合检索的表达；Multi-Query 产生多种检索表达并合并结果。两者都应防止偏离原意。</p></div></details>
+<details class="review-card"><summary>2. HyDE 为什么可能提升检索效果？</summary><div class="review-answer"><p>HyDE 用假设答案的向量帮助寻找相似证据，可能缓解短查询的语义不足。但假设答案不是事实，可能引入偏差与额外成本。</p></div></details>
+<details class="review-card"><summary>3. Hybrid Search 为什么比单纯向量检索更适合企业知识库？</summary><div class="review-answer"><p>关键词检索擅长精确术语、编号与名称，向量检索擅长语义近似。混合可以互补，是否提升仍须按实际数据评测。</p></div></details>
+<details class="review-card"><summary>4. RRF 为什么不直接使用分数加权？</summary><div class="review-answer"><p>不同检索器分数尺度未必可比。RRF 按排名融合，降低标度校准需求，但丢失分数差距信息，融合参数仍需验证。</p></div></details>
+<details class="review-card"><summary>5. Bi-Encoder 与 Cross-Encoder 有什么区别？</summary><div class="review-answer"><p>Bi-Encoder 分别编码查询与文档，适合预计算和大规模召回；Cross-Encoder 联合编码二者，通常更贵，适合候选集重排。</p></div></details>
+<details class="review-card"><summary>6. Rerank Top K 应该怎么选？</summary><div class="review-answer"><p>联合评估召回、重排延迟、模型成本与最终回答质量，选择收益开始递减的候选数量；不存在通用最佳 K。</p></div></details>
+<details class="review-card"><summary>7. 什么是 Lost in the Middle？</summary><div class="review-answer"><p>长上下文中部信息有时较难被模型有效利用。表现随模型与任务变化，需测试证据位置、数量与上下文长度。</p></div></details>
+<details class="review-card"><summary>8. Context Packing 与简单截断有什么区别？</summary><div class="review-answer"><p>Packing 在 Token 预算内按相关性、去重、结构和证据覆盖组织内容；简单截断只保留前部，可能切断条款或遗漏关键证据。</p></div></details>
+<details class="review-card"><summary>9. Citation 和 Groundedness 有什么区别？</summary><div class="review-answer"><p>Citation 表示回答指向何处，Groundedness 表示主张是否被证据支持。存在引用不代表引用正确或充分。</p></div></details>
+<details class="review-card"><summary>10. RAG 如何降低幻觉？</summary><div class="review-answer"><p>提高检索质量、校验权限与证据、要求引用、控制上下文并在证据不足时拒答，使用评测持续发现失败场景；不能保证消除所有幻觉。</p></div></details>
+<details class="review-card"><summary>11. WebFlux SSE 如何处理背压和取消？</summary><div class="review-answer"><p>限制缓冲区与在途任务，明确溢出策略；客户端断开时传播取消并关闭上游资源。响应式接口不自动解决阻塞或无限缓冲。</p></div></details>
+<details class="review-card"><summary>12. 如何衡量一个 RAG Pipeline 是否值得上线？</summary><div class="review-answer"><p>在代表性数据集上同时检验回答质量、安全、延迟、成本与失败恢复，满足预先定义的门槛后灰度验证。</p></div></details>
+</div>
+
 <h2 id="_10">第七章终章：真正的答案</h2>
 <p>2026 年 12 月 31 日。</p>
 <p>新年前夜。</p>

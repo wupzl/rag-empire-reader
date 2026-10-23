@@ -107,3 +107,5 @@
 document.querySelectorAll('article img').forEach(img=>{img.loading='lazy'; img.decoding='async'; img.addEventListener('error',()=>{const note=document.createElement('p');note.className='image-fallback';note.textContent='场景图片暂时无法加载，正文可继续阅读。';img.replaceWith(note);},{once:true});});
 
 document.querySelectorAll('article pre').forEach(pre=>{pre.tabIndex=0;pre.setAttribute('aria-label','代码或结构示意，可横向滚动查看');});
+
+document.querySelectorAll('.review-toggle').forEach(button=>button.addEventListener('click',()=>{const cards=[...button.closest('.review-bank').querySelectorAll('details')];const open=cards.some(c=>!c.open);cards.forEach(c=>c.open=open);button.textContent=open?'全部收起':'全部展开';}));

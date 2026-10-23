@@ -20,7 +20,7 @@
 <li><a href="#_20">本章交互实验</a></li>
 </ul>
 </div>
-</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 06 <span>/ 09 · 约 49 分钟</span></p><h1>权限之墙——一场险些泄露的商业机密</h1><p class="topics">多租户 · 权限 · 安全</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="current" href="chapter-06.html" aria-current="page"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
+</details></aside><main id="main" class="chapter-main"><div class="chapter-heading"><p class="eyebrow">CHAPTER 06 <span>/ 09 · 约 53 分钟</span></p><h1>权限之墙——一场险些泄露的商业机密</h1><p class="topics">多租户 · 权限 · 安全</p><div class="bridge">先遇见系统的问题，再理解技术为什么出现。</div></div><details class="mobile-toc"><summary>章节与本章目录</summary><nav aria-label="移动端章节"><a class="" href="chapter-01.html"><span>01</span>一场价值三百万的幻觉事故</a><a class="" href="chapter-02.html"><span>02</span>一张决定系统命运的架构图</a><a class="" href="chapter-03.html"><span>03</span>五十万份文档的入侵</a><a class="" href="chapter-04.html"><span>04</span>被切碎的法律条款</a><a class="" href="chapter-05.html"><span>05</span>向量数据库的第一次背叛</a><a class="current" href="chapter-06.html" aria-current="page"><span>06</span>权限之墙——一场险些泄露的商业机密</a><a class="" href="chapter-07.html"><span>07</span>推理引擎——让模型学会有证据地回答</a><a class="" href="chapter-08.html"><span>08</span>十万并发的夜晚</a><a class="" href="chapter-09.html"><span>09</span>评测法庭——如何证明 AI 真的变聪明了</a></nav><div class="toc">
 <ul>
 <li><a href="#_2">第一幕：那个不应该出现的答案</a></li>
 <li><a href="#_3">第二幕：身份认证，不等于数据授权</a></li>
@@ -987,14 +987,32 @@ SKIPPED
 <p>“尤其当我们采用异步处理和最终一致性架构时。”</p>
 <h3 id="_15">删除状态机</h3>
 <p>林川重新设计删除流程。</p>
-<p>ACTIVE</p>
-<p>正常可检索</p>
-<p>DELETING</p>
-<p>立即禁止新的检索与内容读取</p>
-<p>PURGING</p>
-<p>异步清理向量、索引、缓存和文件</p>
-<p>DELETED</p>
-<p>完成删除与必要校验</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACTIVE</td>
+<td>正常可检索</td>
+</tr>
+<tr>
+<td>DELETING</td>
+<td>立即禁止新的检索与内容读取</td>
+</tr>
+<tr>
+<td>PURGING</td>
+<td>异步清理向量、索引、缓存和文件</td>
+</tr>
+<tr>
+<td>DELETED</td>
+<td>完成删除与必要校验</td>
+</tr>
+</tbody>
+</table>
 <p>“关键是第一步。”</p>
 <p>林川强调。</p>
 <p>“当删除请求成功提交后，系统必须立即阻止新的检索与内容读取。”</p>
@@ -1255,35 +1273,33 @@ return llmService.generate(query, evidence);
 <p>是延迟、吞吐量和成本。</p>
 <h2 id="_19">本章技术复盘：面试官的十连追问</h2>
 <p>小说结束后，林川整理了十道企业级 RAG 面试中值得重点准备的问题。</p>
-<p>模拟技术面试 · 点击展开参考回答</p>
-<p>全部展开</p>
-<p>1. RAG 为什么需要权限控制？JWT 不够吗？</p>
-<p>2. 多租户 RAG 有哪些隔离方案？</p>
-<p>3. RBAC、ABAC、ACL 有什么区别？</p>
-<p>4. 为什么不能先向量 Top K，再过滤权限？</p>
-<p>5. pgvector 加 WHERE 就一定实现了高效前置过滤吗？</p>
-<p>6. PostgreSQL RLS 有哪些坑？</p>
-<p>7. Redis 缓存为什么可能造成越权？</p>
-<p>8. RAG Prompt Injection 怎么防？</p>
-<p>9. 删除文档后，为什么向量还可能被检索到？</p>
-<p>10. 如何证明 RAG 权限系统可靠？</p>
+<div class="review-bank">
+<p>先自行作答，再展开对照。参考答案为编辑补充，可结合本章正文深入阅读。</p>
+<button type="button" class="review-toggle">全部展开</button>
+<details class="review-card"><summary>1. RAG 为什么需要权限控制？JWT 不够吗？</summary><div class="review-answer"><p>JWT 证明身份，不能证明当前用户有权读取每份文档。检索、缓存及生成前都需校验租户与文档权限。</p></div></details>
+<details class="review-card"><summary>2. 多租户 RAG 有哪些隔离方案？</summary><div class="review-answer"><p>可选独立数据库、独立 schema 或共享表加 tenant_id。隔离强度、成本与运维复杂度不同；共享方案需贯穿索引、缓存和异步任务。</p></div></details>
+<details class="review-card"><summary>3. RBAC、ABAC、ACL 有什么区别？</summary><div class="review-answer"><p>RBAC 按角色授权，ABAC 按主体、资源与环境属性决策，ACL 记录具体资源对主体的许可。组合时应明确拒绝优先及继承规则。</p></div></details>
+<details class="review-card"><summary>4. 为什么不能先向量 Top K，再过滤权限？</summary><div class="review-answer"><p>先取全库 Top K 再过滤会造成授权结果不足，也可能让未授权数据进入后续处理。应在检索链路施加权限约束，并在生成前再次校验。</p></div></details>
+<details class="review-card"><summary>5. pgvector 加 WHERE 就一定实现了高效前置过滤吗？</summary><div class="review-answer"><p>不一定。SQL 的逻辑条件不代表 ANN 索引物理执行时先过滤。应通过 EXPLAIN、选择性与召回测试评估索引、分区和迭代扫描策略。</p></div></details>
+<details class="review-card"><summary>6. PostgreSQL RLS 有哪些坑？</summary><div class="review-answer"><p>超级用户与 BYPASSRLS 角色绕过策略，表所有者通常也绕过。还需关注连接池租户上下文污染、策略组合及事务作用域。</p></div></details>
+<details class="review-card"><summary>7. Redis 缓存为什么可能造成越权？</summary><div class="review-answer"><p>缓存键若遗漏租户、用户授权范围或权限版本，可能复用别人的答案。命中时仍需授权验证，并处理撤权与删除失效。</p></div></details>
+<details class="review-card"><summary>8. RAG Prompt Injection 怎么防？</summary><div class="review-answer"><p>把检索内容视为不可信数据，隔离指令与证据，限制工具权限，验证输出并持续红队测试。单句提示词无法保证彻底防御。</p></div></details>
+<details class="review-card"><summary>9. 删除文档后，为什么向量还可能被检索到？</summary><div class="review-answer"><p>向量、缓存、索引和文件的物理清理可能异步完成。先提交不可读状态，检索时检查状态与版本，再重试清理并防止旧任务复活文档。</p></div></details>
+<details class="review-card"><summary>10. 如何证明 RAG 权限系统可靠？</summary><div class="review-answer"><p>覆盖跨租户、显式拒绝、撤权、缓存命中、删除与并发时序测试，并结合审计、渗透测试和监控。测试通过不能证明绝对安全。</p></div></details>
+</div>
+
 <h2 id="rag_1">林川的架构笔记：真正成熟的 RAG 安全体系</h2>
 <p>纵深防御：五道安全关卡</p>
-<p>01</p>
-<p>身份边界</p>
-<p>JWT 验证、租户成员关系、可信身份上下文</p>
-<p>02</p>
-<p>数据边界</p>
-<p>租户隔离、RLS、RBAC / ABAC / ACL</p>
-<p>03</p>
-<p>检索边界</p>
-<p>授权感知的向量与关键词检索、证据再校验</p>
-<p>04</p>
-<p>模型边界</p>
-<p>不可信上下文隔离、工具最小权限、注入防护</p>
-<p>05</p>
-<p>生命周期边界</p>
-<p>缓存失效、撤权、删除、异步任务防复活、审计</p>
+<div class="boundary-card"><span>01</span><div><strong>身份边界</strong><p>JWT 验证、租户成员关系、可信身份上下文</p></div></div>
+
+<div class="boundary-card"><span>02</span><div><strong>数据边界</strong><p>租户隔离、RLS、RBAC / ABAC / ACL</p></div></div>
+
+<div class="boundary-card"><span>03</span><div><strong>检索边界</strong><p>授权感知的向量与关键词检索、证据再校验</p></div></div>
+
+<div class="boundary-card"><span>04</span><div><strong>模型边界</strong><p>不可信上下文隔离、工具最小权限、注入防护</p></div></div>
+
+<div class="boundary-card"><span>05</span><div><strong>生命周期边界</strong><p>缓存失效、撤权、删除、异步任务防复活、审计</p></div></div>
+
 <p>对于你的 Java + Spring Boot + pgvector RAG 项目，这一章最值得实际落地的部分是：租户与文档 ACL 表、检索 SQL 权限约束、最终证据授权校验、Redis 权限版本失效，以及删除状态机。</p>
 <p>这几项能够将项目从“具有检索与生成能力”进一步推进到“具备基本企业级安全边界”，但是否达到生产要求，还要通过安全测试、性能评测和真实故障演练验证。</p>
 <h2 id="_20">本章交互实验</h2>
