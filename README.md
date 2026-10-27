@@ -7,3 +7,6 @@
 原稿：source/original.md；整理后的正文：chapters/；技术说明：EDITORIAL.md。
 
 网站：https://wupzl.github.io/rag-empire-reader/
+
+
+项目切换菜单已接入 [Agent 帝国：代码审判者](https://wupzl.github.io/coding-agent-reader/)，九章小说式 Coding Agent 工程阅读。
